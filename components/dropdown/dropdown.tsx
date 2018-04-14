@@ -35,6 +35,7 @@ export default class extends React.Component<MyProps, MyStates> {
   public selectedIndex = -1
   public seleted = false
   public event: any
+  public filterVal: string = ''
   public constructor (props: MyProps) {
     super(props)
     this.handleAllData(this.props.data)
@@ -50,9 +51,10 @@ export default class extends React.Component<MyProps, MyStates> {
   public componentWillReceiveProps (props: MyProps) {
     if (props.data) {
       this.handleAllData(props.data)
+      const res = this.filterData()
       this.setState({
-        data: this.allData.slice(0, this.pageNum * this.defaultPage),
-        dataTmp: this.allData
+        data: res.slice(0, this.pageNum * this.defaultPage),
+        dataTmp: res
       })
     }
   }
@@ -142,7 +144,7 @@ export default class extends React.Component<MyProps, MyStates> {
         capital: getCapital(item[title || 'title']) || ['']
       }
       if (this.props.title === item[title || 'title']) {
-        this.defaultPage = index === 0 ? 1 : Math.ceil(index / this.pageNum)
+        this.defaultPage = index === 0 ? 1 : Math.ceil(index + 1 / this.pageNum)
         this.selectedIndex = index
       }
       this.allData[index] = newItem
@@ -155,13 +157,19 @@ export default class extends React.Component<MyProps, MyStates> {
     this.state.dataTmp.map((item, index) => {
       if (this.state.title === item.title) {
         this.selectedIndex = index
+        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
+        this.setState({
+          data: this.state.dataTmp.slice(0, this.defaultPage * this.pageNum),
+          selectedIndex: index
+        })
+        return false
       }
     })
     if (this.selectedIndex < 0) {
       $items.scrollTop(0)
       return
     }
-    this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex / this.pageNum)
+    this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
     // this.setState({
     //   data: this.allData.slice(0, this.defaultPage * this.pageNum),
     //   dataTmp: this.allData
@@ -247,7 +255,7 @@ export default class extends React.Component<MyProps, MyStates> {
       this.t = setTimeout(() => {
         $(results).removeClass('custom-slide-up-leave')
         $(results).addClass('hidden')
-        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex / this.pageNum)
+        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
         this.setState({
           visible: false,
           selectedIndex: this.selectedIndex
@@ -266,7 +274,7 @@ export default class extends React.Component<MyProps, MyStates> {
       title: item.title,
       selectedIndex: index
     })
-    this.defaultPage = index === 0 ? 1 : Math.ceil(index / this.pageNum)
+    this.defaultPage = index === 0 ? 1 : Math.ceil(index + 1 / this.pageNum)
     this.handleLeave()
     if (callBack) {
       setTimeout(() => {
@@ -274,21 +282,36 @@ export default class extends React.Component<MyProps, MyStates> {
       }, 301)
     }
   }
-  public handleChange (e: any) {
-    const $items = $(this.refs.results).find('.items')
-    const filterVal = e.target.value
+  public filterData () {
     const { allData } = this
-    const value: string = $(this.refs.input).val().toString()
-    const pattern = new RegExp(value, 'i')
+    if (this.filterVal === '') {
+      return allData
+    }
+    let pattern: RegExp = null
+    try {
+      pattern = new RegExp(this.filterVal, 'i')
+    } catch (e) {
+      console.log(e.message)
+      pattern = new RegExp('', 'i')
+    }
     const res = allData.filter((item: T, index): boolean => {
       if (pattern.test(item.title) || pattern.test(item.capital.join(','))) {
         return true
       }
     })
+    return res || []
+  }
+  public handleChange (e: any) {
+    const $items = $(this.refs.results).find('.items')
+    this.filterVal = e.target.value
+    const { allData } = this
+    const value: string = $(this.refs.input).val().toString()
+    const res = this.filterData()
     $items.scrollTop(0)
     res.map((item, index) => {
       if (this.state.title === item.title) {
         this.selectedIndex = index
+        return false
       }
     })
     this.defaultPage = 1
@@ -296,7 +319,7 @@ export default class extends React.Component<MyProps, MyStates> {
       data: res.slice(0, this.pageNum),
       dataTmp: res,
       selectedIndex: -1,
-      filterVal
+      filterVal: this.filterVal
     })
   }
   public onMouseEnter (key: number) {

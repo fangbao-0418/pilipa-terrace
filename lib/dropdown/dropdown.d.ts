@@ -35,6 +35,7 @@ export default class  extends React.Component<MyProps, MyStates> {
     selectedIndex: number;
     seleted: boolean;
     event: any;
+    filterVal: string;
     constructor(props: MyProps);
     componentWillReceiveProps(props: MyProps): void;
     componentDidMount(): void;
@@ -49,6 +50,7 @@ export default class  extends React.Component<MyProps, MyStates> {
         key: number;
         title: string;
     }, index: number): void;
+    filterData(): T[];
     handleChange(e: any): void;
     onMouseEnter(key: number): void;
     render(): JSX.Element;

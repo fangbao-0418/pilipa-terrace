@@ -29,6 +29,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   public allData: T[] = []
   public defaultCls = 'pilipa-auto-complete'
   public event: any
+  public filterVal: string = ''
   constructor (props: MyProps) {
     super(props)
     this.handleAllData(this.props.data)
@@ -44,9 +45,10 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   public componentWillReceiveProps (props: MyProps) {
     if (props.data.length) {
       this.handleAllData(props.data)
+      const res = this.filterData()
       this.setState({
-        data: props.data.slice(0, this.pageNum),
-        dataTmp: props.data
+        data: res.slice(0, this.state.page * this.pageNum),
+        dataTmp: res
       })
     }
   }
@@ -137,16 +139,29 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       this.searchShow()
     }
   }
-  public searchShow () {
+  public filterData () {
     const { allData } = this
-    const el = $(this.refs.input)
-    const value: string = el.val().toString() || ''
-    const pattern = new RegExp(value, 'i')
+    if (this.filterVal === '') {
+      return this.allData
+    }
+    let pattern: RegExp = null
+    try {
+      pattern = new RegExp(this.filterVal, 'i')
+    } catch (e) {
+      pattern = new RegExp('', 'i')
+    }
     const res = allData.filter((item: T): boolean => {
       if (pattern.test(item.title) || pattern.test(item.capital.join(','))) {
         return true
       }
     })
+    return res || []
+  }
+  public searchShow () {
+    const { allData } = this
+    const el = $(this.refs.input)
+    this.filterVal = el.val().toString() || ''
+    const res = this.filterData()
     this.setState({
       data: res.slice(0, this.pageNum),
       dataTmp: res,

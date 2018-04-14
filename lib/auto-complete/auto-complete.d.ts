@@ -29,6 +29,7 @@ declare class AutoComplete extends React.Component<MyProps, MyStates> {
     allData: T[];
     defaultCls: string;
     event: any;
+    filterVal: string;
     constructor(props: MyProps);
     componentWillReceiveProps(props: MyProps): void;
     componentDidMount(): void;
@@ -36,6 +37,7 @@ declare class AutoComplete extends React.Component<MyProps, MyStates> {
     onKeyUp(): void;
     handleAllData(data: any[]): void;
     searchChange(): void;
+    filterData(): T[];
     searchShow(): void;
     handleSelect(item: any): void;
     listenScroll(): void;
