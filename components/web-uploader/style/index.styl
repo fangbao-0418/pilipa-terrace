@@ -108,6 +108,7 @@
             padding: 6px
             position: relative
             overflow: hidden
+            box-sizing: content-box
             .pilipa-web-uploader-image-upload-status
               position: absolute
               padding: 4px 6px
@@ -154,6 +155,13 @@
                 font-weight: bold
                 position: absolute
                 font-size: 20px
+                left: 0
+                right: 0
+                top: 0
+                bottom: 0
+                display: flex
+                justify-content: center
+                align-items: center
             .pilipa-web-uploader-image-operate
               height: 30px
               position: absolute
@@ -200,6 +208,7 @@
         position: relative
         span 
           position: absolute
+          left: 0
           line-height: 20px
           width: 100%
           text-align: center

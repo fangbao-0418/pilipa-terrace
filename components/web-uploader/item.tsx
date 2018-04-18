@@ -249,23 +249,24 @@ export default class extends React.Component <Props, States> {
         })
         break
       default:
-        this.store[this.storeId].get<any>(this.name).then((res: any) => {
-          this.handleUploadSuccess(res)
-        }).catch((err2: any) => {
-          if (this.success || this.isDestroy) {
-            return
-          }
-          if (err2.code === 403) {
-            bus.trigger('error', err2)
-          }
-          this.setState({
-            uploadStatus: 'failed'
-          })
-          bus.trigger('end-upload', {
-            index: this.props.index,
-            status: 'failed'
-          })
-        })
+        // ali-oss 5.1.1 修复上传bug 此处验证文件代码屏蔽掉
+        // this.store[this.storeId].get<any>(this.name).then((res: any) => {
+        //   this.handleUploadSuccess(res)
+        // }).catch((err2: any) => {
+        //   if (this.success || this.isDestroy) {
+        //     return
+        //   }
+        //   if (err2.code === 403) {
+        //     bus.trigger('error', err2)
+        //   }
+        //   this.setState({
+        //     uploadStatus: 'failed'
+        //   })
+        //   bus.trigger('end-upload', {
+        //     index: this.props.index,
+        //     status: 'failed'
+        //   })
+        // })
         break
       }
     }

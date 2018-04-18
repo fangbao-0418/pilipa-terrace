@@ -1,6 +1,6 @@
 {
   "name": "pilipa",
-  "version": "1.1.4-alpha.16",
+  "version": "1.1.4-alpha.18",
   "description": "噼里啪前端组件，基于react。",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -78,7 +78,7 @@
     "webpack-hot-middleware": "^2.21.2"
   },
   "peerDependencies": {
-    "ali-oss": "5.0.1",
+    "ali-oss": "5.1.1",
     "font-awesome": "4.7.0",
     "jquery": "3.3.1",
     "react": "16.3.1",
