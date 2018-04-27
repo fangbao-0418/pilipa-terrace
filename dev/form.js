@@ -10,6 +10,10 @@ export default class extends React.Component {
 
   render () {
     const inputData = []
+    const formItemLayout = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 }
+    }
     return (
       <div>
         <Form>

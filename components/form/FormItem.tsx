@@ -5,6 +5,10 @@ import React from 'react'
 //   required?: boolean
 //   message?: string
 // }
+interface FormItemLayout {
+  labelCol?: any
+  wrapperCol?: any
+}
 export interface FormItemProps {
   className?: string
   style?: React.CSSProperties
@@ -20,6 +24,7 @@ export interface FormItemProps {
   formDataChange?: any
   checkboxData?: any
   getField?: any
+  formItemLayout?: FormItemLayout
 }
 export interface FormItemState {
   showMessage: boolean
@@ -103,14 +108,16 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
   }
   public render () {
     const {defaultCls, props, state} = this
-    const {children, className, style, type, label, semicolon, field, placeholder, data, rules} = props
+    const {children, className, style, type, label, semicolon, field, placeholder, data, rules, formItemLayout} = props
     const {showMessage, checkboxData} = state
+    const {span} = formItemLayout.labelCol
+    const labelClassName = ClassNames(`${defaultCls}-label`,{[`col-${span}`]: formItemLayout})
     return (
       <div className={ClassNames(defaultCls, className)} style={style}>
         {children}
         {
           label &&
-          <div className={`${defaultCls}-label`}>
+          <div className={labelClassName}>
             <label
               title={label}
               className={ClassNames(
