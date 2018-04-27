@@ -2,7 +2,7 @@
 import React from 'react'
 import sinon from 'sinon'
 import { render, shallow, mount } from 'enzyme'
-import { Modal } from '../components'
+import { Modal } from '../libs'
 
 let m
 describe('modal api', () => {

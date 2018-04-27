@@ -33,18 +33,23 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 ### 1.1.1  
   &nbsp;&nbsp; `2018-4-8` 
   - dropdown 支持键盘上下按键选择，回车确认选择 #20
+
 ### 1.1.2  
   &nbsp;&nbsp; `2018-4-9` 
   - webuploader 添加callback #15
+
 ### 1.1.3  
   &nbsp;&nbsp; `2018-4-11` 
   - 优化notification，鼠标划过暂停消失
+
 ### 1.1.4 
   &nbsp;&nbsp; `2018-4-12` 
   - notification持续时间调整4500ms
+
 ### 1.1.4-alpha.1 
   &nbsp;&nbsp; `2018-4-12` 
   - dropdown 修复没有数据报错
+
 ### 1.1.4-alpha.9 
   &nbsp;&nbsp; `2018-4-12` 
   - autocomplete 支持上下键选择，回车确定选择
