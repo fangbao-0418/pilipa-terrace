@@ -131,14 +131,12 @@ class Modal {
       footer: this.footer
     }
     for (const key in nodes) {
-      if (nodes[key] instanceof Object && nodes[key].$$typeof.toString() === 'Symbol(react.element)') {
-        console.log(nodes[key])
+      if (nodes[key] instanceof Object && nodes[key].$$typeof) {
         render(
           nodes[key],
           this.$el.find(`.pilipa-modal-${key}`)[0]
         )
       } else {
-        console.log(nodes[key], key)
         if (nodes[key] === null) {
           this.$el.find(`.pilipa-modal-${key}`).remove()
         } else {

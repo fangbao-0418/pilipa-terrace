@@ -35,7 +35,13 @@ module.exports = function (config) {
           {
             test: /\.js$/,
             exclude: [/node_modules/],
-            use: 'babel-loader'
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['react', 'es2015', 'stage-0'],
+                plugins: ['transform-runtime']
+              }
+            }
           },
           {
             test: /\.(ts|tsx)$/,
@@ -115,7 +121,7 @@ module.exports = function (config) {
         modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'components')],
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.json', '.styl', '.css']
       },
-      devtool: 'inline-source-map'
+      devtool: 'source-map'
     },
 
     // test results reporter to use
