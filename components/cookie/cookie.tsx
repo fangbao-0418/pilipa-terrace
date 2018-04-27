@@ -1,24 +1,34 @@
 export default {
-  set (obj: {[key: string]: string}, options: {path?: string, expires?: Date, domain?: string, secure?: 0 | 1}) {
+  set (obj: {[key: string]: string}, options: {path?: string, expires?: any, domain?: string, secure?: any}) {
     let str = ''
+    if (typeof options.expires === 'number') {
+      const time = new Date().getTime()
+      options.expires = new Date(time + options.expires)
+    }
+    if (options.expires && options.expires instanceof Date === false) {
+      throw new Error('options`s expires must be a Date or Number')
+    }
+    options.expires = options.expires.toGMTString() || ''
+    options.path = options.path || '/'
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         str = `${key}=${obj[key]};
-        ${options.expires !== undefined ? `expires=${options.expires};` : ''}
-        path=${options.path || '/'};
+        expires=${options.expires};
+        path=${options.path};
         ${(options.domain !== undefined ? `domain=${options.domain};` : '')}
-        ${(options.secure !== undefined ? `secure=${options.secure};` : '')}`
-        str = str.replace(/;\s*/g, '; ').trim()
+        ${(options.secure !== undefined ? `secure=${options.secure};` : '')} `
+        str = str.replace(/;\s*/g, '; ').trim().slice(0, -1)
+        console.log(str, 'str')
         document.cookie = str
       }
     }
   },
   get (name: string) {
     if (name) {
-      const cookie = document.cookie.split('; ')
-      for (const i of cookie) {
-        if (i.indexOf(name) === 0) {
-          return i.substring(name.length + 1, i.length)
+      const arr: any = document.cookie.split('; ')
+      for (const item of arr) {
+        if (new RegExp(name + '=').test(item)) {
+          return item.substring(name.length + 1)
         }
       }
       return undefined
@@ -37,8 +47,8 @@ export default {
       if (names === '') {
         throw new Error('name is not empty string')
       }
-      val = this.get(name)
-      document.cookie = `${name}=${val}; expires=${expires}`
+      val = this.get(names)
+      document.cookie = `${names}=${val}; expires=${expires}`
       break
     case 'object':
       if (names instanceof Array) {

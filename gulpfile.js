@@ -51,7 +51,7 @@ gulp.task('autoprefix', function () {
   var autoprefixer = require('autoprefixer')
   return gulp.src('.tmp/**/*.css')
     .pipe(postcss([ autoprefixer() ]))
-    .pipe(gulp.dest('lib'))
+    .pipe(gulp.dest('libs'))
 })
 
 // 编译ts
@@ -62,29 +62,29 @@ gulp.task('ts', function (cb) {
   })
   gulp.src('components/**/*.ts?(x)')
     .pipe(tsProject())
-    .pipe(gulp.dest('lib'))
+    .pipe(gulp.dest('libs'))
     .on('end', cb)
 })
 gulp.task('copy', function (cb) {
   gulp.src(['components/**/*.d.ts', 'components/**/*.js'])
-    .pipe(gulp.dest('lib'))
+    .pipe(gulp.dest('libs'))
     .on('end', cb)
 })
 
 // 编译js
 gulp.task('js', function (cb) {
-  gulp.src(['lib/**/*.js', 'lib/**/*.jsx'])
+  gulp.src(['libs/**/*.js', 'libs/**/*.jsx'])
     .pipe(babel())
-    .pipe(gulp.dest('lib'))
+    .pipe(gulp.dest('libs'))
     .on('end', cb)
 })
 // 删除jsx
 gulp.task('cleanjsx', function () {
-  rimraf.sync('lib/**/*.jsx')
+  rimraf.sync('libs/**/*.jsx')
 })
 
 gulp.task('css', ['stylus', 'autoprefix'])
-gulp.task('lib', function (cb) {
-  rimraf.sync('lib')
+gulp.task('libs', function (cb) {
+  rimraf.sync('libs')
   gulpSequence('ts', 'copy', 'js', 'cleanjsx', cb)
 })

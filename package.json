@@ -2,16 +2,19 @@
   "name": "pilipa",
   "version": "1.1.4-alpha.18",
   "description": "噼里啪前端组件，基于react。",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "libs/index.js",
+  "typings": "libs/index.d.ts",
   "scripts": {
     "dev": "node scripts/server",
     "dist": "./node_modules/gulp/bin/gulp.js dist",
-    "lib": "node ./node_modules/gulp/bin/gulp.js lib"
+    "libs": "node ./node_modules/gulp/bin/gulp.js libs",
+    "test:watch": "node ./node_modules/karma/bin/karma start karma.config.js --browsers Chrome",
+    "test": "node ./node_modules/karma/bin/karma start karma.config.js --single-run",
+    "test-jenkins": "node ./node_modules/karma/bin/karma start karma.config.js --single-run"
   },
   "files": [
     "dist",
-    "lib"
+    "libs"
   ],
   "author": "",
   "license": "ISC",
@@ -35,6 +38,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.9",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-loader": "^2.0.0",
@@ -53,6 +58,12 @@
     "gulp-typescript": "^4.0.0-alpha.1",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.17.4",
+    "jasmine-core": "^3.1.0",
+    "karma": "^2.0.2",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
+    "karma-junit-reporter": "^1.2.0",
+    "karma-webpack": "^3.0.0",
     "koa": "^2.4.1",
     "koa-proxies": "^0.6.2",
     "koa-static": "^4.0.2",

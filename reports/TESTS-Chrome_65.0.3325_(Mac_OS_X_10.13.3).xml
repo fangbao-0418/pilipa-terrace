@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome 65.0.3325 (Mac OS X 10.13.3)" package="models" timestamp="2018-04-27T06:58:59" id="0" hostname="fangbaodeMacBook-Pro.local" tests="5" errors="0" failures="0" time="0">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"/>
+  </properties>
+  <testcase name="test cookie test set cookie" time="0" classname="Chrome_65_0_3325_(Mac_OS_X_10_13_3).models.test cookie"/>
+  <testcase name="test cookie test remove cookie" time="0" classname="Chrome_65_0_3325_(Mac_OS_X_10_13_3).models.test cookie"/>
+  <testcase name="test cookie test cookie expires" time="0" classname="Chrome_65_0_3325_(Mac_OS_X_10_13_3).models.test cookie"/>
+  <testcase name="test cookie test remove cookies" time="0" classname="Chrome_65_0_3325_(Mac_OS_X_10_13_3).models.test cookie"/>
+  <testcase name="test cookie test remove all cookies" time="0" classname="Chrome_65_0_3325_(Mac_OS_X_10_13_3).models.test cookie"/>
+  <system-out>
+    <![CDATA[Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: undefined, 'this'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: undefined, 'this'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: undefined, 'this'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: undefined, 'this'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'before all'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'abc=123; expires=Sat, 28 Apr 2018 06:58:59 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'abc=abc; expires=Fri, 27 Apr 2018 06:59:03 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'test=123; expires=Fri, 27 Apr 2018 06:59:01 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'a=1; expires=Fri, 27 Apr 2018 06:59:41 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'b=2; expires=Fri, 27 Apr 2018 06:59:41 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'a=1; expires=Fri, 27 Apr 2018 06:59:41 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'b=2; expires=Fri, 27 Apr 2018 06:59:41 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'a=1; expires=Fri, 27 Apr 2018 06:59:42 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'b=2; expires=Fri, 27 Apr 2018 06:59:42 GMT; path=/', 'str'
+,Chrome 65.0.3325 (Mac OS X 10.13.3) LOG: 'after all'
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
