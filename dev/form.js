@@ -11,12 +11,14 @@ export default class extends React.Component {
   render () {
     const inputData = []
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 14 }
+      labelCol: { span: 6 },
+      wrapperCol: { span: 15 }
     }
     return (
       <div>
-        <Form>
+        <Form
+          column={3}
+        >
           <FormItem
             type='input'
             label='姓名'
@@ -27,6 +29,7 @@ export default class extends React.Component {
               required: true,
               message: '姓名不能为空'
             }}
+            {...formItemLayout}
           />
           <FormItem
             type='select'
@@ -37,25 +40,28 @@ export default class extends React.Component {
               {name: 'Lucy', value: 'lucy'},
               {name: 'yiminghe', value: 'Yiminghe'}
             ]}
+            {...formItemLayout}
           />
           <FormItem
             type='radio'
             label='选择性别'
             field='sex'
             data={[
-              {name: 'sex', value: 'women', checked: true},
-              {name: 'sex', value: 'men'}
+              {name: 'sex', value: 'women', displayName: 'women', checked: true},
+              {name: 'sex', value: 'men', displayName: 'men'}
             ]}
+            {...formItemLayout}
           />
           <FormItem
             type='checkbox'
             label='爱好'
             field='hobby'
             data={[
-              {name: 'hobby', displayName: '', value: 'sing', checked: true},
-              {name: 'hobby', displayName: '', value: 'dance'},
-              {name: 'hobby', displayName: '', value: 'swim'}
+              {name: 'hobby', displayName: 'sing', value: 'sing', checked: true},
+              {name: 'hobby', displayName: 'dance', value: 'dance'},
+              {name: 'hobby', displayName: 'swim', value: 'swim'}
             ]}
+            {...formItemLayout}
           />
           <Form.Item>
             <button type='submit' className='ant-btn ant-btn-primary'><span>Submit</span></button>&nbsp;&nbsp;

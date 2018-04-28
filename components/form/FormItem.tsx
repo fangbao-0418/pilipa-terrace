@@ -5,10 +5,6 @@ import React from 'react'
 //   required?: boolean
 //   message?: string
 // }
-interface FormItemLayout {
-  labelCol?: any
-  wrapperCol?: any
-}
 export interface FormItemProps {
   className?: string
   style?: React.CSSProperties
@@ -24,7 +20,8 @@ export interface FormItemProps {
   formDataChange?: any
   checkboxData?: any
   getField?: any
-  formItemLayout?: FormItemLayout
+  labelCol?: any
+  wrapperCol?: any
 }
 export interface FormItemState {
   showMessage: boolean
@@ -108,10 +105,15 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
   }
   public render () {
     const {defaultCls, props, state} = this
-    const {children, className, style, type, label, semicolon, field, placeholder, data, rules, formItemLayout} = props
+    const {children, className, style, type, label, semicolon, field, placeholder, data, rules,
+      labelCol, wrapperCol} = props
     const {showMessage, checkboxData} = state
-    const {span} = formItemLayout.labelCol
-    const labelClassName = ClassNames(`${defaultCls}-label`,{[`col-${span}`]: formItemLayout})
+    const labelClassName = labelCol && labelCol.span ?
+      ClassNames(`${defaultCls}-label`, {[`col-${labelCol.span}`]: true}) :
+      `${defaultCls}-label`
+    const wrapperClassName = wrapperCol && wrapperCol.span ?
+      ClassNames(`${defaultCls}-control-wrapper`, {[`has-error`]: showMessage}, {[`col-${wrapperCol.span}`]: true}) :
+      ClassNames(`${defaultCls}-control-wrapper`, {[`has-error`]: showMessage})
     return (
       <div className={ClassNames(defaultCls, className)} style={style}>
         {children}
@@ -127,7 +129,7 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             </label>
           </div>
         }
-        <div className={ClassNames(`${defaultCls}-control-wrapper`,{[`has-error`]: showMessage}) }>
+        <div className={wrapperClassName}>
           {
             type === 'input' &&
             <input name={field} placeholder={placeholder} onChange={this.handleInputChange.bind(this)}/>
@@ -148,27 +150,30 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
           {
             (type === 'radio' && data.length) &&
             data.map((item: any, index: number) => {
-              return <input
-                key={index}
-                type='radio'
-                name={item.name}
-                value={item.value}
-                defaultChecked={item.checked}
-                onChange={this.handleRadioChange.bind(this)}
-              />
+              return (<span key={index}>
+                <input
+                  type='radio'
+                  name={item.name}
+                  value={item.value}
+                  defaultChecked={item.checked}
+                  onChange={this.handleRadioChange.bind(this)}
+                />&nbsp;&nbsp;{item.displayName}&nbsp;&nbsp;
+              </span>)
             })
           }
           {
             type === 'checkbox' &&
             checkboxData.map((item: any, index: number) => {
-              return <input
-                key={index}
-                type='checkbox'
-                name={item.name}
-                value={item.value}
-                defaultChecked={item.checked}
-                onChange={this.handleCheckboxChange.bind(this)}
-              />
+              return (<span key={index}>
+                <input
+                  key={index}
+                  type='checkbox'
+                  name={item.name}
+                  value={item.value}
+                  defaultChecked={item.checked}
+                  onChange={this.handleCheckboxChange.bind(this)}
+                />&nbsp;&nbsp;{item.displayName}&nbsp;&nbsp;
+              </span>)
             })
           }
           {showMessage && <div className={`${defaultCls}-explain`}>{rules && rules.message}</div>}
