@@ -35,7 +35,13 @@ export default class  extends React.Component<FormProps, FormStates> {
     const data = $.extend(true, this.state.formData, [])
     const item = $.extend(true, e, [])
     data.push(item)
-    this.setState({formData: data}, () => {
+    const dataForm: any = {}
+    data.map((every: any, index: number) => {
+      if (every.field) {
+        dataForm[every.field] = null
+      }
+    })
+    this.setState({formData: dataForm}, () => {
       console.log(this.state.formData)
     })
   }
@@ -50,12 +56,13 @@ export default class  extends React.Component<FormProps, FormStates> {
   public formDataChange = (e: any) => {
     console.log('change', e)
     const {formData} = this.state
-    const data = $.extend(true, this.state.formData, [])
-    data.map((item: any) => {
-      if (item.field === e.name) {
-        item.value = e.value
+    const data = $.extend(true, formData, {})
+    for (const key of Object.keys(data)) {
+      console.log(key)
+      if (key === e.name) {
+        data[key] = e.value
       }
-    })
+    }
     this.setState({formData: data}, () => {
       console.log(this.state.formData)
     })

@@ -17,7 +17,7 @@ export default class extends React.Component {
     return (
       <div>
         <Form
-          column={3}
+          column={2}
         >
           <FormItem
             type='input'
@@ -63,10 +63,17 @@ export default class extends React.Component {
             ]}
             {...formItemLayout}
           />
-          <Form.Item>
-            <button type='submit' className='ant-btn ant-btn-primary'><span>Submit</span></button>&nbsp;&nbsp;
-            <button type='reset' className='ant-btn ant-btn-primary'><span>Reset</span></button>
-          </Form.Item>
+          <FormItem
+            type='dropdown'
+            label='员工'
+            field='hobby'
+            data={[
+              {key: -1, title: '- - 纳税人类别 - -'},
+              {key: 1, title: '小规模纳税人'},
+              {key: 2, title: '一般纳税人'}
+            ]}
+            {...formItemLayout}
+          />
         </Form>
       </div>
     )

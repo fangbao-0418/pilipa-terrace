@@ -1,6 +1,7 @@
 import ClassNames from 'classnames'
 import $ from 'jquery'
 import React from 'react'
+import DropDown from '../dropdown'
 // export interface Rules {
 //   required?: boolean
 //   message?: string
@@ -45,7 +46,7 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     }
   }
   public componentWillReceiveProps (nextProps: any) {
-    console.log(nextProps)
+    // console.log(nextProps)
   }
   public handleInputChange (e: any) {
     const inputValue = e.target.value
@@ -175,6 +176,12 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
                 />&nbsp;&nbsp;{item.displayName}&nbsp;&nbsp;
               </span>)
             })
+          }
+          {
+            type === 'dropdown' &&
+              <DropDown
+                data={data}
+              />
           }
           {showMessage && <div className={`${defaultCls}-explain`}>{rules && rules.message}</div>}
         </div>
