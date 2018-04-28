@@ -29,7 +29,7 @@ export interface MyStates {
 export default class extends React.Component<MyProps, MyStates> {
   public pageNum = 20
   public t: any
-  public allData: T[]
+  public allData: T[] = []
   public defaultCls = 'pilipa-dropdown'
   public defaultPage = 1
   public selectedIndex = -1
@@ -38,7 +38,7 @@ export default class extends React.Component<MyProps, MyStates> {
   public filterVal: string = ''
   public constructor (props: MyProps) {
     super(props)
-    this.handleAllData(this.props.data)
+    this.handleAllData(this.props)
     this.state = {
       visible: false,
       title: this.props.title || '',
@@ -50,9 +50,10 @@ export default class extends React.Component<MyProps, MyStates> {
   }
   public componentWillReceiveProps (props: MyProps) {
     if (props.data) {
-      this.handleAllData(props.data)
+      this.handleAllData(props)
       const res = this.filterData()
       this.setState({
+        title: props.title,
         data: res.slice(0, this.pageNum * this.defaultPage),
         dataTmp: res
       })
@@ -132,10 +133,12 @@ export default class extends React.Component<MyProps, MyStates> {
       break
     }
   }
-  public handleAllData (data: any[]) {
-    const { key, title } = this.props.setFields || {key: '', title: ''}
-    const selectTitle = this.props.title
-    data = this.props.prePend === undefined ? data : [this.props.prePend].concat(data)
+  public handleAllData (props: MyProps) {
+    let { data } = props
+    data = data || []
+    const { key, title } = props.setFields || {key: '', title: ''}
+    const selectTitle = props.title
+    data = props.prePend === undefined ? data : [props.prePend].concat(data)
     this.allData = []
     data.map((item, index) => {
       const newItem: T = {
@@ -143,8 +146,8 @@ export default class extends React.Component<MyProps, MyStates> {
         title: item[title || 'title'],
         capital: getCapital(item[title || 'title']) || ['']
       }
-      if (this.props.title === item[title || 'title']) {
-        this.defaultPage = index === 0 ? 1 : Math.ceil(index + 1 / this.pageNum)
+      if (props.title === item[title || 'title']) {
+        this.defaultPage = index === 0 ? 1 : Math.ceil((index + 1) / this.pageNum)
         this.selectedIndex = index
       }
       this.allData[index] = newItem
@@ -157,7 +160,7 @@ export default class extends React.Component<MyProps, MyStates> {
     this.state.dataTmp.map((item, index) => {
       if (this.state.title === item.title) {
         this.selectedIndex = index
-        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
+        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
         this.setState({
           data: this.state.dataTmp.slice(0, this.defaultPage * this.pageNum),
           selectedIndex: index
@@ -169,7 +172,7 @@ export default class extends React.Component<MyProps, MyStates> {
       $items.scrollTop(0)
       return
     }
-    this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
+    this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
     // this.setState({
     //   data: this.allData.slice(0, this.defaultPage * this.pageNum),
     //   dataTmp: this.allData
@@ -233,7 +236,6 @@ export default class extends React.Component<MyProps, MyStates> {
       const ch = e.target.clientHeight
       // 显示区域离底部小于10px的时候
       // console.log(scrollTop + ch - h, h , scrollTop + ch > h - 10)
-      console.log(this.defaultPage, 'defaultPage')
       if (scrollTop + ch > h - 10) {
         if (this.defaultPage < Math.ceil(this.state.dataTmp.length / this.pageNum)) {
           this.defaultPage += 1
@@ -255,7 +257,7 @@ export default class extends React.Component<MyProps, MyStates> {
       this.t = setTimeout(() => {
         $(results).removeClass('custom-slide-up-leave')
         $(results).addClass('hidden')
-        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil(this.selectedIndex + 1 / this.pageNum)
+        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
         this.setState({
           visible: false,
           selectedIndex: this.selectedIndex
@@ -274,7 +276,7 @@ export default class extends React.Component<MyProps, MyStates> {
       title: item.title,
       selectedIndex: index
     })
-    this.defaultPage = index === 0 ? 1 : Math.ceil(index + 1 / this.pageNum)
+    this.defaultPage = index === 0 ? 1 : Math.ceil((index + 1) / this.pageNum)
     this.handleLeave()
     if (callBack) {
       setTimeout(() => {
@@ -344,38 +346,46 @@ export default class extends React.Component<MyProps, MyStates> {
             <i className='fa fa-chevron-down' aria-hidden='true'></i>
           </div>
         </div>
-        {visible && <div className='results' ref='results'>
-          {
-            filter &&
-            <input
-              className='input'
-              value={this.state.filterVal}
-              onChange={this.handleChange.bind(this)}
-              ref='input'
-            />
-          }
-          {data.length === 0 && <p>未搜到结果</p>}
-          <div className='items'>
-            <ul>
-              {data.length > 0 && data.map((item: T, key: number) => {
-                return (
-                  <li
-                    key={key}
-                    className={ClassNames({
-                      active: key === this.state.selectedIndex,
-                      selected: key === this.selectedIndex
-                    })}
-                    title={item.title}
-                    onClick={this.handleClick.bind(this, item, key)}
-                    onMouseEnter={this.onMouseEnter.bind(this, key)}
-                  >
-                    {item.title}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </div>}
+        {
+          visible && (
+            <div className='results' ref='results'>
+              {
+                filter &&
+                <input
+                  className='input'
+                  value={this.state.filterVal}
+                  onChange={this.handleChange.bind(this)}
+                  ref='input'
+                />
+              }
+              { data.length === 0 && <p>未搜到结果</p> }
+              <div className='items'>
+                <ul>
+                  {
+                    data.length > 0 && (
+                      data.map((item: T, key: number) => {
+                        return (
+                          <li
+                            key={key}
+                            className={ClassNames({
+                              active: key === this.state.selectedIndex,
+                              selected: key === this.selectedIndex
+                            })}
+                            title={item.title}
+                            onClick={this.handleClick.bind(this, item, key)}
+                            onMouseEnter={this.onMouseEnter.bind(this, key)}
+                          >
+                            {item.title}
+                          </li>
+                        )
+                      })
+                    )
+                  }
+                </ul>
+              </div>
+            </div>
+          )
+        }
       </div>
     )
   }

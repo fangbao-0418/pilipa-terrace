@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { AutoComplete, DropDown } from '../index'
+import { AutoComplete, DropDown } from '../components'
 
 export default class extends React.Component {
   constructor () {
@@ -36,11 +36,15 @@ export default class extends React.Component {
         />
         <DropDown
           title='测试数据1'
-          style={{float: 'left'}}
+          style={{float: 'left', marginRight: '20px'}}
           data={this.data}
           callBack={(item) => {
             console.log(item)
           }}
+          filter
+        />
+        <DropDown
+          style={{float: 'left'}}
           filter
         />
       </div>
