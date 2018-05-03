@@ -17,7 +17,7 @@ export default class extends React.Component {
     return (
       <div>
         <Form
-          column={2}
+          column={4}
         >
           <FormItem
             type='input'
@@ -29,6 +29,7 @@ export default class extends React.Component {
               required: true,
               message: '姓名不能为空'
             }}
+            value='张三'
             {...formItemLayout}
           />
           <FormItem
@@ -37,7 +38,7 @@ export default class extends React.Component {
             field='people'
             data={[
               {name: 'Jack', value: 'jack'},
-              {name: 'Lucy', value: 'lucy'},
+              {name: 'Lucy', value: 'lucy', selected: true},
               {name: 'yiminghe', value: 'Yiminghe'}
             ]}
             {...formItemLayout}
@@ -65,8 +66,8 @@ export default class extends React.Component {
           />
           <FormItem
             type='dropdown'
-            label='员工'
-            field='hobby'
+            label='纳税人类别'
+            field='taxType'
             data={[
               {key: -1, title: '- - 纳税人类别 - -'},
               {key: 1, title: '小规模纳税人'},

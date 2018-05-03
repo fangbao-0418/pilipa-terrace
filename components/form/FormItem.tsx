@@ -16,6 +16,7 @@ export interface FormItemProps {
   children?: any
   rules?: any
   field?: string
+  value?: any
   placeholder?: string
   data?: any
   formDataChange?: any
@@ -25,6 +26,7 @@ export interface FormItemProps {
   wrapperCol?: any
 }
 export interface FormItemState {
+  inputValue?: string | number
   showMessage: boolean
   checkboxData: any
 }
@@ -35,8 +37,14 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     super(props)
     this.state = {
       showMessage: false,
-      checkboxData: []
+      checkboxData: [],
+      inputValue: ''
     }
+  }
+  public componentWillMount () {
+    const {props} = this
+    const {value} = props
+    this.setState({inputValue: value})
   }
   public componentDidMount () {
     const {props} = this
@@ -49,18 +57,20 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     // console.log(nextProps)
   }
   public handleInputChange (e: any) {
-    const inputValue = e.target.value
-    const {rules} = this.props
-    if (rules && rules.required && inputValue === '') {
-      this.setState({showMessage: true})
-    } else {
-      this.setState({showMessage: false})
-    }
-    const data = {
-      name: e.target.name,
-      value: inputValue
-    }
-    this.props.formDataChange(data)
+    const {name, value} = e.target
+    this.setState({inputValue: value}, () => {
+      const {rules} = this.props
+      if (rules && rules.required && value === '') {
+        this.setState({showMessage: true})
+      } else {
+        this.setState({showMessage: false})
+      }
+      const data = {
+        name,
+        value: this.state.inputValue
+      }
+      this.props.formDataChange(data)
+    })
   }
   public handleSelectChange (e: any) {
     const value = e.target.value
@@ -92,7 +102,6 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
   }
   public handleCheckboxChange (event: any) {
     const {checkboxData} = this.state
-    console.log(event.target)
     const data = $.extend(true, checkboxData, [])
     data.map((item: any, index: number) => {
       if (event.target.value === item.value) {
@@ -101,14 +110,32 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     })
     this.setState({checkboxData: data},() => {
       console.log(this.state.checkboxData)
-      this.props.formDataChange(data)
+      const arr: any = []
+      data.map((item: any, index: number) => {
+        console.log(item)
+        if (item.checked) {
+          arr.push(item.value)
+        }
+      })
+      console.log(arr)
+      this.props.formDataChange({name: this.props.field, value: arr})
     })
+  }
+  public handleDropDownChange (item: any, field: string) {
+    console.log(item, this.props.field)
+    const data = {
+      name: this.props.field,
+      value: item.title,
+      id: item.key
+    }
+    this.props.formDataChange(data)
   }
   public render () {
     const {defaultCls, props, state} = this
-    const {children, className, style, type, label, semicolon, field, placeholder, data, rules,
+    const {children, className, style, type, label, semicolon, field, value,
+      placeholder, data, rules,
       labelCol, wrapperCol} = props
-    const {showMessage, checkboxData} = state
+    const {showMessage, checkboxData, inputValue} = state
     const labelClassName = labelCol && labelCol.span ?
       ClassNames(`${defaultCls}-label`, {[`col-${labelCol.span}`]: true}) :
       `${defaultCls}-label`
@@ -133,7 +160,12 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
         <div className={wrapperClassName}>
           {
             type === 'input' &&
-            <input name={field} placeholder={placeholder} onChange={this.handleInputChange.bind(this)}/>
+            <input
+              name={field}
+              placeholder={placeholder}
+              onChange={this.handleInputChange.bind(this)}
+              value={inputValue}
+            />
           }
           {
             (type === 'select' && data.length) &&
@@ -143,7 +175,7 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             >
               {
                 data.map((item: any, index: number) => {
-                  return <option key={index} value={item.value}>{item.name}</option>
+                  return <option key={index} value={item.value} selected={item.selected}>{item.name}</option>
                 })
               }
             </select>
@@ -181,6 +213,7 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             type === 'dropdown' &&
               <DropDown
                 data={data}
+                callBack={this.handleDropDownChange.bind(this)}
               />
           }
           {showMessage && <div className={`${defaultCls}-explain`}>{rules && rules.message}</div>}

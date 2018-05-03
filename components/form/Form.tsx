@@ -35,10 +35,26 @@ export default class  extends React.Component<FormProps, FormStates> {
     const data = $.extend(true, this.state.formData, [])
     const item = $.extend(true, e, [])
     data.push(item)
+    console.log(item)
     const dataForm: any = {}
     data.map((every: any, index: number) => {
       if (every.field) {
-        dataForm[every.field] = null
+        if (every.data && every.data.length > 0) {
+          let tempVal: any = every.type === 'checkbox' ? [] : null
+          every.data.map((dataItem: any) => {
+            console.log(dataItem)
+            if (dataItem.checked || dataItem.selected) {
+              if (every.type === 'checkbox') {
+                tempVal.push(dataItem.value)
+              } else {
+                tempVal = dataItem.value
+              }
+            }
+          })
+          dataForm[every.field] = tempVal ? tempVal : every.data[0].value
+        } else {
+          dataForm[every.field] = every.value !== undefined ? every.value : null
+        }
       }
     })
     this.setState({formData: dataForm}, () => {

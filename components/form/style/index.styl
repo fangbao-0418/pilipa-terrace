@@ -25,8 +25,6 @@ for row in 1 2 3 4 5
     margin-right 0
 .{form-prefix}-item
   position relative
-  height 32px
-  line-height 32px
   & > .{form-item-prefix}-label
     text-align right
     box-sizing border-box
@@ -52,15 +50,17 @@ for row in 1 2 3 4 5
     .{form-item-prefix}-explain
       color #f5222d
       border none
+      position absolute
+      bottom -22px
   .{form-item-prefix}-control-wrapper,
   & > .{form-item-prefix}-label
     font-size 14px
     display inline-block
     vertical-align middle
-    height 100%
     *
-      height 100%
       box-sizing border-box
+    .pilipa-dropdown
+      height 32px
 for row in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
   .col-{row}
     width (row/24*100)%
@@ -116,3 +116,4 @@ button
   border-color: #d9d9d9;
 select
   width 100%
+  height 32px
