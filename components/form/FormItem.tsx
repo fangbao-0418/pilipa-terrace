@@ -24,6 +24,7 @@ export interface FormItemProps {
   getField?: any
   labelCol?: any
   wrapperCol?: any
+  defaultValue?: string
 }
 export interface FormItemState {
   inputValue?: string | number
@@ -54,7 +55,6 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     }
   }
   public componentWillReceiveProps (nextProps: any) {
-    // console.log(nextProps)
   }
   public handleInputChange (e: any) {
     const {name, value} = e.target
@@ -109,20 +109,16 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
       }
     })
     this.setState({checkboxData: data},() => {
-      console.log(this.state.checkboxData)
       const arr: any = []
       data.map((item: any, index: number) => {
-        console.log(item)
         if (item.checked) {
           arr.push(item.value)
         }
       })
-      console.log(arr)
       this.props.formDataChange({name: this.props.field, value: arr})
     })
   }
   public handleDropDownChange (item: any, field: string) {
-    console.log(item, this.props.field)
     const data = {
       name: this.props.field,
       value: item.title,
@@ -172,10 +168,17 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             <select
               name={field}
               onChange={this.handleSelectChange.bind(this)}
+              defaultValue={this.props.defaultValue}
             >
               {
                 data.map((item: any, index: number) => {
-                  return <option key={index} value={item.value} selected={item.selected}>{item.name}</option>
+                  console.log()
+                  return <option
+                    key={index}
+                    value={item.value}
+                  >
+                    {item.name}
+                  </option>
                 })
               }
             </select>
@@ -184,13 +187,15 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             (type === 'radio' && data.length) &&
             data.map((item: any, index: number) => {
               return (<span key={index}>
+                <label htmlFor={item.value}>{item.displayName}</label>&nbsp;&nbsp;
                 <input
                   type='radio'
+                  id={item.value}
                   name={item.name}
                   value={item.value}
                   defaultChecked={item.checked}
                   onChange={this.handleRadioChange.bind(this)}
-                />&nbsp;&nbsp;{item.displayName}&nbsp;&nbsp;
+                />&nbsp;&nbsp;
               </span>)
             })
           }
@@ -198,14 +203,16 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
             type === 'checkbox' &&
             checkboxData.map((item: any, index: number) => {
               return (<span key={index}>
+                <label htmlFor={item.value}>{item.displayName}</label>&nbsp;&nbsp;
                 <input
                   key={index}
                   type='checkbox'
                   name={item.name}
+                  id={item.value}
                   value={item.value}
                   defaultChecked={item.checked}
                   onChange={this.handleCheckboxChange.bind(this)}
-                />&nbsp;&nbsp;{item.displayName}&nbsp;&nbsp;
+                />&nbsp;&nbsp;
               </span>)
             })
           }
@@ -214,6 +221,7 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
               <DropDown
                 data={data}
                 callBack={this.handleDropDownChange.bind(this)}
+                setFields={{key: 'key', title: 'value'}}
               />
           }
           {showMessage && <div className={`${defaultCls}-explain`}>{rules && rules.message}</div>}

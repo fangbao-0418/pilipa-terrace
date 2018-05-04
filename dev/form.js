@@ -11,13 +11,13 @@ export default class extends React.Component {
   render () {
     const inputData = []
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 15 }
+      labelCol: { span: 8 },
+      wrapperCol: { span: 16 }
     }
     return (
       <div>
         <Form
-          column={4}
+          column={3}
         >
           <FormItem
             type='input'
@@ -36,9 +36,10 @@ export default class extends React.Component {
             type='select'
             label='选择名称'
             field='people'
+            defaultValue='lucy'
             data={[
               {name: 'Jack', value: 'jack'},
-              {name: 'Lucy', value: 'lucy', selected: true},
+              {name: 'Lucy', value: 'lucy'},
               {name: 'yiminghe', value: 'Yiminghe'}
             ]}
             {...formItemLayout}
@@ -59,7 +60,7 @@ export default class extends React.Component {
             field='hobby'
             data={[
               {name: 'hobby', displayName: 'sing', value: 'sing', checked: true},
-              {name: 'hobby', displayName: 'dance', value: 'dance'},
+              {name: 'hobby', displayName: 'dance', value: 'dance', checked: true},
               {name: 'hobby', displayName: 'swim', value: 'swim'}
             ]}
             {...formItemLayout}
@@ -69,9 +70,9 @@ export default class extends React.Component {
             label='纳税人类别'
             field='taxType'
             data={[
-              {key: -1, title: '- - 纳税人类别 - -'},
-              {key: 1, title: '小规模纳税人'},
-              {key: 2, title: '一般纳税人'}
+              {name: 'taxType', key: -1, value: '- - 纳税人类别 - -'},
+              {name: 'taxType', key: 1, value: '小规模纳税人'},
+              {name: 'taxType', key: 2, value: '一般纳税人'}
             ]}
             {...formItemLayout}
           />
