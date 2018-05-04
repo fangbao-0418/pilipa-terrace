@@ -38,6 +38,10 @@ export default class  extends React.Component<FormProps, FormStates> {
     const dataForm: any = {}
     data.map((every: any, index: number) => {
       if (every.field) {
+        if (every.defaultValue) {
+          dataForm[every.field] = every.defaultValue
+          return
+        }
         if (every.data && every.data.length > 0) {
           let tempVal: any = every.type === 'checkbox' ? [] : null
           every.data.map((dataItem: any) => {
@@ -68,7 +72,7 @@ export default class  extends React.Component<FormProps, FormStates> {
   }
 
   public formDataChange = (e: any) => {
-    console.log('change', e)
+    // console.log('change', e)
     const {formData} = this.state
     const data = $.extend(true, formData, {})
     for (const key of Object.keys(data)) {

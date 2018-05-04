@@ -46,13 +46,12 @@ export default class FormItem extends React.Component<FormItemProps, FormItemSta
     const {props} = this
     const {value} = props
     this.setState({inputValue: value})
-  }
-  public componentDidMount () {
-    const {props} = this
     this.props.getField(props)
     if (props.type === 'checkbox') {
       this.setState({checkboxData: props.data})
     }
+  }
+  public componentDidMount () {
   }
   public componentWillReceiveProps (nextProps: any) {
   }
