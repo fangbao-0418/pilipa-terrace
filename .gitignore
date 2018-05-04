@@ -4,3 +4,4 @@ dist
 libs
 .awcache
 reports
+coverage

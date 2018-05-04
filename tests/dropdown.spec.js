@@ -1,8 +1,7 @@
-/* global describe, it, xit, expect, singlequote: false */
+/* global describe, it, fit, xit, expect, afterEach, beforeEach, singlequote: false */
 import { mount } from 'enzyme'
 import React from 'react'
 import sinon from 'sinon'
-import '../dist/pilipa.min.css'
 import { DropDown } from '../components'
 import { createKeyboardEvent } from './utils/events'
 const data = []
@@ -125,13 +124,14 @@ describe('test dropdown component', () => {
     expect(dropdown.handleChange.calledOn(dropdown)).toBeTruthy()
     expect(dropdown.state.data.length).toBe(11)
   })
-  it('test dropdown keydown down key', () => {
+  it('test dropdown keydown down key', (done) => {
     const wrapper = mount(<Container />)
     wrapper.setState({
       data
     })
     $('body').html(wrapper.getDOMNode())
     let dropdown = wrapper.ref('dropdown')
+    expect(dropdown.state.dataTmp.length).toBe(200)
     sinon.spy(dropdown, 'onKeyDown')
     sinon.spy(dropdown, 'setState')
     sinon.spy(dropdown, 'render')
@@ -149,39 +149,62 @@ describe('test dropdown component', () => {
     document.dispatchEvent(evtObj)
     expect(dropdown.render.callCount).toBe(5)
     expect(dropdown.state.selectedIndex).toBe(3)
+    setTimeout(() => {
+      let index = 0
+      let t = 0
+      // ↓
+      function simulateKeyDown40 () {
+        t = setInterval(() => {
+          if (index >= 50) {
+            clearInterval(t)
+            expect(dropdown.onKeyDown.callCount).toBe(54)
+            expect(dropdown.state.data.length).toBe(60)
+            expect(dropdown.state.selectedIndex).toBe(53)
+            done()
+          } else {
+            document.dispatchEvent(evtObj)
+            index++
+          }
+        }, 30)
+      }
+      // 连续按↓键
+      simulateKeyDown40()
+    }, 220)
+  })
+  it('test dropdown keydown up key', (done) => {
+    const wrapper = mount(<Container />)
+    wrapper.setState({
+      data,
+      title: '测试数据40'
+    })
+    $('body').html(wrapper.getDOMNode())
+    let dropdown = wrapper.ref('dropdown')
+    console.log(dropdown.refs, 'button')
+    $(dropdown.refs.button).trigger('mouseover')
+    const evtObj = createKeyboardEvent('keydown', 38)
+    wrapper.update()
+    expect(dropdown.state.selectedIndex).toBe(40)
+    expect(dropdown.state.data.length).toBe(60)
+    const $items = $(dropdown.refs.results).find('.items')
+    const $lis = $(dropdown.refs.results).find('li')
+    const liH = $lis.eq(0)[0].clientHeight
     let index = 0
     let t = 0
-    // ↓
-    function simulateKeyDown40 () {
+    // ↑
+    function simulateKeyDown38 () {
       t = setInterval(() => {
-        if (index === 210) {
+        if (index >= 20) {
           clearInterval(t)
-          expect(dropdown.state.data.length).toBe(200)
-          expect(dropdown.state.selectedIndex).toBe(199)
+          expect(dropdown.state.data.length).toBe(60)
+          expect(dropdown.state.selectedIndex).toBe(20)
+          expect($items.scrollTop()).toBe(liH * 20)
+          done()
+        } else {
+          document.dispatchEvent(evtObj)
+          index++
         }
-        document.dispatchEvent(evtObj)
-        index++
-      }, 100)
+      }, 30)
     }
-    // 连续按↓键
-    simulateKeyDown40()
-    // // 连续按↑键
-    // function simulateKeyDown38 (done) {
-    //   let t = 0
-    //   console.log('xxx')
-    //   index = 0
-    //   const evtObj2 = createKeyboardEvent('keydown', 38)
-    //   t = setInterval(() => {
-    //     if (index === 50) {
-    //       clearInterval(t)
-    //       console.log(index, 'index')
-    //       // expect(dropdown.state.data.length).toBe(60)
-    //       // expect(dropdown.state.selectedIndex).toBe(53)
-    //     }
-    //     console.log(dropdown.state.selectedIndex, 'si')
-    //     document.dispatchEvent(evtObj2)
-    //     index++
-    //   }, 10)
-    // }
+    simulateKeyDown38()
   })
 })

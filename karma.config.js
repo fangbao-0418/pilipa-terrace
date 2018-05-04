@@ -22,12 +22,6 @@ module.exports = function (config) {
     exclude: [
     ],
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      './tests/tests.webpack.js': ['webpack']
-    },
-
     webpack: {
       mode: 'development',
       module: {
@@ -121,17 +115,31 @@ module.exports = function (config) {
       resolve: {
         modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'components')],
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.json', '.styl', '.css']
-      },
-      devtool: 'source-map'
+      }
+      // devtool: 'source-map'
+    },
+
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+      './tests/tests.webpack.js': ['webpack'],
+      'components/**/*.tsx': ['webpack', 'coverage']
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['junit', 'progress'],
+    reporters: ['junit', 'progress', 'coverage'],
+
     junitReporter: {
       outputDir: './reports',
       suite: 'models'
+    },
+    coverageReporter: {
+      dir: 'coverage',
+      subdir: '.',
+      type: 'html'
+      // Would output the results into: .'/coverage/'
     },
     // web server port
     port: 9876,

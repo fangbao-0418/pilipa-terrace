@@ -1,6 +1,6 @@
 {
   "name": "pilipa",
-  "version": "1.1.5",
+  "version": "1.1.5-alpha.1",
   "description": "噼里啪前端组件，基于react。",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
@@ -61,6 +61,7 @@
     "jasmine-core": "^3.1.0",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
     "karma-jasmine": "^1.1.1",
     "karma-junit-reporter": "^1.2.0",
     "karma-webpack": "^3.0.0",

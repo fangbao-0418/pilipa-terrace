@@ -90,10 +90,10 @@ export default class extends React.Component<MyProps, MyStates> {
   }
   public onKeyDown (event: any) {
     this.event = event
-    const $dropdowm = $(this.refs.dropdown)
+    const $dropdown = $(this.refs.dropdown)
     const keyCode = event.keyCode
     let { selectedIndex } = this.state
-    const $items = $dropdowm.find('.results .items')
+    const $items = $dropdown.find('.results .items')
     const $lis = $items.find('li')
     const { data } = this.state
     if ($lis.length === 0 || $lis.eq(selectedIndex).length === 0) {
@@ -229,8 +229,10 @@ export default class extends React.Component<MyProps, MyStates> {
     })
   }
   public onItemScroll () {
+    const $dropdown = $(this.refs.dropdown)
     const results = this.refs.results
-    $(results).children('.items').scroll((e) => {
+    // console.log($(results).children('.items'), 'itemScroll')
+    $dropdown.find('.results .items').scroll((e) => {
       const scrollTop = e.target.scrollTop
       const h = $(results).find('ul').height()
       const ch = e.target.clientHeight
@@ -239,7 +241,6 @@ export default class extends React.Component<MyProps, MyStates> {
       if (scrollTop + ch > h - 10) {
         if (this.defaultPage < Math.ceil(this.state.dataTmp.length / this.pageNum)) {
           this.defaultPage += 1
-          // console.log(this.defaultPage, 'defaultPage')
           this.setState({
             data: this.state.dataTmp.slice(0, this.defaultPage * this.pageNum)
           })
@@ -261,8 +262,6 @@ export default class extends React.Component<MyProps, MyStates> {
         this.setState({
           visible: false,
           selectedIndex: this.selectedIndex
-          // data: this.allData.slice(0, this.defaultPage * this.pageNum),
-          // dataTmp: this.allData
         })
         this.seleted = false
       }, 200)

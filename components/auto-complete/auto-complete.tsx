@@ -111,9 +111,6 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       break
     }
   }
-  public onKeyUp () {
-
-  }
   public handleAllData (data: any[]) {
     const { key, title } = this.props.setFields || {key: '', title: ''}
     this.allData = []
