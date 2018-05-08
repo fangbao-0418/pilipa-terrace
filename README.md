@@ -54,3 +54,6 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
   &nbsp;&nbsp; `2018-4-12` 
   - autocomplete 支持上下键选择，回车确定选择
 
+### 1.1.5-alpha.2 
+  &nbsp;&nbsp; `2018-4-12` 
+  - autocomplete 修复点击input闪烁问题

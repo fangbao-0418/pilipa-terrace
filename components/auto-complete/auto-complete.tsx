@@ -55,6 +55,9 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   public componentDidMount () {
     $(this.refs.input).off('click')
     $(this.refs.input).click(() => {
+      if (this.state.visible) {
+        return
+      }
       this.searchShow()
     })
     $(document).keydown((event) => {
