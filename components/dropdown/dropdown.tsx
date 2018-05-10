@@ -196,6 +196,10 @@ export default class extends React.Component<MyProps, MyStates> {
       clearTimeout(this.t)
     }
     let { results } = this.refs
+    const { button } = this.refs
+    $(button).find('.btn-right i').removeClass('pilipa-dropdown-arrow-down pilipa-dropdown-arrow-active')
+    $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-up')
+    $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-active')
     if (results) {
       this.scrollToSelectedPos()
       $(results).removeClass('custom-slide-up-leave')
@@ -253,8 +257,12 @@ export default class extends React.Component<MyProps, MyStates> {
       clearTimeout(this.t)
     }
     const { button, results } = this.refs
+
     this.t = setTimeout(() => {
       $(results).addClass('custom-slide-up-leave')
+      $(button).find('.btn-right i').removeClass('pilipa-dropdown-arrow-up pilipa-dropdown-arrow-active')
+      $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-down')
+      $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-active')
       this.t = setTimeout(() => {
         $(results).removeClass('custom-slide-up-leave')
         $(results).addClass('hidden')

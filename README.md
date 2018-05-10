@@ -57,3 +57,7 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 ### 1.1.5-alpha.2 
   &nbsp;&nbsp; `2018-5-8` 
   - autocomplete 修复点击input闪烁问题 #22
+
+### 1.1.5-alpha.3
+  &nbsp;&nbsp; `2018-5-9` 
+  - autocomplete 修复点击input闪烁问题 #22

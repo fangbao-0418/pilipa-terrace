@@ -95,6 +95,7 @@
   100%
     opacity: 1
     right: 0
+
 .pilipa-fade-enter
   animation-name: pilipaFadeIn
 .pilipa-fade-leave
@@ -156,4 +157,27 @@
   animation-play-state: running
 .pilipa-web-uploader-menu-unfold.pilipa-web-uploader-menu-active
   animation-name: pilipaWebUploaderMenuUnFold
+  animation-play-state: running
+
+
+@keyframes pilipaDropDownArrowUp
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(180deg)
+@keyframes pilipaDropDownArrowDown
+  0%
+    transform: rotate(180deg)
+  100%
+    transform: rotate(0deg)
+.pilipa-dropdown-arrow-up, .pilipa-dropdown-arrow-down
+  animation-timing-function: linear
+  animation-duration: 0.3s;
+  animation-fill-mode: both
+  animation-play-state: paused
+.pilipa-dropdown-arrow-up.pilipa-dropdown-arrow-active
+  animation-name: pilipaDropDownArrowUp
+  animation-play-state: running
+.pilipa-dropdown-arrow-down.pilipa-dropdown-arrow-active
+  animation-name: pilipaDropDownArrowDown
   animation-play-state: running
