@@ -60,4 +60,4 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 
 ### 1.1.5-alpha.3
   &nbsp;&nbsp; `2018-5-9` 
-  - autocomplete 修复点击input闪烁问题 #20
+  - dropdown 优化icon动画 #20
