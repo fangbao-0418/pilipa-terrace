@@ -12,7 +12,7 @@ function mounted () {
 }
 function destroy () {
 }
-const allowComponents = ['SearchView']
+const allowComponents = ['SearchView', 'DropDown']
 export default function <P> (conf: {component: string, props: P,  el: any}) {
   const { component, props } = conf
   let { el } = conf

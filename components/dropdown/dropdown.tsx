@@ -4,7 +4,7 @@ import React from 'react'
 import { getCapital } from '../_util'
 export interface T {
   title: string
-  key: number | ''
+  key: any
   capital?: string[]
 }
 export interface MyProps {
@@ -13,6 +13,7 @@ export interface MyProps {
   style?: React.CSSProperties
   filter?: boolean
   callBack?: (item: T) => void
+  onChange?: (item: T) => void
   setFields?: {key: string, title: string}
   prePend?: object
   title?: string
@@ -275,10 +276,10 @@ export default class extends React.Component<MyProps, MyStates> {
       }, 200)
     }, 100)
   }
-  public handleClick (item: {key: number, title: string}, index: number) {
+  public handleClick (item: T, index: number) {
     this.seleted = true
     this.selectedIndex = index
-    const { callBack } = this.props
+    const { callBack, onChange } = this.props
     this.setState({
       title: item.title,
       selectedIndex: index
@@ -288,6 +289,11 @@ export default class extends React.Component<MyProps, MyStates> {
     if (callBack) {
       setTimeout(() => {
         callBack(item)
+      }, 301)
+    }
+    if (onChange) {
+      setTimeout(() => {
+        onChange(item)
       }, 301)
     }
   }

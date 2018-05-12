@@ -18,7 +18,7 @@ export default class extends React.Component {
       <div>
         <AutoComplete
           data={this.data}
-          onSelect={(item) => {
+          onChange={(item) => {
             console.log(item)
           }}
         />

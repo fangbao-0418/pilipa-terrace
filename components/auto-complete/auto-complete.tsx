@@ -4,12 +4,13 @@ import React from 'react'
 import { getCapital } from '../_util'
 export interface T {
   title: string
-  key: number | ''
+  key: any
   capital?: string[]
 }
 export interface MyProps {
   data: any[]
-  onSelect?: (value: string) => any
+  onSelect?: (item: T) => void
+  onChange?: (item: T) => void
   className?: string
   placeholder?: string
   style?: React.CSSProperties
@@ -199,9 +200,10 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       })
     })
   }
-  public handleSelect (item: any) {
+  public handleSelect (item: T) {
     $(this.refs.input).val(item.title)
     const results = this.refs.results
+    const { onSelect, onChange } = this.props
     $(results).addClass('custom-slide-up-leave')
     setTimeout(() => {
       $(results).removeClass('custom-slide-up-leave')
@@ -209,8 +211,11 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         visible: false
       })
     }, 300)
-    if (this.props.onSelect) {
-      this.props.onSelect(item)
+    if (onSelect) {
+      onSelect(item)
+    }
+    if (onChange) {
+      onChange(item)
     }
   }
   public listenScroll () {
