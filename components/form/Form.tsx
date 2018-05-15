@@ -1,6 +1,7 @@
 import ClassNames from 'classnames'
 import $ from 'jquery'
 import React, {Children, cloneElement} from 'react'
+import Bus from './bus'
 import FormItem from './FormItem'
 
 export interface FormProps {
@@ -10,10 +11,12 @@ export interface FormProps {
   column?: number
   layout?: string
   onSubmit?: React.FormEventHandler<any>
+  onFormChange?: (value: any) => any
 }
 export interface FormStates {
   formData: any
 }
+
 export default class  extends React.Component<FormProps, FormStates> {
   public static Item = FormItem
   public defaultCls = 'pilipa-form'
@@ -28,18 +31,29 @@ export default class  extends React.Component<FormProps, FormStates> {
     }
   }
   public componentWillMount () {
+    Bus.on('getField', this.getField.bind(this))
+    Bus.on('formDataChange', this.formDataChange.bind(this))
   }
   public componentDidMount () {
   }
   public getField = (e: any) => {
     const data = $.extend(true, this.state.formData, [])
     const item = $.extend(true, e, [])
-    data.push(item)
+
     const dataForm: any = {}
+    if (data.length !== undefined) {
+      data.push(item)
+    } else {
+      return
+    }
     data.map((every: any, index: number) => {
       if (every.field) {
         if (every.defaultValue) {
           dataForm[every.field] = every.defaultValue
+          return
+        }
+        if (every.title) {
+          dataForm[every.field] = every.title
           return
         }
         if (every.data && every.data.length > 0) {
@@ -63,12 +77,11 @@ export default class  extends React.Component<FormProps, FormStates> {
       console.log(this.state.formData)
     })
   }
-  public formSubmit = () => {
-    console.log('submit', this.state.formData)
-  }
   public handleFormSubmit = (e: any) => {
     e.preventDefault()
-    this.formSubmit()
+    console.log('submit', this.state.formData)
+    const {onSubmit} = this.props
+    if (onSubmit) {onSubmit(this.state.formData)}
   }
 
   public formDataChange = (e: any) => {
@@ -81,13 +94,11 @@ export default class  extends React.Component<FormProps, FormStates> {
       }
     }
     this.setState({formData: data}, () => {
+      const {onFormChange} = this.props
+      if (onFormChange) {onFormChange(this.state.formData)}
       console.log('formData', this.state.formData)
     })
   }
-
-  public handleFormChange = () => {
-  }
-
   public render () {
     const {defaultCls, props} = this
     const {className, style, children, layout, column} = props
@@ -99,18 +110,32 @@ export default class  extends React.Component<FormProps, FormStates> {
     },
       className
     )
+    const mapChildren = (child: any) => {
+      console.log(child)
+      const childProps = child.props
+      const type = child.type
+      if (type !== FormItem) {
+        if (childProps && childProps.children) {
+          Children.map(childProps.children, (item: any, index: number) => {
+            console.log(item.type)
+            if (item.type !== FormItem) {
+              item = cloneElement(item as React.ReactElement<any>,
+                {formDataChange: this.formDataChange, getField: this.getField})
+              mapChildren(item)
+            }
+          })
+        }
+      }
+    }
     return (
       <form
         className={formClassName}
         style={style}
         onSubmit={(e: any) => this.handleFormSubmit(e)}
-        onChange={this.handleFormChange.bind(this)}
       >
-        {
-          Children.map(children, (child) =>
-            cloneElement(child as React.ReactElement<any>,
-              {formDataChange: this.formDataChange, getField: this.getField}))
-        }
+        {/*<myContext.Provider value={{formDataChange: this.formDataChange, getField: this.getField}}>*/}
+        {children}
+        {/*</myContext.Provider>*/}
       </form>
     )
   }
