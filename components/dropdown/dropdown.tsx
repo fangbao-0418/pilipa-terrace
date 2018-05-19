@@ -17,6 +17,7 @@ export interface MyProps {
   setFields?: {key: string, title: string}
   prePend?: object
   title?: string
+  defaultValue?: any
 }
 
 export interface MyStates {
@@ -42,7 +43,7 @@ export default class extends React.Component<MyProps, MyStates> {
     this.handleAllData(this.props)
     this.state = {
       visible: false,
-      title: this.props.title || '',
+      title: this.props.title || this.getDefaultValue() || '',
       data: this.allData.slice(0, this.pageNum * this.defaultPage),
       dataTmp: this.allData,
       selectedIndex: this.selectedIndex,
@@ -54,7 +55,7 @@ export default class extends React.Component<MyProps, MyStates> {
       this.handleAllData(props)
       const res = this.filterData()
       this.setState({
-        title: props.title,
+        title: props.title || this.getDefaultValue() || '',
         data: res.slice(0, this.pageNum * this.defaultPage),
         dataTmp: res
       })
@@ -88,6 +89,15 @@ export default class extends React.Component<MyProps, MyStates> {
       clearTimeout(this.t)
     }
     console.log('will unmount')
+  }
+  public getDefaultValue () {
+    let value = ''
+    const title = this.props.setFields ? this.props.setFields.title : 'title'
+    try {
+      value = this.props.defaultValue[title]
+    } catch(e) {}
+
+    return value
   }
   public onKeyDown (event: any) {
     this.event = event

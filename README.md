@@ -61,3 +61,7 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 ### 1.1.5-alpha.3
   &nbsp;&nbsp; `2018-5-9` 
   - dropdown 优化icon动画 #20
+
+### 1.1.5-alpha.8
+  &nbsp;&nbsp; `2018-5-19` 
+  - dropdown 添加defaultvalue 属性

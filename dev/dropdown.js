@@ -12,6 +12,13 @@ export default class extends React.Component {
       key: 2,
       title: '噼里啪智能财税'
     }]
+    this.data2 = [{
+      key2: 1,
+      title2: '爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司1'
+    }, {
+      key2: 2,
+      title2: '噼里啪智能财税'
+    }]
     let i = 0
     while (i < 100) {
       console.log(i)
@@ -26,25 +33,30 @@ export default class extends React.Component {
     return (
       <div style={{height: '1000px'}}>
         <DropDown
-          title='测试数据55'
           style={{float: 'left', marginRight: '20px'}}
           data={[]}
-          callBack={(item) => {
+          onChange={(item) => {
             console.log(item)
           }}
           filter
         />
         <DropDown
-          title='测试数据1'
+          defaultValue={{key: '测试数据55', title: '测试数据5'}}
           style={{float: 'left', marginRight: '20px'}}
           data={this.data}
-          callBack={(item) => {
+          onChange={(item) => {
             console.log(item)
           }}
           filter
         />
         <DropDown
           style={{float: 'left'}}
+          data={this.data2}
+          defaultValue={{
+            key2: 2,
+            title2: '噼里啪智能财税'
+          }}
+          setFields={{key: 'key2', title: 'title2'}}
           filter
         />
       </div>
