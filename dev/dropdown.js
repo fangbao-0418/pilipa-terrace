@@ -28,10 +28,20 @@ export default class extends React.Component {
       })
       i++
     }
+    this.state = {
+      name: '点击'
+    }
   }
   render () {
     return (
       <div style={{height: '1000px'}}>
+        <button
+          onClick={() => {
+            this.setState({
+              name: this.state.name === '点击' ? '取消' : '点击'
+            })
+          }}
+        >{this.state.name}</button>
         <DropDown
           style={{float: 'left', marginRight: '20px'}}
           data={[]}

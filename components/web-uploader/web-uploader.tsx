@@ -478,9 +478,9 @@ class WebUploader extends React.Component <Props, States> {
                   this.state.newNo === 0 && this.state.uploadStatus !== 'finish' &&
                   <p style={{marginLeft: '15px'}}>
                     上传失败请点击
-                    <span className='clickabled' onClick={this.handleUpload.bind(this)}>继续上传</span>
+                    <span className='pilipa-clickabled' onClick={this.handleUpload.bind(this)}>继续上传</span>
                     或
-                    <span className='clickabled' onClick={this.toIgnore.bind(this)}>忽略</span>
+                    <span className='pilipa-clickabled' onClick={this.toIgnore.bind(this)}>忽略</span>
                   </p>
                 }
               </div>

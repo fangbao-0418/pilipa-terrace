@@ -55,7 +55,7 @@ export default class extends React.Component<MyProps, MyStates> {
       this.handleAllData(props)
       const res = this.filterData()
       this.setState({
-        title: props.title || this.getDefaultValue() || '',
+        // title: props.title || this.getDefaultValue() || '',
         data: res.slice(0, this.pageNum * this.defaultPage),
         dataTmp: res
       })
@@ -146,18 +146,23 @@ export default class extends React.Component<MyProps, MyStates> {
   }
   public handleAllData (props: MyProps) {
     let { data } = props
+    const { defaultValue } = this.props
     data = data || []
-    const { key, title } = props.setFields || {key: '', title: ''}
+    const { key, title } = props.setFields || {key: 'key', title: 'title'}
     const selectTitle = props.title
     data = props.prePend === undefined ? data : [props.prePend].concat(data)
     this.allData = []
+    const value = this.state ?
+    this.state.title : (props.title ? props.title : (defaultValue ? defaultValue[title] : ''))
+    this.defaultPage = 1
+    this.selectedIndex = -1
     data.map((item, index) => {
       const newItem: T = {
-        key: item[key || 'key'],
-        title: item[title || 'title'],
-        capital: getCapital(item[title || 'title']) || ['']
+        key: item[key],
+        title: item[title],
+        capital: getCapital(item[title]) || ['']
       }
-      if (props.title === item[title || 'title']) {
+      if (value === item[title]) {
         this.defaultPage = index === 0 ? 1 : Math.ceil((index + 1) / this.pageNum)
         this.selectedIndex = index
       }
@@ -267,7 +272,7 @@ export default class extends React.Component<MyProps, MyStates> {
     if (this.t) {
       clearTimeout(this.t)
     }
-    const { button, results } = this.refs
+    const { button, input, results } = this.refs
 
     this.t = setTimeout(() => {
       $(results).addClass('custom-slide-up-leave')
@@ -277,16 +282,20 @@ export default class extends React.Component<MyProps, MyStates> {
       this.t = setTimeout(() => {
         $(results).removeClass('custom-slide-up-leave')
         $(results).addClass('hidden')
-        this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
+        // this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
+        this.handleAllData(this.props)
         this.setState({
           visible: false,
-          selectedIndex: this.selectedIndex
+          selectedIndex: this.selectedIndex,
+          filterVal: '',
+          data: this.allData.slice(0, this.pageNum * this.defaultPage),
+          dataTmp: this.allData
         })
         this.seleted = false
       }, 200)
     }, 100)
   }
-  public handleClick (item: T, index: number) {
+  public handleSelect (item: T, index: number) {
     this.seleted = true
     this.selectedIndex = index
     const { callBack, onChange } = this.props
@@ -395,10 +404,10 @@ export default class extends React.Component<MyProps, MyStates> {
                               selected: key === this.selectedIndex
                             })}
                             title={item.title}
-                            onClick={this.handleClick.bind(this, item, key)}
+                            onClick={this.handleSelect.bind(this, item, key)}
                             onMouseEnter={this.onMouseEnter.bind(this, key)}
                           >
-                            {item.title}
+                            <span>{item.title}</span>
                           </li>
                         )
                       })

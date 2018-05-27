@@ -1,12 +1,12 @@
 {
   "name": "pilipa",
-  "version": "1.1.5-alpha.8",
+  "version": "1.1.5-alpha.11",
   "description": "噼里啪前端组件，基于react。",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
   "scripts": {
     "dev": "node scripts/server",
-    "dist": "./node_modules/gulp/bin/gulp.js dist",
+    "dist": "node ./node_modules/gulp/bin/gulp.js dist",
     "libs": "node ./node_modules/gulp/bin/gulp.js libs",
     "test:watch": "node ./node_modules/karma/bin/karma start karma.config.js --browsers Chrome",
     "test": "node ./node_modules/karma/bin/karma start karma.config.js --single-run",

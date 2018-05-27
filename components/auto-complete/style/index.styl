@@ -49,15 +49,18 @@ auto-complete-prefix = pilipa-prefix + '-auto-complete'
     p
       margin: 0
       padding: 8px 10px
+      line-height 18px
+      font-size 12px
     .items
       max-height: 240px
-      overflow-y: scroll
+      overflow-y: auto
       margin: 0
       padding: 0
     ul
       margin: 0
       padding: 0
       li
+        margin: 0
         padding: 2px 10px
         cursor: pointer
         transition: all 300ms
@@ -67,3 +70,6 @@ auto-complete-prefix = pilipa-prefix + '-auto-complete'
         line-height: 30px
         &.active
           background-color: #ecf6fd
+        span 
+          margin: 2px 10px
+          font-size: 12px

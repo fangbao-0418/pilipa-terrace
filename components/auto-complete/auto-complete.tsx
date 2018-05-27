@@ -15,6 +15,7 @@ export interface MyProps {
   placeholder?: string
   style?: React.CSSProperties
   setFields?: {key: string, title: string}
+  defaultValue?: any
 }
 export interface MyStates {
   data: T[]
@@ -23,6 +24,7 @@ export interface MyStates {
   visible: boolean
   hover: boolean
   selectedIndex: number
+  value: string
 }
 
 class AutoComplete extends React.Component<MyProps, MyStates> {
@@ -40,16 +42,18 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       page: 1,
       visible: false,
       hover: false,
-      selectedIndex: -1
+      selectedIndex: -1,
+      value: this.getDefaultValue()
     }
   }
   public componentWillReceiveProps (props: MyProps) {
     if (props.data.length) {
       this.handleAllData(props.data)
-      const res = this.filterData()
+      // const res = this.filterData()
       this.setState({
-        data: res.slice(0, this.state.page * this.pageNum),
-        dataTmp: res
+        data: this.allData.slice(0, this.pageNum),
+        dataTmp: this.allData,
+        page: 1
       })
     }
   }
@@ -69,6 +73,15 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         this.event.returnValue = false
       }
     })
+  }
+  public getDefaultValue () {
+    let value = ''
+    const { defaultValue, setFields } = this.props
+    if (typeof defaultValue !== 'object') {
+      return defaultValue || ''
+    }
+    value = setFields ? defaultValue[setFields.title] : defaultValue.title
+    return value
   }
   public onKeyDown (event?: any) {
     this.event = event
@@ -116,29 +129,26 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     }
   }
   public handleAllData (data: any[]) {
-    const { key, title } = this.props.setFields || {key: '', title: ''}
+    const { key, title } = this.props.setFields || {key: 'key', title: 'title'}
     this.allData = []
     data.map((item, index) => {
       const newItem: T = {
-        key: item[key || 'key'],
-        title: item[title || 'title'],
-        capital: getCapital<string>(item[title || 'title']) || ['']
+        key: item[key],
+        title: item[title],
+        capital: getCapital<string>(item[title]) || ['']
       }
       this.allData[index] = newItem
     })
   }
-  public searchChange () {
+  public searchChange (e: any) {
     const $items = $(this.refs.results).find('.items')
-    const el = $(this.refs.input)
-    const value: string = el.val().toString() || ''
-    $items.scrollTop(0)
-    if (!value) {
-      this.setState({
-        visible: false
-      })
-    } else {
+    const value = e.target.value
+    this.setState({
+      value
+    }, () => {
+      $items.scrollTop(0)
       this.searchShow()
-    }
+    })
   }
   public filterData () {
     const { allData } = this
@@ -201,6 +211,9 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     })
   }
   public handleSelect (item: T) {
+    this.setState({
+      value: item.title
+    })
     $(this.refs.input).val(item.title)
     const results = this.refs.results
     const { onSelect, onChange } = this.props
@@ -236,11 +249,17 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     })
   }
   public render () {
-    const { data, visible } = this.state
+    const { data, value, visible } = this.state
     const { className, placeholder } = this.props
     return (
       <div className={classNames(this.defaultCls, className)} style={this.props.style}>
-        <input type='text' placeholder={placeholder} onChange={this.searchChange.bind(this)} ref='input' />
+        <input
+          type='text'
+          placeholder={placeholder}
+          onChange={this.searchChange.bind(this)}
+          ref='input'
+          value={value}
+        />
         {visible &&
           <div className='results' ref='results'>
             {data.length === 0 && <p>未搜到结果</p>}
@@ -262,7 +281,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
                           })
                         }}
                       >
-                        {item.title}
+                        <span>{item.title}</span>
                       </li>
                     )
                   })

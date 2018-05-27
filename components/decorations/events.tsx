@@ -1,7 +1,6 @@
 export default function () {
   return (target: any) => {
     let events: any[] = []
-    console.log(this, 'this')
     function trigger (...args: any[]) {
       events.map((item) => {
         if (item.name === args[0]) {

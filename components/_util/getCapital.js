@@ -36,7 +36,7 @@ function mkRslt (arr) {
   }
   return arrRslt
 }
-export default function (str) {
+export default function (str = '') {
   var refer = {
     '佛': 'f',
     '长春': 'cc'
