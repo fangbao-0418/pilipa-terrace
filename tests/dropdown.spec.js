@@ -79,6 +79,7 @@ describe('test dropdown component', () => {
   })
   it('test dropdown data change', () => {
     const wrapper = mount(<Container />)
+    $('body').html(wrapper.getDOMNode())
     const dropdown = wrapper.ref('dropdown')
     expect(dropdown.props.data.length).toBe(20)
     wrapper.setState({
@@ -93,20 +94,23 @@ describe('test dropdown component', () => {
     wrapper.setState({
       title: '测试数据55'
     })
+    $(dropdown.refs.button).trigger('mouseover')
+    console.log(dropdown, dropdown.defaultPage, 'dropdown.defaultPage')
     const spyCall = dropdown.componentWillReceiveProps.getCall(0)
     expect(spyCall.calledOn(dropdown)).toBeTruthy()
     expect(spyCall.calledOn())
     expect(dropdown.componentWillReceiveProps.calledWithMatch({title: '测试数据55', data})).toBeTruthy()
     expect(dropdown.handleAllData.callCount).toBe(1)
-    expect(dropdown.render.callCount).toBe(1)
+    expect(dropdown.render.callCount).toBe(2)
     expect(dropdown.props.title).toBe('测试数据55')
+    console.log(dropdown, dropdown.defaultPage, 'dropdown.defaultPage')
     expect(dropdown.defaultPage).toBe(3)
     expect(dropdown.props.data.length).toBe(200)
     expect(dropdown.state.data.length).toBe(60)
-    $(dropdown.refs.button).trigger('mouseover')
     wrapper.setState({
       title: '测试数据66'
     })
+    $(dropdown.refs.button).trigger('mouseover')
     expect(dropdown.state.data.length).toBe(80)
   })
   it('test dropdown search', () => {

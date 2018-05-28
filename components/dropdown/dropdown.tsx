@@ -55,7 +55,7 @@ export default class extends React.Component<MyProps, MyStates> {
       this.handleAllData(props)
       const res = this.filterData()
       this.setState({
-        // title: props.title || this.getDefaultValue() || '',
+        title: props.title || this.getDefaultValue(props),
         data: res.slice(0, this.pageNum * this.defaultPage),
         dataTmp: res
       })
@@ -88,13 +88,13 @@ export default class extends React.Component<MyProps, MyStates> {
     if (this.t) {
       clearTimeout(this.t)
     }
-    console.log('will unmount')
   }
-  public getDefaultValue () {
+  public getDefaultValue (props?: MyProps) {
+    props = props || this.props
     let value = ''
-    const title = this.props.setFields ? this.props.setFields.title : 'title'
+    const title = props.setFields ? props.setFields.title : 'title'
     try {
-      value = this.props.defaultValue[title]
+      value = props.defaultValue[title]
     } catch(e) {}
 
     return value
@@ -173,39 +173,35 @@ export default class extends React.Component<MyProps, MyStates> {
   public scrollToSelectedPos () {
     const $dropdowm = $(this.refs.dropdown)
     const $items = $dropdowm.find('.results .items')
-    this.state.dataTmp.map((item, index) => {
+    this.state.dataTmp.find((item, index) => {
       if (this.state.title === item.title) {
         this.selectedIndex = index
         this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
-        this.setState({
-          data: this.state.dataTmp.slice(0, this.defaultPage * this.pageNum),
-          selectedIndex: index
-        })
-        return false
+        return true
       }
     })
     if (this.selectedIndex < 0) {
       $items.scrollTop(0)
       return
     }
-    this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
-    // this.setState({
-    //   data: this.allData.slice(0, this.defaultPage * this.pageNum),
-    //   dataTmp: this.allData
-    // })
-    if ($items.find('li').length === 0) {
-      return
-    }
-    try {
-      const scrollTop = $items.find('li').eq(this.selectedIndex)[0].offsetTop
-      console.log($items.find('li').eq(this.selectedIndex)[0].offsetTop)
-      $items.scrollTop(scrollTop - $items.find('li').eq(this.selectedIndex)[0].clientHeight * 3)
-    } catch (e) {
-      this.selectedIndex = 0
-      const scrollTop = $items.find('li').eq(this.selectedIndex)[0].offsetTop
-      console.log($items.find('li').eq(this.selectedIndex)[0].offsetTop)
-      $items.scrollTop(scrollTop - $items.find('li').eq(this.selectedIndex)[0].clientHeight * 3)
-    }
+    this.setState({
+      data: this.state.dataTmp.slice(0, this.defaultPage * this.pageNum),
+      selectedIndex: this.selectedIndex
+    }, () => {
+      if ($items.find('li').length === 0) {
+        return
+      }
+      try {
+        const scrollTop = $items.find('li').eq(this.selectedIndex)[0].offsetTop
+        console.log($items.find('li').eq(this.selectedIndex)[0].offsetTop)
+        $items.scrollTop(scrollTop - $items.find('li').eq(this.selectedIndex)[0].clientHeight * 3)
+      } catch (e) {
+        this.selectedIndex = 0
+        const scrollTop = $items.find('li').eq(this.selectedIndex)[0].offsetTop
+        console.log($items.find('li').eq(this.selectedIndex)[0].offsetTop)
+        $items.scrollTop(scrollTop - $items.find('li').eq(this.selectedIndex)[0].clientHeight * 3)
+      }
+    })
   }
   public handleEnter () {
     if (this.t) {
@@ -342,10 +338,10 @@ export default class extends React.Component<MyProps, MyStates> {
     const value: string = $(this.refs.input).val().toString()
     const res = this.filterData()
     $items.scrollTop(0)
-    res.map((item, index) => {
+    res.find((item, index) => {
       if (this.state.title === item.title) {
         this.selectedIndex = index
-        return false
+        return true
       }
     })
     this.defaultPage = 1

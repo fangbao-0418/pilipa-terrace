@@ -29,7 +29,8 @@ export default class extends React.Component {
       i++
     }
     this.state = {
-      name: '点击'
+      name: '点击',
+      title: ''
     }
   }
   render () {
@@ -38,7 +39,8 @@ export default class extends React.Component {
         <button
           onClick={() => {
             this.setState({
-              name: this.state.name === '点击' ? '取消' : '点击'
+              name: this.state.name === '点击' ? '取消' : '点击',
+              title: '测试数据55'
             })
           }}
         >{this.state.name}</button>
@@ -51,7 +53,10 @@ export default class extends React.Component {
           filter
         />
         <DropDown
-          defaultValue={{key: '测试数据55', title: '测试数据5'}}
+          // defaultValue={{key: '测试数据55', title: '测试数据5'}}
+          defaultValue={{
+            title: this.state.title
+          }}
           style={{float: 'left', marginRight: '20px'}}
           data={this.data}
           onChange={(item) => {
