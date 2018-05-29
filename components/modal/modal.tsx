@@ -156,8 +156,8 @@ class Modal {
           </div>
           <div class="${this.defaultCls}-body">xxx</div>
           <div class="${this.defaultCls}-footer">
-            <button class="pilipa-btn pilipa-btn-default">取消</button>
-            <button class="pilipa-btn pilipa-btn-warning">确定</button>
+            <button class="pilipa-btn pilipa-btn-default">取 消</button>
+            <button class="pilipa-btn pilipa-btn-primary">确 定</button>
           </div>
         </div>
       </div>

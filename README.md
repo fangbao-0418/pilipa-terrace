@@ -1,3 +1,8 @@
+# version
+ 旧版请使用1.x，旧版最后版本为1.1.6
+
+ 新版使用3.x 
+
 # usage
 ```
 npm config set registry https://npmregistry.i-counting.cn
@@ -65,3 +70,8 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 ### 1.1.5-alpha.8
   &nbsp;&nbsp; `2018-5-19` 
   - dropdown 添加defaultvalue 属性
+
+### 3.0.0
+  &nbsp;&nbsp; `2018-5-29` 
+  - dropdown 样式优化 #30
+  - modal 样式优化 #30
