@@ -5,7 +5,7 @@ export default class extends React.Component {
     loading.show()
     setTimeout(() => {
       loading.hide()
-    }, 200)
+    }, 1000)
   }
   toClick2 (type) {
     loading.hide()

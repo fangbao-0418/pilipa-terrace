@@ -35,43 +35,7 @@ define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, React
 ```
 
 # Change Log 
-### 1.1.1  
-  &nbsp;&nbsp; `2018-4-8` 
-  - dropdown 支持键盘上下按键选择，回车确认选择 #20
 
-### 1.1.2  
-  &nbsp;&nbsp; `2018-4-9` 
-  - webuploader 添加callback #15
-
-### 1.1.3  
-  &nbsp;&nbsp; `2018-4-11` 
-  - 优化notification，鼠标划过暂停消失
-
-### 1.1.4 
-  &nbsp;&nbsp; `2018-4-12` 
-  - notification持续时间调整4500ms
-
-### 1.1.4-alpha.1 
-  &nbsp;&nbsp; `2018-4-12` 
-  - dropdown 修复没有数据报错
-
-### 1.1.4-alpha.9 
-  &nbsp;&nbsp; `2018-4-12` 
-  - autocomplete 支持上下键选择，回车确定选择
-
-### 1.1.5-alpha.2 
-  &nbsp;&nbsp; `2018-5-8` 
-  - autocomplete 修复点击input闪烁问题 #22
-
-### 1.1.5-alpha.3
-  &nbsp;&nbsp; `2018-5-9` 
-  - dropdown 优化icon动画 #20
-
-### 1.1.5-alpha.8
-  &nbsp;&nbsp; `2018-5-19` 
-  - dropdown 添加defaultvalue 属性
-
-### 3.0.0
-  &nbsp;&nbsp; `2018-5-29` 
-  - dropdown 样式优化 #30
-  - modal 样式优化 #30
+### 3.0.2
+  &nbsp;&nbsp; `2018-06-07` 
+  - loading 组件改版 样式优化 #32

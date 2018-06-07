@@ -4,6 +4,9 @@ import '../_util'
 export default {
   $el: $('<div class="pilipa-loading"></div>'),
   hide () {
+    if (this.t) {
+      clearInterval(this.t)
+    }
     $('.pilipa-loading-content').fadeOut(10, () => {
       this.$el.remove()
     })
@@ -13,13 +16,19 @@ export default {
     if ($('body').find(this.$el).length > 0) {
       this.$el.remove()
     }
+    let i = 0
+    this.t = setInterval(() => {
+      i = i === 3 ? 0 : i + 1
+      $('.pilipa-loading-content span').text('.'.repeat(i))
+    }, 500)
     $('body').append(this.$el)
-    $('.pilipa-loading-content').lettering()
   },
   template () {
     return `
       <div class="pilipa-loading-mask">
-        <h1 class="pilipa-loading-content">loading...</h1>
+        <div class="pilipa-loading-content">
+          <span></span>
+        </div>
       </div>
     `
   }

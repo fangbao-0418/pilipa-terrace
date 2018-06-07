@@ -11,30 +11,22 @@
   background: rgba(255, 255, 255, .1)
   .pilipa-loading-content
     position: absolute
-    bottom: 30px
-    right: 20px
+    bottom: 40px
+    left: 50%
+    transform: translateX(-50%)
     margin: auto
-    width: 300px
-    height: 50px
+    width: 173px
+    height: 40px
     text-transform: uppercase
     font-size: 24px
-    for row in 1..10
-      .char{row}
-        animation: foo 2s ease infinite, bar 3s linear infinite
-    for row in 1..10
-      .char{row}
-        animation-delay: .1s * row
+    background: rgba(174, 174, 174, 1) url('../../images/u2966.png') center center / 59px 20px no-repeat
+    border-radius: 4px
     span
-      display: inline-block
-      width: 24px
-      height: 50px
-      line-height: 50px
-      text-align: center
-      color: #CCCCCC
-      text-shadow: 1px 1px 0 black
-      position: relative
-      top: 0
-      // box-shadow: inset 0 1px 1px -1px black, inset 0 -5px 1px -1px rgba(black, .5)
+      position: absolute
+      left: 122px
+      font-size: 16px
+      line-height: 40px
+      color: #FFFFFF
 @keyframes foo
   10%
     top: -10px
