@@ -6,8 +6,7 @@ export interface MyProps {
   style?: React.CSSProperties
   items?: any[]
   companyName: string
-  date: string
-  voucherNo: string
+  accountPeriod: string
   treasurer: string
   reviewer: string
   originator: string
@@ -19,7 +18,8 @@ export interface MyProps {
     creditMoney: string
     taxRate: string
   }
-  isShowTaxRate?: boolean // 是否显示税率
+  isForeignCurrency?: boolean // 是否是外币
+  header?: React.ReactElement<any>
   onTd?: (event: JQuery.Event, items: any[], index: number) => void
 }
 export interface MyStates {
@@ -86,7 +86,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
     return node
   }
   public mapTrNode () {
-    const { fieldCfg, isShowTaxRate } = this.props
+    const { fieldCfg, isForeignCurrency } = this.props
     const { items } = this.state
     const node: JSX.Element[] = []
     items.map((item, index) => {
@@ -98,7 +98,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
           </td>
           <td>{item[fieldCfg.abstract]}</td>
           <td>{item[fieldCfg.subjectName]}</td>
-          { isShowTaxRate ?
+          { isForeignCurrency ?
             <td>
               <input
                 onChange={this.onTaxRateChange.bind(this, index)}
@@ -165,28 +165,58 @@ class Voucher extends React.Component<MyProps, MyStates> {
       creditMoney
     }
   }
+  public amountInWords () {
+    // 壹（壹）、贰（贰）、叁、肆（肆）、伍（伍）、陆（陆）、柒、捌、玖、拾、佰、仟、万（万）、亿、元、角、分、零、整（正）
+    const upperCase = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+    const total = this.getTotal()
+    // const num = Math.abs(total.debitMoney + total.creditMoney) * 100 || 0
+    const num = 92909901000
+    if (num > 99999999999) {
+      return <span style={{color: 'red'}}>非法数值</span>
+    }
+    const arr = (num).toString().split('').reverse()
+    const pos = '亿仟佰拾万仟佰拾元角分'.split('').reverse()
+    const res: string[] = []
+    arr.map((item, index) => {
+      console.log(pos[index], pos, index)
+      res.push(upperCase[Number(item)] + pos[index])
+    })
+    let str = ''
+    const raw = res.reverse().join('')
+    console.log(raw, 'raw')
+    const pattern = new RegExp('(零角)?零分', 'g')
+    const pattern1 = new RegExp('(零[亿仟佰拾仟佰拾元])+', 'g')
+    const pattern2 = new RegExp('零(([零壹贰叁肆伍陆柒捌玖][角分]){1,2})$', 'g')
+    const pattern3 = new RegExp('(零万)+', 'g')
+    const pattern4 = new RegExp('(零角)+', 'g')
+    str = raw.replace(pattern, '')
+    .replace(pattern1, '零')
+    .replace(pattern2, '圆$1')
+    .replace(pattern3, '万')
+    .replace(pattern4, '零')
+    .replace(/零$/, '圆整')
+    return str
+  }
   public render () {
     const {
-      className, style, companyName, date, voucherNo, treasurer, reviewer, originator, isShowTaxRate
+      className, style, treasurer, reviewer, originator, isForeignCurrency
     } = this.props
     const total = this.getTotal()
     return (
       <div ref='voucher' className={ClassNames(this.defaultCls, className)} style={style}>
         <div className={this.defaultCls + '-header'}>
           <h3>记账凭证</h3>
-          <p>
-            <span>单位名称：{companyName}</span>
-            <span>日期：{date}</span>
-            <span>凭证字号：{voucherNo}</span>
-          </p>
+          <div>
+            {this.props.header}
+          </div>
         </div>
-        <table className={ClassNames(this.defaultCls + '-table' + (isShowTaxRate ? 2 : 1))}>
+        <table className={ClassNames(this.defaultCls + '-table' + (isForeignCurrency ? 2 : 1))}>
           <thead>
             <tr>
               <th rowSpan={2}></th>
               <th rowSpan={2}>摘要</th>
               <th rowSpan={2}>会计科目</th>
-              {isShowTaxRate ? <th rowSpan={2}>税率(%)</th> : null}
+              {isForeignCurrency ? <th rowSpan={2}>外币</th> : null}
               <th>借方金额</th>
               <th>贷方金额</th>
             </tr>
@@ -207,8 +237,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
             {this.mapTrNode()}
             <tr>
               <td></td>
-              <td colSpan={!isShowTaxRate ? 2 : 3}>
-                合计：
+              <td colSpan={!isForeignCurrency ? 2 : 3}>
+                合计：{this.amountInWords()}
               </td>
               <td>{this.convertMoney(total.debitMoney)}</td>
               <td>{this.convertMoney(total.creditMoney)}</td>
@@ -217,7 +247,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
         </table>
         <div className={this.defaultCls + '-footer'}>
           <p>
-            <span>会计主管：{treasurer}</span>
+            <span>主管会计：{treasurer}</span>
             <span>审核人：{reviewer}</span>
             <span>制单人：{originator}</span>
           </p>
