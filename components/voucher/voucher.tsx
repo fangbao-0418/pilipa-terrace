@@ -157,8 +157,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
     let debitMoney = 0
     let creditMoney = 0
     items.map((item: any) => {
-      debitMoney += item[fieldCfg.debitMoney]
-      creditMoney += item[fieldCfg.creditMoney]
+      debitMoney += (item[fieldCfg.debitMoney] || 0)
+      creditMoney += (item[fieldCfg.creditMoney] || 0)
     })
     return {
       debitMoney,
@@ -169,8 +169,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
     // 壹（壹）、贰（贰）、叁、肆（肆）、伍（伍）、陆（陆）、柒、捌、玖、拾、佰、仟、万（万）、亿、元、角、分、零、整（正）
     const upperCase = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
     const total = this.getTotal()
-    // const num = Math.abs(total.debitMoney + total.creditMoney) * 100 || 0
-    const num = 92909901000
+    const num = Math.abs(total.debitMoney) * 100 || 0
     if (num > 99999999999) {
       return <span style={{color: 'red'}}>非法数值</span>
     }
@@ -183,7 +182,6 @@ class Voucher extends React.Component<MyProps, MyStates> {
     })
     let str = ''
     const raw = res.reverse().join('')
-    console.log(raw, 'raw')
     const pattern = new RegExp('(零角)?零分', 'g')
     const pattern1 = new RegExp('(零[亿仟佰拾仟佰拾元])+', 'g')
     const pattern2 = new RegExp('零(([零壹贰叁肆伍陆柒捌玖][角分]){1,2})$', 'g')
@@ -191,11 +189,11 @@ class Voucher extends React.Component<MyProps, MyStates> {
     const pattern4 = new RegExp('(零角)+', 'g')
     str = raw.replace(pattern, '')
     .replace(pattern1, '零')
-    .replace(pattern2, '圆$1')
+    .replace(pattern2, '元$1')
     .replace(pattern3, '万')
     .replace(pattern4, '零')
-    .replace(/零$/, '圆整')
-    return str
+    .replace(/零$/, '元整')
+    return str || '零元整'
   }
   public render () {
     const {

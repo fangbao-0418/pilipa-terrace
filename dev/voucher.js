@@ -2,18 +2,18 @@ import React from 'react'
 import Voucher from '../components/voucher'
 
 const data = [{
-  SubjectAbstract: '2-15应收商品收入（普票）,税率：3.00%',
-  SubjectName: '预付账款_待摊费用',
-  DebitMoney: 111236.11,
-  CreditorMoney: 0.02,
-  TaxRate: 3.00
+  summary: '2-15应收商品收入（普票）,税率：3.00%',
+  name: '预付账款_待摊费用',
+  debit: 12000,
+  credit: 0,
+  taxRate: 3.00
 },
 {
-  SubjectAbstract: '2-15应收商品收入（普票）,税率：3.00%',
-  SubjectName: '预付账款_待摊费用',
-  DebitMoney: -1111236.00,
-  CreditorMoney: 0.00,
-  TaxRate: 3.00
+  summary: '2-15应收商品收入（普票）,税率：3.00%',
+  name: '预付账款_待摊费用',
+  debit: 0,
+  credit: 12000,
+  taxRate: 3.00
 }]
 export default class extends React.Component {
   constructor () {
@@ -55,11 +55,11 @@ export default class extends React.Component {
           editable={true}
           isShowTaxRate={this.state.isShowTaxRate}
           fieldCfg={{
-            abstract: 'SubjectAbstract',
-            subjectName: 'SubjectName',
-            debitMoney: 'DebitMoney',
-            creditMoney: 'CreditorMoney',
-            taxRate: 'TaxRate'
+            abstract: 'summary',
+            subjectName: 'name',
+            debitMoney: 'debit',
+            creditMoney: 'credit',
+            taxRate: 'taxRate'
           }}
           onTd={this.onTdClick.bind(this)}
         />
