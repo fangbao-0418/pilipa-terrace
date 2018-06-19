@@ -13,7 +13,10 @@ const data = [{
   name: '预付账款_待摊费用',
   debit: 0,
   credit: 12000,
-  taxRate: 3.00
+  taxRate: 3.00,
+  exchangeRate: 6.8,
+  currencyType: '美元',
+  originalCurrencyMoney: 1000
 }]
 export default class extends React.Component {
   constructor () {
@@ -46,20 +49,18 @@ export default class extends React.Component {
         <Voucher
           ref='voucher'
           companyName='中投华为科技（北京）有限公司'
-          date='2018-02-28'
-          voucherNo='记-1'
           treasurer='江苏报税'
           reviewer='xxx'
           originator='xxx'
           items={data}
           editable={true}
-          isShowTaxRate={this.state.isShowTaxRate}
+          isForeignCurrency={true}
+          // isShowTaxRate={this.state.isShowTaxRate}
           fieldCfg={{
             abstract: 'summary',
             subjectName: 'name',
             debitMoney: 'debit',
-            creditMoney: 'credit',
-            taxRate: 'taxRate'
+            creditMoney: 'credit'
           }}
           onTd={this.onTdClick.bind(this)}
         />

@@ -6,17 +6,19 @@ export interface MyProps {
   style?: React.CSSProperties
   items?: any[]
   companyName: string
-  accountPeriod: string
   treasurer: string
   reviewer: string
   originator: string
   editable?: boolean
   fieldCfg?: {
-    abstract: string
-    subjectName: string
-    debitMoney: string
-    creditMoney: string
-    taxRate: string
+    abstract?: string
+    subjectName?: string
+    debitMoney?: string
+    creditMoney?: string
+    taxRate?: string
+    exchangeRate?: string
+    currencyType?: string
+    originalCurrencyMoney?: string
   }
   isForeignCurrency?: boolean // 是否是外币
   header?: React.ReactElement<any>
@@ -86,7 +88,17 @@ class Voucher extends React.Component<MyProps, MyStates> {
     return node
   }
   public mapTrNode () {
-    const { fieldCfg, isForeignCurrency } = this.props
+    const { isForeignCurrency } = this.props
+    const fieldCfg = Object.assign({}, {
+      abstract: 'summary',
+      subjectName: 'name',
+      debitMoney: 'debit',
+      creditMoney: 'credit',
+      taxRate: 'taxRate',
+      exchangeRate: 'exchangeRate',
+      currencyType: 'currencyType',
+      originalCurrencyMoney: 'originalCurrencyMoney'
+    }, this.props.fieldCfg)
     const { items } = this.state
     const node: JSX.Element[] = []
     items.map((item, index) => {
@@ -96,15 +108,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
             <i className='fa fa-plus' aria-hidden='true'></i>
             <i className='fa fa-minus' aria-hidden='true'></i>
           </td>
-          <td>{item[fieldCfg.abstract]}</td>
-          <td>{item[fieldCfg.subjectName]}</td>
+          <td><p>{item[fieldCfg.abstract]}</p></td>
+          <td><p>{item[fieldCfg.subjectName]}</p></td>
           { isForeignCurrency ?
             <td>
-              <input
-                onChange={this.onTaxRateChange.bind(this, index)}
-                value={item[fieldCfg.taxRate] || ''}
-                maxLength={5}
-              />
+              <p>
+                {item[fieldCfg.currencyType]}：{item[fieldCfg.originalCurrencyMoney]} <br />
+                汇率：{item[fieldCfg.exchangeRate]}
+              </p>
             </td>
             :
             null
@@ -157,8 +168,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
     let debitMoney = 0
     let creditMoney = 0
     items.map((item: any) => {
-      debitMoney += (item[fieldCfg.debitMoney] || 0)
-      creditMoney += (item[fieldCfg.creditMoney] || 0)
+      debitMoney += (Number(item[fieldCfg.debitMoney]) || 0)
+      creditMoney += (Number(item[fieldCfg.creditMoney]) || 0)
     })
     return {
       debitMoney,
@@ -177,7 +188,6 @@ class Voucher extends React.Component<MyProps, MyStates> {
     const pos = '亿仟佰拾万仟佰拾元角分'.split('').reverse()
     const res: string[] = []
     arr.map((item, index) => {
-      console.log(pos[index], pos, index)
       res.push(upperCase[Number(item)] + pos[index])
     })
     let str = ''
@@ -236,7 +246,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
             <tr>
               <td></td>
               <td colSpan={!isForeignCurrency ? 2 : 3}>
-                合计：{this.amountInWords()}
+                <p>合计：{this.amountInWords()}</p>
               </td>
               <td>{this.convertMoney(total.debitMoney)}</td>
               <td>{this.convertMoney(total.creditMoney)}</td>
