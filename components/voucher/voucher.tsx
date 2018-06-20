@@ -5,7 +5,6 @@ export interface MyProps {
   className?: string
   style?: React.CSSProperties
   items?: any[]
-  companyName: string
   treasurer: string
   reviewer: string
   originator: string
@@ -92,8 +91,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
     const fieldCfg = Object.assign({}, {
       abstract: 'summary',
       subjectName: 'name',
-      debitMoney: 'debit',
-      creditMoney: 'credit',
+      debitMoney: 'debitMoney',
+      creditMoney: 'creditMoney',
       taxRate: 'taxRate',
       exchangeRate: 'exchangeRate',
       currencyType: 'currencyType',

@@ -16,6 +16,7 @@ export interface MyProps {
   style?: React.CSSProperties
   setFields?: {key: string, title: string}
   defaultValue?: any
+  onPanelHide?: () => void
 }
 export interface MyStates {
   data: T[]
@@ -198,6 +199,9 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         })
       })
       el.blur(() => {
+        if (this.props.onPanelHide) {
+          this.props.onPanelHide()
+        }
         if (!this.state.hover) {
           $(results).addClass('custom-slide-up-leave')
           setTimeout(() => {
