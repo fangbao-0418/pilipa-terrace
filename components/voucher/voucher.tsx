@@ -1,6 +1,17 @@
 import ClassNames from 'classnames'
 import $ from 'jquery'
 import React, { SyntheticEvent } from 'react'
+export interface VoucherFieldConfigProps {
+  abstract?: string
+  subjectName?: string
+  debitMoney?: string
+  creditMoney?: string
+  taxRate?: string
+  exchangeRate?: string
+  currencyType?: string
+  originalCurrencyMoney?: string
+  foreignCurrency?: string
+}
 export interface MyProps {
   className?: string
   style?: React.CSSProperties
@@ -9,17 +20,7 @@ export interface MyProps {
   reviewer: string
   originator: string
   editable?: boolean
-  fieldCfg?: {
-    abstract?: string
-    subjectName?: string
-    debitMoney?: string
-    creditMoney?: string
-    taxRate?: string
-    exchangeRate?: string
-    currencyType?: string
-    originalCurrencyMoney?: string
-    foreignCurrency?: string
-  }
+  fieldCfg?: VoucherFieldConfigProps
   isForeignCurrency?: boolean // 是否是外币
   header?: React.ReactElement<any>
   onTd?: (event: JQuery.Event, items: any[], index: number) => void
@@ -34,12 +35,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
   }
   public type = this.props.type || 'voucher'
   public defaultCls = 'pilipa-voucher'
+  public fieldCfg = this.getFieldCfg(this.props.fieldCfg)
   public componentDidMount () {
     this.setTrHover()
     this.initOperate()
   }
   public componentWillReceiveProps (props: MyProps) {
     this.type = props.type || 'voucher'
+    this.fieldCfg = this.getFieldCfg(props.fieldCfg)
     if (props.items) {
       this.setState({
         items: props.items
@@ -49,6 +52,19 @@ class Voucher extends React.Component<MyProps, MyStates> {
   public componentDidUpdate () {
     this.setTrHover()
     this.initOperate()
+  }
+  public getFieldCfg (configs: VoucherFieldConfigProps) {
+    return Object.assign({}, {
+      abstract: 'abstract',
+      subjectName: 'subjectName',
+      debitMoney: 'debitMoney',
+      creditMoney: 'creditMoney',
+      taxRate: 'taxRate',
+      exchangeRate: 'exchangeRate',
+      currencyType: 'currencyType',
+      originalCurrencyMoney: 'originalCurrencyMoney',
+      foreignCurrency: 'foreignCurrency'
+    }, configs)
   }
   public setTrHover () {
     if (this.props.editable === false) {
@@ -103,19 +119,9 @@ class Voucher extends React.Component<MyProps, MyStates> {
   }
   public mapTrNode () {
     const { isForeignCurrency } = this.props
-    const fieldCfg = Object.assign({}, {
-      abstract: 'abstract',
-      subjectName: 'subjectName',
-      debitMoney: 'debitMoney',
-      creditMoney: 'creditMoney',
-      taxRate: 'taxRate',
-      exchangeRate: 'exchangeRate',
-      currencyType: 'currencyType',
-      originalCurrencyMoney: 'originalCurrencyMoney',
-      foreignCurrency: 'foreignCurrency'
-    }, this.props.fieldCfg)
     const { items } = this.state
     const node: JSX.Element[] = []
+    const fieldCfg = this.fieldCfg
     items.map((item, index) => {
       node.push(
         <tr key={this.defaultCls + '-tr-' + index}>
@@ -152,7 +158,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
     }
     const value = event.currentTarget.value
     const { items } = this.state
-    const { fieldCfg } = this.props
+    const fieldCfg = this.fieldCfg
     items[index][fieldCfg.taxRate] = value
     this.setState({
       items
@@ -182,7 +188,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
     return <div className='money-unit'>{node}</div>
   }
   public getTotal (): {debitMoney: number, creditMoney: number} {
-    const { fieldCfg } = this.props
+    const fieldCfg = this.fieldCfg
     const { items } = this.state
     let debitMoney = 0
     let creditMoney = 0
