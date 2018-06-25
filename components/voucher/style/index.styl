@@ -87,7 +87,7 @@ voucher-prefix = pilipa-prefix + '-voucher'
               &:hover
                 color: #23527c
           &:nth-child(4), &:nth-child(5)
-            padding: 0px 0
+            padding: 0
           .money-unit
             height: 100%
             span
@@ -154,13 +154,26 @@ voucher-prefix = pilipa-prefix + '-voucher'
               outline: none
               text-align: center
           &:nth-child(5), &:nth-child(6)
-            padding: 8px 0
-            background: url('../../images/money_bg.png') 0 0 / 100% auto repeat-y
+            padding: 0
+          .money-unit
+            height: 100%
+            span
+              border-right: 1px solid #CCC
+              display: flex
+              align-items: center
+              justify-content: center
+              &:last-child
+                border-right: none
+              &:nth-child(3), &:nth-child(6)
+                border-right: 1px solid #3492ff
+              &:nth-child(9)
+                border-right: 1px solid red
         &:last-child
           td
             &:nth-child(3), &:nth-child(4)
-              padding: 8px 0
-              background: url('../../images/money_bg.png') 0 0 / 100% auto repeat-y
+              padding: 0
+        &:hover
+          background: #efefef
   .money-unit
     font-size: 12px
     display: flex
@@ -168,3 +181,8 @@ voucher-prefix = pilipa-prefix + '-voucher'
     span 
       width: (100/11)%
       text-align: center
+.pilipa-voucher-entry
+  border: none
+  padding: 0
+  margin: 0
+  box-shadow: none

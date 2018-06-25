@@ -37,6 +37,9 @@ function mkRslt (arr) {
   return arrRslt
 }
 export default function (str = '') {
+  if (typeof str !== 'string') {
+    str = ''
+  }
   var refer = {
     '佛': 'f',
     '长春': 'cc'

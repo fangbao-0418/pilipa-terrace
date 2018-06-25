@@ -187,7 +187,6 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       setTimeout(() => {
         $(results).addClass('custom-slide-up-enter')
       }, 300)
-      el.off('blur')
       $(results).off('blur')
       $(results).hover(() => {
         this.setState({
@@ -222,18 +221,21 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     const results = this.refs.results
     const { onSelect, onChange } = this.props
     $(results).addClass('custom-slide-up-leave')
-    setTimeout(() => {
-      $(results).removeClass('custom-slide-up-leave')
-      this.setState({
-        visible: false
-      })
-    }, 300)
     if (onSelect) {
       onSelect(item)
     }
     if (onChange) {
       onChange(item)
     }
+    setTimeout(() => {
+      $(results).removeClass('custom-slide-up-leave')
+      this.setState({
+        visible: false
+      })
+      if (this.props.onPanelHide) {
+        this.props.onPanelHide()
+      }
+    }, 300)
   }
   public listenScroll () {
     const results = this.refs.results

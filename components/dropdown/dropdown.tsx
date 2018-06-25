@@ -18,6 +18,7 @@ export interface MyProps {
   prePend?: object
   title?: string
   defaultValue?: any
+  visible?: boolean
 }
 
 export interface MyStates {
@@ -42,7 +43,7 @@ export default class extends React.Component<MyProps, MyStates> {
     super(props)
     this.handleAllData(this.props)
     this.state = {
-      visible: false,
+      visible: this.props.visible,
       title: this.props.title || this.getDefaultValue() || '',
       data: this.allData.slice(0, this.pageNum * this.defaultPage),
       dataTmp: this.allData,

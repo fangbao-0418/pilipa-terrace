@@ -18,10 +18,12 @@ export interface MyProps {
     exchangeRate?: string
     currencyType?: string
     originalCurrencyMoney?: string
+    foreignCurrency?: string
   }
   isForeignCurrency?: boolean // 是否是外币
   header?: React.ReactElement<any>
   onTd?: (event: JQuery.Event, items: any[], index: number) => void
+  type?: 'voucher' | 'entry'
 }
 export interface MyStates {
   items: any[]
@@ -30,8 +32,21 @@ class Voucher extends React.Component<MyProps, MyStates> {
   public state = {
     items: this.props.items
   }
+  public type = this.props.type || 'voucher'
   public defaultCls = 'pilipa-voucher'
   public componentDidMount () {
+    this.setTrHover()
+    this.initOperate()
+  }
+  public componentWillReceiveProps (props: MyProps) {
+    this.type = props.type || 'voucher'
+    if (props.items) {
+      this.setState({
+        items: props.items
+      })
+    }
+  }
+  public componentDidUpdate () {
     this.setTrHover()
     this.initOperate()
   }
@@ -89,14 +104,15 @@ class Voucher extends React.Component<MyProps, MyStates> {
   public mapTrNode () {
     const { isForeignCurrency } = this.props
     const fieldCfg = Object.assign({}, {
-      abstract: 'summary',
-      subjectName: 'name',
+      abstract: 'abstract',
+      subjectName: 'subjectName',
       debitMoney: 'debitMoney',
       creditMoney: 'creditMoney',
       taxRate: 'taxRate',
       exchangeRate: 'exchangeRate',
       currencyType: 'currencyType',
-      originalCurrencyMoney: 'originalCurrencyMoney'
+      originalCurrencyMoney: 'originalCurrencyMoney',
+      foreignCurrency: 'foreignCurrency'
     }, this.props.fieldCfg)
     const { items } = this.state
     const node: JSX.Element[] = []
@@ -111,10 +127,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
           <td><p>{item[fieldCfg.subjectName]}</p></td>
           { isForeignCurrency ?
             <td>
-              <p>
-                {item[fieldCfg.currencyType]}：{item[fieldCfg.originalCurrencyMoney]} <br />
-                汇率：{item[fieldCfg.exchangeRate]}
-              </p>
+              {
+                item[fieldCfg.foreignCurrency] && (
+                  <p>
+                    {item[fieldCfg.currencyType]}：{item[fieldCfg.originalCurrencyMoney]} <br />
+                    汇率：{item[fieldCfg.exchangeRate]}
+                  </p>
+                )
+              }
             </td>
             :
             null
@@ -210,9 +230,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
     } = this.props
     const total = this.getTotal()
     return (
-      <div ref='voucher' className={ClassNames(this.defaultCls, className)} style={style}>
+      <div
+        ref='voucher'
+        className={ClassNames(this.defaultCls, className, {
+          'pilipa-voucher-entry': this.type === 'entry'
+        })}
+        style={style}
+      >
         <div className={this.defaultCls + '-header'}>
-          <h3>记账凭证</h3>
           <div>
             {this.props.header}
           </div>
@@ -253,11 +278,15 @@ class Voucher extends React.Component<MyProps, MyStates> {
           </tbody>
         </table>
         <div className={this.defaultCls + '-footer'}>
-          <p>
-            <span>主管会计：{treasurer}</span>
-            <span>审核人：{reviewer}</span>
-            <span>制单人：{originator}</span>
-          </p>
+          {
+            this.type === 'voucher' && (
+              <p>
+                <span>主管会计：{treasurer}</span>
+                <span>审核人：{reviewer}</span>
+                <span>制单人：{originator}</span>
+              </p>
+            )
+          }
         </div>
       </div>
     )
