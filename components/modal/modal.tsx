@@ -14,6 +14,7 @@ export interface MyOptions {
   maskClosable?: boolean
 }
 class Modal {
+  public in: boolean = false
   public style: string
   public className: string
   public title: string = 'Modal'
@@ -29,6 +30,7 @@ class Modal {
   public pageX: number
   public pageY: number = 0
   public constructor (options: MyOptions = {}) {
+    this.$el = $('<div />')
     this.style = options.style
     this.className = options.className
     this.title = options.title || this.title
@@ -49,6 +51,9 @@ class Modal {
     //   }
     // })
   }
+  public destroy () {
+    this.$el.remove()
+  }
   public initEvent () {
     this.$el.find('.pilipa-modal-close').unbind('click').click(() => {
       this.hide()
@@ -68,8 +73,15 @@ class Modal {
         }
       })
     }
-    this.$el.find('.pilipa-modal-wrap').off('click').on('click', (event) => {
-      if (this.$el.children('.pilipa-modal-wrap').find(event.target).length === 0 && this.maskClosable) {
+    const $wrap = this.$el.find('.pilipa-modal-wrap')
+    const $content = $wrap.find('.pilipa-modal-content')
+    $content.hover(() => {
+      this.in = true
+    }, () => {
+      this.in = false
+    })
+    $wrap.off('click').on('click', (event) => {
+      if (this.in === false && this.maskClosable) {
         this.hide()
       }
     })
@@ -90,6 +102,7 @@ class Modal {
     })
   }
   public show () {
+    this.in = false
     $('body').append(this.$el)
     this.$el.html(this.template())
     this.$el.find('.pilipa-modal-content').attr({
