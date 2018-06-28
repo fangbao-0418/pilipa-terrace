@@ -4,7 +4,7 @@ import React from 'react'
 import { getCapital } from '../_util'
 export interface T {
   title: string
-  key: any
+  key?: any
   capital?: string[]
 }
 export interface MyProps {
@@ -54,7 +54,8 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       this.setState({
         data: this.allData.slice(0, this.pageNum),
         dataTmp: this.allData,
-        page: 1
+        page: 1,
+        value: this.getDefaultValue(props)
       })
     }
   }
@@ -75,14 +76,14 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       }
     })
   }
-  public getDefaultValue () {
+  public getDefaultValue (props: MyProps = this.props) {
     let value = ''
-    const { defaultValue, setFields } = this.props
+    const { defaultValue, setFields } = props
     if (typeof defaultValue !== 'object') {
       return defaultValue || ''
     }
     value = setFields ? defaultValue[setFields.title] : defaultValue.title
-    return value
+    return value || ''
   }
   public onKeyDown (event?: any) {
     this.event = event
@@ -143,7 +144,13 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   }
   public searchChange (e: any) {
     const $items = $(this.refs.results).find('.items')
-    const value = e.target.value
+    const value = e.target.value || ''
+    if (this.props.onChange) {
+      // const title = this.props.setFields.title || 'title'
+      this.props.onChange({
+        title: value
+      })
+    }
     this.setState({
       value
     }, () => {

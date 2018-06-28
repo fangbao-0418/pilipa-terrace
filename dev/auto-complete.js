@@ -8,10 +8,24 @@ export default class extends React.Component {
     this.data = []
     for (var i = 0; i <= 100; i++) {
       this.data.push({
-        key: i,
-        title: `测试数xxxxxxxxxxxxxxxx据${i}`
+        key2: i,
+        title2: `测试数xxxxxxxxxxxxxxxx据${i}`
       })
     }
+    this.state = {
+      value: {
+        title: 2
+      }
+    }
+  }
+  componentDidMount () {
+    setTimeout(() => {
+      this.setState({
+        value: {
+          title: 44444
+        }
+      })
+    }, 1000)
   }
   render () {
     return (
@@ -19,6 +33,10 @@ export default class extends React.Component {
         <AutoComplete
           data={this.data}
           style={{float: 'left'}}
+          setFields={{
+            title: 'title2',
+            key: 'key2'
+          }}
           onChange={(item) => {
             console.log(item)
           }}
@@ -26,6 +44,10 @@ export default class extends React.Component {
         <AutoComplete
           style={{float: 'left'}}
           data={this.data.slice(0, 4)}
+          setFields={{
+            title: 'title2',
+            key: 'key2'
+          }}
           defaultValue='0'
           onChange={(item) => {
             console.log(item)
@@ -34,9 +56,11 @@ export default class extends React.Component {
         <AutoComplete
           style={{float: 'left'}}
           data={this.data.slice(0, 4)}
-          defaultValue={{
-            title: '0'
+          setFields={{
+            title: 'title2',
+            key: 'key2'
           }}
+          defaultValue={this.state.value}
           onChange={(item) => {
             console.log(item)
           }}
