@@ -6,6 +6,7 @@ export interface T {
   title: string
   key?: any
   capital?: string[]
+  index?: number
 }
 export interface MyProps {
   data: any[]
@@ -220,7 +221,8 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       })
     })
   }
-  public handleSelect (item: T) {
+  public handleSelect (item: T, index: number) {
+    item.index = index
     this.setState({
       value: item.title
     })
@@ -282,7 +284,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
                   data && data.map((item, index) => {
                     return (
                       <li
-                        onClick={this.handleSelect.bind(this, item)}
+                        onClick={this.handleSelect.bind(this, item, index)}
                         key={'auto-complete-' + index}
                         title={item.title}
                         className={classNames({

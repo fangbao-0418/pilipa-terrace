@@ -3,6 +3,7 @@ import $ from 'jquery'
 import React from 'react'
 import { getCapital } from '../_util'
 export interface T {
+  index?: number
   title: string
   key: any
   capital?: string[]
@@ -293,6 +294,7 @@ export default class extends React.Component<MyProps, MyStates> {
     }, 100)
   }
   public handleSelect (item: T, index: number) {
+    item.index = index
     this.seleted = true
     this.selectedIndex = index
     const { callBack, onChange } = this.props

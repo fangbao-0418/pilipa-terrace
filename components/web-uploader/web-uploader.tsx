@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import $ from 'jquery'
 import React from 'react'
 import events from '../decorations/events'
-import modal from '../modal'
 import notification from '../notification'
 import bus from './bus'
 import Item from './item'
@@ -56,6 +55,8 @@ class WebUploader extends React.Component <Props, States> {
   }
   public maxUploadNum: number = this.props.maxUploadNum || 3
   public uploadTarget = this.props.uploadTarget || '图片'
+  public parallel = 10
+  public maxIndex = 6
   public state = {
     initShow: this.files.length === 0,
     files: this.files,
@@ -78,7 +79,6 @@ class WebUploader extends React.Component <Props, States> {
     this.handleDrop()
   }
   public componentWillUnmount () {
-    console.log('willmount')
     this.resetData()
   }
   public handleDrop () {
@@ -237,6 +237,7 @@ class WebUploader extends React.Component <Props, States> {
   }
   // 处理上传
   public handleUpload () {
+    const { successNo, failedNo } = this.state
     if (this.state.disabled) {
       return
     }
@@ -248,7 +249,13 @@ class WebUploader extends React.Component <Props, States> {
         disabled: false
       })
     }, 500)
-    bus.trigger('handle-upload', this.state.uploadStatus)
+    if (successNo + failedNo >= this.maxIndex) {
+      this.maxIndex = successNo + failedNo + this.parallel
+    }
+    bus.trigger<{status: string, maxIndex: number}>('handle-upload', {
+      status: this.state.uploadStatus,
+      maxIndex: this.maxIndex
+    })
     let status = 'start'
     switch (this.state.uploadStatus) {
     case 'start':
@@ -328,6 +335,15 @@ class WebUploader extends React.Component <Props, States> {
   }
   // 监听上传结束
   public onEndUpload (item: {index: number, status: 'success' | 'failed', url: string}) {
+    const { files, uploadStatus } = this.state
+    if (this.maxIndex < files.length && uploadStatus === 'pause') {
+      this.maxIndex += this.parallel
+      bus.trigger<{status: string, maxIndex: number, next: boolean}>('handle-upload', {
+        status: 'start',
+        maxIndex: this.maxIndex,
+        next: true
+      })
+    }
     this.uploadedInfo[item.index] = item.status
     this.uploadedUrls[item.index] = item.url
     this.reckonFilesNo()

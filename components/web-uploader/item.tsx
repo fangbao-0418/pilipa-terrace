@@ -4,7 +4,6 @@ import $ from 'jquery'
 import React from 'react'
 import Viewer from 'viewerjs'
 import { md5 } from '../_util'
-import modal from '../modal'
 import bus from './bus'
 export interface Props {
   file: File
@@ -63,12 +62,15 @@ export default class extends React.Component <Props, States> {
     this.readFile()
     this.handleCallBack()
     this.dir = this.props.dir
-    bus.on<UploadStatus>('handle-upload', (status) => {
+    bus.on<{status: UploadStatus, maxIndex: number, next?: boolean}>('handle-upload', (payload) => {
+      const { status, maxIndex, next } = payload
       if (this.isDestroy || this.success) {
         return
       }
       this.initStatus(() => {
-        this.handleUpload(status)
+        setTimeout(() => {
+          this.handleUpload(status, maxIndex, next)
+        }, 0)
       })
     })
     bus.on('oss-update', this.updateOssOpts.bind(this))
@@ -153,15 +155,17 @@ export default class extends React.Component <Props, States> {
     if (this.success) {
       return
     }
-    console.log(this.props.file, 'file')
     this.store[this.storeId].multipartUpload<{
+      parallel: number
+      partSize: number
       progress: (percentage: number, checkpoint: CheckPoint) => void,
       checkpoint?: CheckPoint
       callback?: any,
       timeout: number
     }, ClientPromise>(this.name, this.props.file, {
+      parallel: 2,
+      partSize: 500 * 1024,
       progress: async (percentage, checkpoint) => {
-        console.log(percentage, checkpoint, 'progress')
         percentage = percentage > 1 ? 1 : percentage
         this.setState({
           percentage
@@ -189,17 +193,16 @@ export default class extends React.Component <Props, States> {
       },
       checkpoint: this.tempCheckpoint,
       callback: this.callback,
-      timeout: 10000
+      timeout: 15 * 60 * 1000
     }).then((res) => {
       this.handleUploadSuccess(res)
     }).catch((err) => {
       this.handleUploadError(err)
     }).finally(() => {
-      console.log('finally')
+      // console.log('finally')
     })
   }
   public handleUploadSuccess (res: any) {
-    console.log(res, 'success')
     this.tempCheckpoint = null
     // console.log(res, this.props.index, 'success')
     if (this.isDestroy) {
@@ -221,7 +224,7 @@ export default class extends React.Component <Props, States> {
     })
   }
   public handleUploadError (err: any) {
-    console.log(err, err.code, this.props.index, this.state.percentage, this.completeMultipartUpload, this.success)
+    console.log(err.code)
     // console.log(err, 'error')
     if (this.success || this.isDestroy) {
       return
@@ -250,23 +253,23 @@ export default class extends React.Component <Props, States> {
         break
       default:
         // ali-oss 5.1.1 修复上传bug 此处验证文件代码屏蔽掉
-        // this.store[this.storeId].get<any>(this.name).then((res: any) => {
-        //   this.handleUploadSuccess(res)
-        // }).catch((err2: any) => {
-        //   if (this.success || this.isDestroy) {
-        //     return
-        //   }
-        //   if (err2.code === 403) {
-        //     bus.trigger('error', err2)
-        //   }
-        //   this.setState({
-        //     uploadStatus: 'failed'
-        //   })
-        //   bus.trigger('end-upload', {
-        //     index: this.props.index,
-        //     status: 'failed'
-        //   })
-        // })
+        this.store[this.storeId].get<any>(this.name).then((res: any) => {
+          this.handleUploadSuccess(res)
+        }).catch((err2: any) => {
+          if (this.success || this.isDestroy) {
+            return
+          }
+          if (err2.code === 403) {
+            bus.trigger('error', err2)
+          }
+          this.setState({
+            uploadStatus: 'failed'
+          })
+          bus.trigger('end-upload', {
+            index: this.props.index,
+            status: 'failed'
+          })
+        })
         break
       }
     }
@@ -281,10 +284,27 @@ export default class extends React.Component <Props, States> {
       bucket,
       region
     })
-    console.log(this.store, 'store')
   }
-  public handleUpload (status: UploadStatus) {
-    if (this.success) {
+  public handleUpload (status: UploadStatus, maxIndex?: number, next?: boolean) {
+    const { uploadStatus } = this.state
+    console.log(uploadStatus, 'xxxxxxx')
+    if (this.props.index >= maxIndex) {
+      if (status === 'pause') {
+        this.setState({
+          uploadStatus: 'pause',
+          uploading: false
+        })
+      } else {
+        // console.log(uploadStatus, 'xxxxxxx')
+        if (uploadStatus !== 'failed') {
+          // this.setState({
+          //   uploading: true
+          // })
+        }
+      }
+      return
+    }
+    if (this.success || (uploadStatus === 'failed' && next)) {
       return
     }
     switch (status) {
