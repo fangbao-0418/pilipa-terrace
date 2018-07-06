@@ -24,12 +24,12 @@ export interface MyStates {
   dataTmp: T[]
   page: number
   visible: boolean
-  hover: boolean
   selectedIndex: number
   value: string
 }
 
 class AutoComplete extends React.Component<MyProps, MyStates> {
+  public hover = false
   public pageNum = 20
   public allData: T[] = []
   public defaultCls = 'pilipa-auto-complete'
@@ -43,7 +43,6 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
       dataTmp: this.allData,
       page: 1,
       visible: false,
-      hover: false,
       selectedIndex: -1,
       value: this.getDefaultValue()
     }
@@ -178,7 +177,6 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     return res || []
   }
   public searchShow () {
-    const { allData } = this
     const el = $(this.refs.input)
     this.filterVal = el.val().toString() || ''
     const res = this.filterData()
@@ -191,25 +189,26 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     }, () => {
       this.listenScroll()
       const results = this.refs.results
+      const height = $(this.refs.input).outerHeight() + 8
+      $(results).css({
+        'transform-origin': height,
+        'top': height
+      })
       $(results).addClass('custom-slide-up-enter')
       setTimeout(() => {
         $(results).addClass('custom-slide-up-enter')
       }, 300)
       $(results).off('blur')
       $(results).hover(() => {
-        this.setState({
-          hover: true
-        })
+        this.hover = true
       }, () => {
-        this.setState({
-          hover: false
-        })
+        this.hover = false
       })
       el.blur(() => {
         if (this.props.onPanelHide) {
           this.props.onPanelHide()
         }
-        if (!this.state.hover) {
+        if (!this.hover) {
           $(results).addClass('custom-slide-up-leave')
           setTimeout(() => {
             $(results).removeClass('custom-slide-up-leave')

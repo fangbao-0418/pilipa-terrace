@@ -14,7 +14,6 @@ export interface MyOptions {
   maskClosable?: boolean
 }
 class Modal {
-  public in: boolean = false
   public style: string
   public className: string
   public title: string = 'Modal'
@@ -73,17 +72,9 @@ class Modal {
         }
       })
     }
-    const $wrap = this.$el.find('.pilipa-modal-wrap')
-    const $content = $wrap.find('.pilipa-modal-content')
-    $content.hover(() => {
-      this.in = true
-    }, () => {
-      this.in = false
-    })
-    $wrap.off('click').on('click', (event) => {
-      if (this.in === false && this.maskClosable) {
-        this.hide()
-      }
+    const $mask = this.$el.find('.pilipa-modal-mask')
+    $mask.off('click').on('click', (event) => {
+      this.hide()
     })
   }
   public setTransformOrigin () {
@@ -102,20 +93,19 @@ class Modal {
     })
   }
   public show () {
-    this.in = false
     $('body').append(this.$el)
     this.$el.html(this.template())
     this.$el.find('.pilipa-modal-content').attr({
       style: this.style,
       class: ['pilipa-modal-content', this.className].join(' ')
     })
-    // this.$el.find('.pilipa-modal-content').css(this.style)
     if (!this.mask) {
-      this.$el.find('.pilipa-modal-mask').hide()
+      this.$el.find('.pilipa-modal-mask').css({
+        'background-color': 'rgba(0,0,0,0)'
+      })
     }
     this.setNode()
-    // this.setTransformOrigin()
-    this.setAnination()
+    this.setAnimation()
     this.initEvent()
   }
   public hide () {
@@ -129,7 +119,7 @@ class Modal {
       }, 200)
     }
   }
-  public setAnination () {
+  public setAnimation () {
     this.$el.find('.pilipa-modal-mask').addClass('pilipa-fade-enter pilipa-fade-active')
     this.$el.find('.pilipa-modal-content').addClass('pilipa-zoom-enter pilipa-zoom-active')
     setTimeout(() => {
@@ -160,8 +150,8 @@ class Modal {
   }
   public template () {
     return `
-      <div class="${this.defaultCls}-mask"></div>
       <div class="${this.defaultCls}-wrap">
+        <div class="${this.defaultCls}-mask"></div>
         <div class="${this.defaultCls}-content" style="">
           <div class="${this.defaultCls}-header">
             <span class="${this.defaultCls}-title">${this.title}</span>
