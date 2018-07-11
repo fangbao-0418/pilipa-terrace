@@ -22,6 +22,7 @@ export interface Props {
   uploadTarget?: string
   mark?: string
   callBack?: {}
+  beforeUpdate?: (arr: Array<{name: string, hash: string}>) => any
 }
 export interface States {
   initShow: boolean
@@ -74,6 +75,7 @@ class WebUploader extends React.Component <Props, States> {
     }
     bus.on('end-upload', this.onEndUpload.bind(this))
     bus.on('percentage', this.onPercentage.bind(this))
+    bus.on('file-readed', this.fileReaded.bind(this))
   }
   public componentDidMount () {
     this.handleDrop()
@@ -81,13 +83,15 @@ class WebUploader extends React.Component <Props, States> {
   public componentWillUnmount () {
     this.resetData()
   }
+  public fileReaded (data: {index: number, name: string, hash: string}) {
+    console.log(data, 'file readed')
+  }
   public handleDrop () {
     const $dropArea = $(this.refs['drop-area'])
     document.addEventListener('dragover', (event) => {
       event.preventDefault()
     })
     document.addEventListener('dragenter', (event: any) => {
-      console.log($dropArea.parent().find(event.target).length)
       if ($dropArea.parent().find(event.target).length) {
         $dropArea.css({
           border: '2px rgba(0, 0, 0, .8) dashed'

@@ -35,6 +35,8 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   public defaultCls = 'pilipa-auto-complete'
   public event: any
   public filterVal: string = ''
+  public isDestroy = false
+  public t: NodeJS.Timer | number
   constructor (props: MyProps) {
     super(props)
     this.handleAllData(this.props.data)
@@ -75,6 +77,12 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         this.event.returnValue = false
       }
     })
+  }
+  public componentWillUnmount () {
+    this.isDestroy = true
+    if (this.t !== undefined) {
+      clearTimeout(Number(this.t))
+    }
   }
   public getDefaultValue (props: MyProps = this.props) {
     let value = ''
@@ -195,7 +203,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         'top': height
       })
       $(results).addClass('custom-slide-up-enter')
-      setTimeout(() => {
+      this.t = setTimeout(() => {
         $(results).addClass('custom-slide-up-enter')
       }, 300)
       $(results).off('blur')
@@ -210,7 +218,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
         }
         if (!this.hover) {
           $(results).addClass('custom-slide-up-leave')
-          setTimeout(() => {
+          this.t = setTimeout(() => {
             $(results).removeClass('custom-slide-up-leave')
             this.setState({
               visible: false
@@ -235,7 +243,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     if (onChange) {
       onChange(item)
     }
-    setTimeout(() => {
+    this.t = setTimeout(() => {
       $(results).removeClass('custom-slide-up-leave')
       this.setState({
         visible: false

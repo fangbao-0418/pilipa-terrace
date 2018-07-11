@@ -45,6 +45,7 @@ export default class extends React.Component {
           }}
         >{this.state.name}</button>
         <DropDown
+          type='click'
           style={{float: 'left', marginRight: '20px'}}
           data={[]}
           onChange={(item) => {

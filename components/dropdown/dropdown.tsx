@@ -20,6 +20,7 @@ export interface MyProps {
   title?: string
   defaultValue?: any
   visible?: boolean
+  type?: 'click' | 'hover'
 }
 
 export interface MyStates {
@@ -40,6 +41,7 @@ export default class extends React.Component<MyProps, MyStates> {
   public seleted = false
   public event: any
   public filterVal: string = ''
+  public type = this.props.type !== undefined ? this.props.type : 'hover'
   public constructor (props: MyProps) {
     super(props)
     this.handleAllData(this.props)
@@ -66,17 +68,22 @@ export default class extends React.Component<MyProps, MyStates> {
   public componentDidMount () {
     const $dropdowm = $(this.refs.dropdown)
     const { button } = this.refs
-    $(button).hover(() => {
-      this.handleEnter()
-    }, (e) => {
-      this.handleLeave()
-    })
-    // $(document).on('click', (event) => {
-    //   console.log('click')
-    //   if($dropdowm.find(event.target).length === 0) {
-    //     this.handleLeave()
-    //   }
-    // })
+    if (this.type === 'click') {
+      $(button).click(() => {
+        this.handleEnter()
+      })
+      $(document).on('click', (event) => {
+        if($dropdowm.find(event.target).length === 0) {
+          this.handleLeave()
+        }
+      })
+    } else {
+      $(button).hover(() => {
+        this.handleEnter()
+      }, (e) => {
+        this.handleLeave()
+      })
+    }
     $(document).keydown((event) => {
       this.onKeyDown(event)
     })
@@ -98,7 +105,6 @@ export default class extends React.Component<MyProps, MyStates> {
     try {
       value = props.defaultValue[title]
     } catch(e) {}
-
     return value
   }
   public onKeyDown (event: any) {
@@ -240,9 +246,11 @@ export default class extends React.Component<MyProps, MyStates> {
       $(results).one('mouseover', () => {
         clearTimeout(this.t)
       })
-      $(results).one('mouseleave', () => {
-        this.handleLeave()
-      })
+      if (this.type === 'hover') {
+        $(results).one('mouseleave', () => {
+          this.handleLeave()
+        })
+      }
       this.onItemScroll()
     })
   }
