@@ -205,7 +205,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
     // 壹（壹）、贰（贰）、叁、肆（肆）、伍（伍）、陆（陆）、柒、捌、玖、拾、佰、仟、万（万）、亿、元、角、分、零、整（正）
     const upperCase = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
     const total = this.getTotal()
-    const num = Math.abs(total.debitMoney) * 100 || 0
+    let num = Math.abs(total.debitMoney) * 100 || 0
+    num = Math.round(num)
     if (num > 99999999999) {
       return <span style={{color: 'red'}}>非法数值</span>
     }
