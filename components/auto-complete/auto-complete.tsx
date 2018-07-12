@@ -220,12 +220,18 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
           $(results).addClass('custom-slide-up-leave')
           this.t = setTimeout(() => {
             $(results).removeClass('custom-slide-up-leave')
-            this.setState({
-              visible: false
-            })
+            this.hide()
           }, 300)
         }
       })
+    })
+  }
+  public hide () {
+    if (this.isDestroy) {
+      return
+    }
+    this.setState({
+      visible: false
     })
   }
   public handleSelect (item: T, index: number) {
@@ -245,9 +251,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     }
     this.t = setTimeout(() => {
       $(results).removeClass('custom-slide-up-leave')
-      this.setState({
-        visible: false
-      })
+      this.hide()
       if (this.props.onPanelHide) {
         this.props.onPanelHide()
       }

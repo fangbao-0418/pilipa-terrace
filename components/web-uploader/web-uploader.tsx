@@ -418,6 +418,9 @@ class WebUploader extends React.Component <Props, States> {
     const $wrap = $uploader.parents('.pilipa-modal-wrap')
     $wrap.removeClass('pilipa-web-uploader-unfold pilipa-web-uploader-active')
     $wrap.addClass('pilipa-web-uploader-fold pilipa-web-uploader-active')
+    setTimeout(() => {
+      $wrap.children('.pilipa-modal-mask').hide()
+    }, 300)
     $('body').append(`
       <div class='pilia-web-uploader-menu pilia-web-uploader-menu-${WebUploader.id}'>
         <i class="fa fa-angle-double-left" aria-hidden="true"></i>
@@ -432,6 +435,7 @@ class WebUploader extends React.Component <Props, States> {
       bus.trigger('unfold')
       $menu.removeClass('pilipa-web-uploader-menu-unfold pilipa-web-uploader-menu-active')
       $menu.addClass('pilipa-web-uploader-menu-fold pilipa-web-uploader-menu-active')
+      $wrap.children('.pilipa-modal-mask').show()
       setTimeout(() => {
         $wrap.addClass('pilipa-web-uploader-unfold pilipa-web-uploader-active')
       }, 300)
