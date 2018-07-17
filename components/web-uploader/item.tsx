@@ -144,16 +144,22 @@ export default class extends React.Component <Props, States> {
   }
   public readFile () {
     const reader: FileReader = new FileReader()
+    const reader2: FileReader = new FileReader()
     reader.readAsDataURL(this.props.file)
     reader.onload = (e: any) => {
-      const hash = md5(e.target.result)
+      const result = e.target.result
+      this.setState({
+        src: result
+      })
+    }
+    reader2.readAsBinaryString(this.props.file)
+    reader2.onload = (e: any) => {
+      const result = e.target.result
+      const hash = md5(result, 32)
       bus.trigger('file-readed', {
         index: this.props.index,
         name: this.props.file.name,
         hash
-      })
-      this.setState({
-        src: e.target.result
       })
     }
   }

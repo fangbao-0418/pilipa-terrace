@@ -56,6 +56,7 @@ export default class extends React.Component {
           editable={true}
           isForeignCurrency={true}
           type='entry'
+          editable={false}
           // isShowTaxRate={this.state.isShowTaxRate}
           fieldCfg={{
             abstract: 'summary',

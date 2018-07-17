@@ -18,6 +18,7 @@ export interface MyProps {
   setFields?: {key: string, title: string}
   defaultValue?: any
   onPanelHide?: () => void
+  initCapital?: (item: any) => string[]
 }
 export interface MyStates {
   data: T[]
@@ -142,10 +143,15 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     const { key, title } = this.props.setFields || {key: 'key', title: 'title'}
     this.allData = []
     data.map((item, index) => {
+      let initCapital: string[] = []
+      if (this.props.initCapital) {
+        initCapital = this.props.initCapital(item) instanceof Array ? this.props.initCapital(item) : []
+      }
+      const capital = initCapital.concat(getCapital<string>(item[title]))
       const newItem: T = {
         key: item[key],
         title: item[title],
-        capital: getCapital<string>(item[title]) || ['']
+        capital
       }
       this.allData[index] = newItem
     })

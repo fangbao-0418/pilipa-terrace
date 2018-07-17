@@ -21,6 +21,7 @@ export interface MyProps {
   defaultValue?: any
   visible?: boolean
   type?: 'click' | 'hover'
+  initCapital?: (item: any) => string[]
 }
 
 export interface MyStates {
@@ -32,6 +33,7 @@ export interface MyStates {
   filterVal: string
 }
 export default class extends React.Component<MyProps, MyStates> {
+  public isDestroy = false
   public pageNum = 20
   public t: any
   public allData: T[] = []
@@ -94,6 +96,7 @@ export default class extends React.Component<MyProps, MyStates> {
     })
   }
   public componentWillUnmount () {
+    this.isDestroy = true
     if (this.t) {
       clearTimeout(this.t)
     }
@@ -165,10 +168,15 @@ export default class extends React.Component<MyProps, MyStates> {
     this.defaultPage = 1
     this.selectedIndex = -1
     data.map((item, index) => {
+      let initCapital: string[] = []
+      if (this.props.initCapital) {
+        initCapital = this.props.initCapital(item) instanceof Array ? this.props.initCapital(item) : []
+      }
+      const capital = initCapital.concat(getCapital(item[title]))
       const newItem: T = {
         key: item[key],
         title: item[title],
-        capital: getCapital(item[title]) || ['']
+        capital
       }
       if (value === item[title]) {
         this.defaultPage = index === 0 ? 1 : Math.ceil((index + 1) / this.pageNum)
@@ -278,7 +286,7 @@ export default class extends React.Component<MyProps, MyStates> {
     if (this.t) {
       clearTimeout(this.t)
     }
-    const { button, input, results } = this.refs
+    const { button, results } = this.refs
 
     this.t = setTimeout(() => {
       $(results).addClass('custom-slide-up-leave')
@@ -286,10 +294,14 @@ export default class extends React.Component<MyProps, MyStates> {
       $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-down')
       $(button).find('.btn-right i').addClass('pilipa-dropdown-arrow-active')
       this.t = setTimeout(() => {
+        if (this.isDestroy) {
+          return
+        }
         $(results).removeClass('custom-slide-up-leave')
         $(results).addClass('hidden')
         // this.defaultPage = this.selectedIndex <= 0 ? 1 : Math.ceil((this.selectedIndex + 1) / this.pageNum)
         this.handleAllData(this.props)
+        this.seleted = false
         this.setState({
           visible: false,
           selectedIndex: this.selectedIndex,
@@ -297,7 +309,6 @@ export default class extends React.Component<MyProps, MyStates> {
           data: this.allData.slice(0, this.pageNum * this.defaultPage),
           dataTmp: this.allData
         })
-        this.seleted = false
       }, 200)
     }, 100)
   }

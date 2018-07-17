@@ -1,6 +1,6 @@
 {
   "name": "pilipa",
-  "version": "3.0.2-alpha.23",
+  "version": "3.0.2-alpha.26",
   "description": "噼里啪前端组件，基于react。",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
@@ -26,6 +26,7 @@
     "@types/ali-oss": "^1.0.2",
     "@types/classnames": "^2.2.3",
     "@types/jquery": "^3.2.18",
+    "@types/js-base64": "^2.3.1",
     "@types/react-dom": "16.0.2",
     "autoprefixer": "^7.2.5",
     "awesome-typescript-loader": "^5.0.0",
@@ -94,6 +95,7 @@
     "ali-oss": "5.3.1",
     "font-awesome": "4.7.0",
     "jquery": "3.3.1",
+    "js-base64": "^2.4.6",
     "react": "16.3.1",
     "react-dom": "16.3.1",
     "viewerjs": "1.0.0"

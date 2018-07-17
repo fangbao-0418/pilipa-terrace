@@ -14,6 +14,7 @@ export interface Options {
   uploadTarget?: string
   mark?: string
   callback?: {}
+  beforeUpdate?: (arr: Array<{name: string, hash: string}>) => any
 }
 
 let modal: Modal = null
@@ -40,6 +41,7 @@ export default class extends Bus {
           maxUploadNum={opts.maxUploadNum}
           uploadTarget={opts.uploadTarget}
           mark={opts.mark}
+          beforeUpdate={opts.beforeUpdate}
           callBack={opts.callback}
         />
       )

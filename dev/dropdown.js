@@ -6,6 +6,7 @@ export default class extends React.Component {
   constructor () {
     super()
     this.data = [{
+      code: 3306,
       key: 1,
       title: '爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司1'
     }, {
@@ -63,7 +64,10 @@ export default class extends React.Component {
           onChange={(item) => {
             console.log(item)
           }}
-          filter
+          filter={true}
+          initCapital={(item) => {
+            return [item.code]
+          }}
         />
         <DropDown
           style={{float: 'left'}}

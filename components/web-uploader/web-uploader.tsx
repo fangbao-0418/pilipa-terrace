@@ -48,6 +48,7 @@ class WebUploader extends React.Component <Props, States> {
   public uploadedInfo: Array<'success' | 'failed'> = []
   public m: any
   public defaultAccpet: string = 'jpeg,png,gif'
+  public md5Files: Array<{name: string, hash: string}> = []
   public allUploadStatus: any = {
     start: '开始上传',
     pause: '暂停上传',
@@ -84,7 +85,19 @@ class WebUploader extends React.Component <Props, States> {
     this.resetData()
   }
   public fileReaded (data: {index: number, name: string, hash: string}) {
-    console.log(data, 'file readed')
+    const { index } = data
+    this.md5Files[index] = data
+    console.log(this.md5Files.length, this.files.length, 'read filed')
+    if (this.md5Files.length === this.files.length) {
+      this.toMd5Verify()
+    }
+  }
+  public toMd5Verify () {
+    if (this.props.beforeUpdate) {
+      this.props.beforeUpdate(this.md5Files).then((res: Array<{name: string, hash: string}>) => {
+        console.log(res)
+      })
+    }
   }
   public handleDrop () {
     const $dropArea = $(this.refs['drop-area'])
@@ -204,6 +217,7 @@ class WebUploader extends React.Component <Props, States> {
     this.files.splice(index, 1)
     this.uploadedInfo.splice(index, 1)
     this.percentages.splice(index, 1)
+    this.md5Files.splice(index, 1)
     this.setState({
       files: this.files,
       initShow: this.files.length === 0

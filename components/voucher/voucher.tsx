@@ -81,6 +81,9 @@ class Voucher extends React.Component<MyProps, MyStates> {
     const el = $(this.refs.voucher)
     const { items } = this.state
     el.find('table tbody tr td:nth-child(1) .fa').unbind('click').click((item) => {
+      if (this.props.editable !== true) {
+        return
+      }
       const target = item.target
       const index = $(item.target).parent().parent().index()
       if (target.className === 'fa fa-plus') {
@@ -126,8 +129,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
       node.push(
         <tr key={this.defaultCls + '-tr-' + index}>
           <td>
-            <i className='fa fa-plus' aria-hidden='true'></i>
-            <i className='fa fa-minus' aria-hidden='true'></i>
+            {
+              this.props.editable === true && (
+                <div>
+                  <i className='fa fa-plus' aria-hidden='true'></i>
+                  <i className='fa fa-minus' aria-hidden='true'></i>
+                </div>
+              )
+            }
           </td>
           <td><p>{item[fieldCfg.abstract]}</p></td>
           <td><p>{item[fieldCfg.subjectName]}</p></td>

@@ -5,9 +5,14 @@ import { AutoComplete } from '../index'
 export default class extends React.Component {
   constructor () {
     super()
-    this.data = []
+    this.data = [{
+      code: '1001',
+      key: '1001',
+      title: '测试1001'
+    }]
     for (var i = 0; i <= 100; i++) {
       this.data.push({
+        code: `k${i}`,
         key2: i,
         title2: `测试数xxxxxxxxxxxxxxxx据${i}`
       })
@@ -39,6 +44,9 @@ export default class extends React.Component {
           }}
           onChange={(item) => {
             console.log(item)
+          }}
+          initCapital={(item) => {
+            return [item.code]
           }}
         />
         <AutoComplete

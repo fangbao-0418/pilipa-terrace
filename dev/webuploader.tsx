@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import React from 'react'
 import { webUploader } from '../components'
 /* tslint:disable:max-line-length quotemark */
@@ -18,6 +19,15 @@ export default class extends React.Component {
       uploadTarget: '票据',
       // maxUploadNum: 19,
       mark: '西藏山峰广告装饰有限公司',
+      beforeUpdate: (item: any) => {
+        console.log(item)
+        return $.ajax({
+          url: '/api/note/duplicates-checking',
+          method: 'POST',
+          contentType: 'application/json; charset=utf-8',
+          data: JSON.stringify(item)
+        })
+      },
       callback: {
         url: "https://x-agent.i-counting.cn/api/v1/OSSCallBack.ashx",
         host: "x-agent.i-counting.cn",

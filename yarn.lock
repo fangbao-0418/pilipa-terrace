@@ -20,6 +20,10 @@
   version "3.2.18"
   resolved "http://registry.npm.taobao.org/@types/jquery/download/@types/jquery-3.2.18.tgz#a1cd262034cd8c79fa4d9b2a409d8f747ac2f72f"
 
+"@types/js-base64@^2.3.1":
+  version "2.3.1"
+  resolved "http://registry.npm.taobao.org/@types/js-base64/download/@types/js-base64-2.3.1.tgz#c39f14f129408a3d96a1105a650d8b2b6eeb4168"
+
 "@types/node@*":
   version "9.6.2"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
@@ -122,8 +126,8 @@ agent-base@2:
     semver "~5.0.1"
 
 agent-base@4, agent-base@^4.1.0, agent-base@^4.2.0:
-  version "4.2.0"
-  resolved "http://registry.npm.taobao.org/agent-base/download/agent-base-4.2.0.tgz#9838b5c3392b962bad031e6a4c5e1024abec45ce"
+  version "4.2.1"
+  resolved "http://registry.npm.taobao.org/agent-base/download/agent-base-4.2.1.tgz#d89e5999f797875674c07d87f260fc41e83e8ca9"
   dependencies:
     es6-promisify "^5.0.0"
 
@@ -4761,6 +4765,10 @@ jquery@3.3.1:
 js-base64@^2.1.9:
   version "2.4.1"
   resolved "http://registry.npm.taobao.org/js-base64/download/js-base64-2.4.1.tgz#e02813181cd53002888e918935467acb2910e596"
+
+js-base64@^2.4.6:
+  version "2.4.6"
+  resolved "http://registry.npm.taobao.org/js-base64/download/js-base64-2.4.6.tgz#1d49f618bef43630cd191f4e122447acfdb947d8"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
