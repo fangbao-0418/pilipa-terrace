@@ -155,7 +155,7 @@ export default class extends React.Component <Props, States> {
     reader2.readAsBinaryString(this.props.file)
     reader2.onload = (e: any) => {
       const result = e.target.result
-      const hash = md5(result, 32)
+      const hash = md5(result, 32).toUpperCase()
       bus.trigger('file-readed', {
         index: this.props.index,
         name: this.props.file.name,

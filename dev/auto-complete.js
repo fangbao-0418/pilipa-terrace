@@ -1,14 +1,12 @@
 import React from 'react'
-
-// import { AutoComplete } from '../index'
-import { AutoComplete } from '../index'
+import { AutoComplete } from '../libs'
 export default class extends React.Component {
   constructor () {
     super()
     this.data = [{
       code: '1001',
-      key: '1001',
-      title: '测试1001'
+      key2: '1001',
+      title2: '测试1001'
     }]
     for (var i = 0; i <= 100; i++) {
       this.data.push({
@@ -33,11 +31,12 @@ export default class extends React.Component {
     }, 1000)
   }
   render () {
+    console.log(this.data, 'data')
     return (
       <div>
         <AutoComplete
           data={this.data}
-          style={{float: 'left'}}
+          style={{float: 'left', position: 'absolute', top: '400px'}}
           setFields={{
             title: 'title2',
             key: 'key2'
@@ -45,6 +44,7 @@ export default class extends React.Component {
           onChange={(item) => {
             console.log(item)
           }}
+          placement='top'
           initCapital={(item) => {
             return [item.code]
           }}

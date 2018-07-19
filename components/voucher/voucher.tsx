@@ -154,8 +154,8 @@ class Voucher extends React.Component<MyProps, MyStates> {
             :
             null
           }
-          <td>{this.convertMoney(item[fieldCfg.debitMoney])}</td>
-          <td>{this.convertMoney(item[fieldCfg.creditMoney])}</td>
+          <td>{this.convertMoney(item[fieldCfg.debitMoney] || '')}</td>
+          <td>{this.convertMoney(item[fieldCfg.creditMoney] || '')}</td>
         </tr>
       )
     })
@@ -179,12 +179,14 @@ class Voucher extends React.Component<MyProps, MyStates> {
     }
     const node: JSX.Element[] = []
     let money = (Math.round(Math.abs(num) * 100)).toString()
-    console.log(money)
     const maxNum = Math.pow(10, 11)
     if (parseFloat(money) > maxNum) {
       money = (maxNum - 1).toString()
     }
+    money = money === '0' ? '' : money
+    console.log(money, 'money')
     const arr = (' '.repeat((11 - money.length)) + money).split('')
+    console.log(arr, 'arr')
     arr.map((item, index) => {
       node.push(
         <span

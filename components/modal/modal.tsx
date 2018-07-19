@@ -60,12 +60,12 @@ class Modal {
     if (this.footer === undefined) {
       this.$el.find('.pilipa-modal-footer button').unbind('click').click((event) => {
         const index = $(event.target).index()
-        if (index === 0) {
+        if (index === 1) {
           this.hide()
           if (this.onCancel) {
             this.onCancel()
           }
-        } else if (index === 1) {
+        } else if (index === 0) {
           if (this.onOk) {
             this.onOk()
           }
@@ -159,8 +159,8 @@ class Modal {
           </div>
           <div class="${this.defaultCls}-body">xxx</div>
           <div class="${this.defaultCls}-footer">
-            <button class="pilipa-btn pilipa-btn-default">取 消</button>
             <button class="pilipa-btn pilipa-btn-primary">确 定</button>
+            <button class="pilipa-btn pilipa-btn-default">取 消</button>
           </div>
         </div>
       </div>

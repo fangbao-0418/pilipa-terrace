@@ -3,36 +3,64 @@ auto-complete-prefix = pilipa-prefix + '-auto-complete'
 @keyframes customSlideDownIn
   from
     opacity: 0
-    transform-origin: 0% 0%
+    transform-origin: 100% 100%;
     transform: scaleY(.8)
   to
     opacity: 1
-    transform-origin: 10% 10%
+    transform-origin: 100% 100%;
     transform: scaleY(1)
 @keyframes customSlideDownOut
   from
     opacity: 1
-    transform-origin: 0% 0%
+    transform-origin: 100% 100%;
     transform: scaleY(1)
   to
     opacity: 0
-    transform-origin: 10% 10%
+    transform-origin: 100% 100%;
+    transform: scaleY(.8)
+@keyframes customSlideUpIn
+  from
+    opacity: 0
+    transform-origin: 100% 100%;
+    transform: scaleY(.8)
+  to
+    opacity: 1
+    transform-origin: 100% 100%;
+    transform: scaleY(1)
+@keyframes customSlideUpOut
+  from
+    opacity: 1
+    transform-origin: 100% 100%;
+    transform: scaleY(1)
+  to
+    opacity: 0
+    transform-origin: 100% 100%;
     transform: scaleY(.8)
 .{auto-complete-prefix}
   width: 200px
   position: relative
-  .custom-slide-up-enter
+  .bottom.custom-slide-up-enter
     animation-duration: 300ms
     animation-name: customSlideDownIn
     animation-timing-function: cubic-bezier(0,1.02,.74,1.01)
     animation-fill-mode: both
-  .custom-slide-up-leave
+  .bottom.custom-slide-up-leave
     animation-duration: 300ms
     animation-name: customSlideDownOut
     animation-timing-function: cubic-bezier(0,1.02,.74,1.01)
     animation-fill-mode: both
+  .top.custom-slide-up-enter
+    animation-duration: 300ms
+    animation-name: customSlideUpIn
+    animation-timing-function: cubic-bezier(0,1.02,.74,1.01)
+    animation-fill-mode: both
+  .top.custom-slide-up-leave
+    animation-duration: 300ms
+    animation-name: customSlideUpOut
+    animation-timing-function: cubic-bezier(0,1.02,.74,1.01)
+    animation-fill-mode: both
   .results
-    width: 100%
+    min-width: 100%
     outline: none
     user-select: none
     padding: 5px 0px
@@ -44,7 +72,6 @@ auto-complete-prefix = pilipa-prefix + '-auto-complete'
     background-clip: padding-box
     transition: all 300ms
     position: absolute
-    // top: 30px
     font-size: 12px
     p
       margin: 0
