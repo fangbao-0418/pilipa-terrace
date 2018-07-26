@@ -117,7 +117,8 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     switch (keyCode) {
     // 回车
     case 13:
-      $lis.eq(this.state.selectedIndex).trigger('click')
+      selectedIndex = selectedIndex > -1 ? selectedIndex : 0
+      $lis.eq(selectedIndex).trigger('click')
       break
     // ↑
     case 38:
