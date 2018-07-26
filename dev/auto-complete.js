@@ -1,5 +1,5 @@
 import React from 'react'
-import { AutoComplete } from '../libs'
+import { AutoComplete } from '../components'
 export default class extends React.Component {
   constructor () {
     super()
@@ -41,6 +41,7 @@ export default class extends React.Component {
             title: 'title2',
             key: 'key2'
           }}
+          select={true}
           onChange={(item) => {
             console.log(item)
           }}
@@ -52,6 +53,7 @@ export default class extends React.Component {
         <AutoComplete
           style={{float: 'left'}}
           data={this.data.slice(0, 4)}
+          select={true}
           setFields={{
             title: 'title2',
             key: 'key2'

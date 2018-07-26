@@ -85,7 +85,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
         return
       }
       const target = item.target
-      const index = $(item.target).parent().parent().index()
+      const index = $(item.target).parent().parent().parent().index()
       if (target.className === 'fa fa-plus') {
         items.splice(index + 1, 0, {})
       } else if (target.className === 'fa fa-minus') {

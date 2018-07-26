@@ -20,6 +20,7 @@ export interface MyProps {
   onPanelHide?: () => void
   initCapital?: (item: any) => string[]
   placement?: 'top' | 'bottom'
+  select?: boolean
 }
 export interface MyStates {
   data: T[]
@@ -54,7 +55,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   }
   public componentWillReceiveProps (props: MyProps) {
     this.placement = props.placement === undefined ? 'bottom' : props.placement
-    if (props.data.length) {
+    if (props.data instanceof Array) {
       this.handleAllData(props.data)
       this.setState({
         data: this.allData.slice(0, this.pageNum),
@@ -67,6 +68,9 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
   public componentDidMount () {
     $(this.refs.input).off('click')
     $(this.refs.input).click(() => {
+      if (this.props.select) {
+        $(this.refs.input).select()
+      }
       if (this.state.visible) {
         return
       }

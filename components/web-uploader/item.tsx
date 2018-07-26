@@ -16,6 +16,7 @@ export interface Props {
   region: string
   dir: string
   callBack?: any
+  isRepeat: boolean
 }
 export interface States {
   src: string
@@ -64,10 +65,18 @@ export default class extends React.Component <Props, States> {
     this.dir = this.props.dir
     bus.on<{status: UploadStatus, maxIndex: number, next?: boolean}>('handle-upload', (payload) => {
       const { status, maxIndex, next } = payload
+      const isRepeat = this.props.isRepeat === undefined ? true : this.props.isRepeat
       if (this.isDestroy || this.success) {
         return
       }
       this.initStatus(() => {
+        if (isRepeat) {
+          bus.trigger('end-upload', {
+            index: this.props.index,
+            status: 'failed'
+          })
+          return
+        }
         setTimeout(() => {
           this.handleUpload(status, maxIndex, next)
         }, 0)
@@ -384,6 +393,8 @@ export default class extends React.Component <Props, States> {
     }
   }
   public render () {
+    const { isRepeat } = this.props
+    const { uploadStatus } = this.state
     return (
       <li ref='item'>
         {
@@ -405,19 +416,19 @@ export default class extends React.Component <Props, States> {
         }
         {
           // 失败 || 成功
-          ['success', 'failed'].indexOf(this.state.uploadStatus) > -1 &&
+          (isRepeat || ['success', 'failed'].indexOf(this.state.uploadStatus) > -1) &&
           <div
             className={
               classNames([
                 'pilipa-web-uploader-image-upload-status',
                 {
-                  success: this.state.uploadStatus === 'success',
-                  failed: this.state.uploadStatus === 'failed'
+                  success: uploadStatus === 'success',
+                  failed: isRepeat || uploadStatus === 'failed'
                 }
               ])
             }
           >
-            {this.state.uploadStatus === 'success' ? '上传成功' : '上传失败'}
+            {isRepeat ? '票据重复' : uploadStatus === 'success' ? '上传成功' : '上传失败'}
           </div>
         }
         <div className='pilipa-web-uploader-image-operate'>

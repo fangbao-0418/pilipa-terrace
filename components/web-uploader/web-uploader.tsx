@@ -34,6 +34,8 @@ export interface States {
   newNo: number // 新增数
   sumSize: string
   disabled: boolean
+  verifyStatus: 'doing' | 'success' | 'failed',
+  verifyResult: Array<{hash: string}>
 }
 export type UploadStatus = 'start' | 'pause' | 'continue' | 'finish'
 @events()
@@ -59,7 +61,7 @@ class WebUploader extends React.Component <Props, States> {
   public uploadTarget = this.props.uploadTarget || '图片'
   public parallel = 10
   public maxIndex = 6
-  public state = {
+  public state: States = {
     initShow: this.files.length === 0,
     files: this.files,
     uploadStatus: 'start',
@@ -68,7 +70,9 @@ class WebUploader extends React.Component <Props, States> {
     failedNo: 0,
     newNo: 0,
     sumSize: 'OKb',
-    disabled: false
+    disabled: false,
+    verifyStatus: 'doing',
+    verifyResult: []
   }
   public componentWillMount () {
     if (!FileReader) {
@@ -87,7 +91,6 @@ class WebUploader extends React.Component <Props, States> {
   public fileReaded (data: {index: number, name: string, hash: string}) {
     const { index } = data
     this.md5Files[index] = data
-    console.log(this.md5Files.length, this.files.length, 'read filed')
     if (this.md5Files.length === this.files.length) {
       this.toMd5Verify()
     }
@@ -95,7 +98,14 @@ class WebUploader extends React.Component <Props, States> {
   public toMd5Verify () {
     if (this.props.beforeUpdate) {
       this.props.beforeUpdate(this.md5Files).then((res: Array<{name: string, hash: string}>) => {
-        console.log(res)
+        this.setState({
+          verifyStatus: 'success',
+          verifyResult: res
+        })
+      }, () => {
+        this.setState({
+          verifyStatus: 'failed'
+        })
       })
     }
   }
@@ -227,11 +237,18 @@ class WebUploader extends React.Component <Props, States> {
     this.reckonFilesSize()
   }
   public imageListView () {
+    const { verifyResult } = this.state
     return (
       <div className='pilipa-web-uploader-images'>
         <ul>
           {
             this.state.files.map((file, index) => {
+              const info = this.md5Files[index] || {hash: ''}
+              const isRepeat = verifyResult.findIndex((item) => {
+                if (info.hash && item.hash === info.hash) {
+                  return true
+                }
+              }) > -1
               return (
                 <Item
                   key={`pilipa-web-uploader-image-${file.name}-${file.size}`}
@@ -241,6 +258,7 @@ class WebUploader extends React.Component <Props, States> {
                   bucket={this.props.bucket}
                   region={this.props.region}
                   dir={this.props.dir}
+                  isRepeat={isRepeat}
                   index={index}
                   file={file}
                   removeImg={this.removeImage.bind(this, index)}
@@ -290,6 +308,7 @@ class WebUploader extends React.Component <Props, States> {
       this.uploadSuccess()
       break
     }
+    console.log(status, 'status')
     this.setState({
       newNo: status === 'finish' ? this.state.newNo : 0,
       uploadStatus: status
@@ -456,6 +475,7 @@ class WebUploader extends React.Component <Props, States> {
     })
   }
   public render () {
+    const { uploadStatus, verifyStatus } = this.state
     return (
       <div className='pilipa-web-uploader' ref='uploader'>
         <div className='pilipa-web-uploader-header'>
@@ -487,14 +507,24 @@ class WebUploader extends React.Component <Props, States> {
         {
           this.state.files.length > 0 &&
           <div className='pilipa-web-uploader-footer'>
+            { verifyStatus === 'doing' && (
+              <div className='pilipa-web-uploader-info'>
+                <span>文件校验中...</span>
+              </div>
+            )}
+             { verifyStatus === 'failed' && (
+              <div className='pilipa-web-uploader-info'>
+                <span style={{color: 'red'}}>文件校验失败</span>
+              </div>
+            )}
             {
-               this.state.uploadStatus === 'start' &&
+               (uploadStatus === 'start' && verifyStatus === 'success') &&
                <div className='pilipa-web-uploader-info'>
                 <p>共<b>{this.state.files.length}</b>张 ({this.state.sumSize})</p>
                </div>
             }
             {
-              this.state.uploadStatus !== 'start' &&
+              (this.state.uploadStatus !== 'start' && verifyStatus === 'success') &&
               <div className='pilipa-web-uploader-info'>
                 <div className='pilipa-web-uploader-percentage'>
                   <span>{this.state.percentage}%</span>
@@ -535,10 +565,14 @@ class WebUploader extends React.Component <Props, States> {
                   className={classNames(
                     'pilipa-web-uploader-btn-primary',
                     {
-                      disabled: this.state.disabled
+                      disabled: verifyStatus !== 'success' || this.state.disabled
                     }
                   )}
-                  onClick={this.handleUpload.bind(this)}
+                  onClick={() => {
+                    if (verifyStatus === 'success') {
+                      this.handleUpload()
+                    }
+                  }}
                 >
                   {this.allUploadStatus[this.state.uploadStatus]}
                 </div>

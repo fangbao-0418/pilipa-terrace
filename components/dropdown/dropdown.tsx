@@ -57,7 +57,7 @@ export default class extends React.Component<MyProps, MyStates> {
     }
   }
   public componentWillReceiveProps (props: MyProps) {
-    if (props.data) {
+    if (props.data instanceof Array) {
       this.handleAllData(props)
       const res = this.filterData()
       this.setState({
