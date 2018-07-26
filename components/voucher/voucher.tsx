@@ -106,9 +106,10 @@ class Voucher extends React.Component<MyProps, MyStates> {
     }
     const el = $(this.refs.voucher)
     el.find('table tbody tr td').unbind('click').click((event) => {
-      const index = $(event.currentTarget).parent().index()
-      if (this.props.onTd) {
-        this.props.onTd(event, this.state.items, index)
+      const cellIndex = $(event.currentTarget).index()
+      const rowIndex = $(event.currentTarget).parent().index()
+      if (this.props.onTd && cellIndex > 0) {
+        this.props.onTd(event, this.state.items, rowIndex)
       }
     })
   }
