@@ -441,11 +441,11 @@ class WebUploader extends React.Component <Props, States> {
   }
   public toClose () {
     $(`.pilia-web-uploader-menu-${WebUploader.id}`).remove()
+    bus.trigger('close', this.uploadedUrls)
     this.resetData()
-    bus.trigger('close')
   }
   public toFold () {
-    bus.trigger('fold')
+    bus.trigger('fold', this.uploadedUrls)
     $(`.pilia-web-uploader-menu-${WebUploader.id}`).remove()
     const $uploader = $(this.refs.uploader)
     const $wrap = $uploader.parents('.pilipa-modal-wrap')
