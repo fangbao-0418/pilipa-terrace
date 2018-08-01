@@ -74,7 +74,9 @@ class Modal {
     }
     const $mask = this.$el.find('.pilipa-modal-mask')
     $mask.off('click').on('click', (event) => {
-      this.hide()
+      if (this.maskClosable) {
+        this.hide()
+      }
     })
   }
   public setTransformOrigin () {

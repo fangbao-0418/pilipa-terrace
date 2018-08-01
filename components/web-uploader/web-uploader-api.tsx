@@ -11,6 +11,7 @@ export interface Options {
   region: string
   dir: string
   maxUploadNum?: number
+  maskClosable?: boolean
   uploadTarget?: string
   mark?: string
   callback?: {}
@@ -26,7 +27,7 @@ export default class extends Bus {
       header: null,
       footer: null,
       mask: false,
-      maskClosable: false,
+      maskClosable: opts.maskClosable !== undefined ? opts.maskClosable : false,
       className: 'pilipa-web-uploader-modal',
       style: 'width: auto;',
       content: (

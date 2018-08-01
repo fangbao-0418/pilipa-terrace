@@ -17,6 +17,7 @@ export default class extends React.Component {
       dir: ossCfg.dir,
       accept: ossCfg.accept,
       uploadTarget: '票据',
+      maskClosable: true,
       // maxUploadNum: 19,
       mark: '西藏山峰广告装饰有限公司',
       beforeUpdate: (item: any) => {

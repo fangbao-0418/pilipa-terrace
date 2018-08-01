@@ -91,7 +91,13 @@ class WebUploader extends React.Component <Props, States> {
   public fileReaded (data: {index: number, name: string, hash: string}) {
     const { index } = data
     this.md5Files[index] = data
-    if (this.md5Files.length === this.files.length) {
+    let length = 0
+    this.md5Files.forEach((item) => {
+      if (item.hash) {
+        length += 1
+      }
+    })
+    if (length === this.files.length) {
       this.toMd5Verify()
     }
   }
