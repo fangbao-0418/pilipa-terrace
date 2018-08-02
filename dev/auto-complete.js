@@ -4,6 +4,10 @@ export default class extends React.Component {
   constructor () {
     super()
     this.data = [{
+      code: 0,
+      key2: 0,
+      title2: 0
+    }, {
       code: '1001',
       key2: '1001',
       title2: '测试1001'

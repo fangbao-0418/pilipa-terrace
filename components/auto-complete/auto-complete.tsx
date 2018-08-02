@@ -95,10 +95,10 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
     let value = ''
     const { defaultValue, setFields } = props
     if (typeof defaultValue !== 'object') {
-      return defaultValue || ''
+      return defaultValue
     }
     value = setFields ? defaultValue[setFields.title] : defaultValue.title
-    return value || ''
+    return value
   }
   public onKeyDown (event?: any) {
     this.event = event
