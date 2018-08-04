@@ -1,6 +1,16 @@
 @import '../../style'
 modal-prefix = pilipa-prefix + '-modal'
 .{modal-prefix}
+  .{modal-prefix}-mask
+    position: fixed
+    top: 0
+    right: 0
+    left: 0
+    bottom: 0
+    background-color: #373737
+    background-color: rgba(0, 0, 0, 0.65)
+    height: 100%
+    z-index: 1000
   .{modal-prefix}-wrap 
     position: fixed
     overflow: auto
@@ -11,18 +21,8 @@ modal-prefix = pilipa-prefix + '-modal'
     z-index: 1000
     -webkit-overflow-scrolling: touch
     outline: 0
-    .{modal-prefix}-mask
-      position: fixed
-      top: 0
-      right: 0
-      left: 0
-      bottom: 0
-      background-color: #373737
-      background-color: rgba(0, 0, 0, 0.65)
-      height: 100%
-      z-index: 1000
     .{modal-prefix}-content
-      width: 500px
+      min-width: 500px
       background: #FFFFFF
       border-radius: 4px
       position: absolute
@@ -32,6 +32,7 @@ modal-prefix = pilipa-prefix + '-modal'
       border: 1px solid rgba(0,0,0,.32)
       box-shadow: 0 3px 9px rgba(0,0,0,.5)
       z-index: 1001
+      margin-bottom: 100px
       .{modal-prefix}-header
         padding: 15px 20px
         line-height: 20px

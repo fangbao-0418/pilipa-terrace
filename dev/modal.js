@@ -2,13 +2,17 @@ import React from 'react'
 import { findDOMNode } from 'react-dom'
 import modal from '../components/modal'
 import $ from 'jquery'
+modal.config({
+  maskClosable: false
+})
+console.log(modal, 'modal')
 class Content extends React.Component {
   toClick () {
     alert('xxx')
   }
   render () {
     return (
-      <div>
+      <div style={{width: '1000px'}}>
         Content Component
         <button onClick={this.toClick.bind(this)}>点我</button>
       </div>
@@ -20,8 +24,8 @@ export default class extends React.Component {
     super()
     this.modal = new modal({
       title: '修改文字',
-      content: '333',
-      // maskClosable: false,
+      content: <Content />,
+      maskClosable: true,
       // header: '<button>xxx</button>',
       // footer: '<button>xxx</button>',
       // footer: null,
@@ -41,8 +45,7 @@ export default class extends React.Component {
     this.modal3 = new modal({
       title: 'xxx',
       mask: false,
-      className: 'abc cde',
-      style: {width: '200px'}
+      className: 'abc cde'
     })
     // this.modal.show()
     // this.modal2.show()

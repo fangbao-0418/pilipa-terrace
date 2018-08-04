@@ -14,6 +14,12 @@ export interface MyOptions {
   maskClosable?: boolean
 }
 class Modal {
+  public static maskClosable: boolean = true
+  public static config (config: {
+    maskClosable: boolean
+  }) {
+    Modal.maskClosable = config.maskClosable
+  }
   public style: string
   public className: string
   public title: string = 'Modal'
@@ -39,7 +45,7 @@ class Modal {
     this.onOk = options.onOk
     this.onCancel = options.onCancel
     this.mask = options.mask !== undefined ? options.mask : this.mask
-    this.maskClosable = options.maskClosable !== undefined ? options.maskClosable : this.maskClosable
+    this.maskClosable = options.maskClosable !== undefined ? options.maskClosable : Modal.maskClosable
     this.$el.addClass(this.defaultCls)
     // $('body').on('click', (event) => {
     //   this.pageX = event.pageX
@@ -72,9 +78,10 @@ class Modal {
         }
       })
     }
-    const $mask = this.$el.find('.pilipa-modal-mask')
-    $mask.off('click').on('click', (event) => {
-      if (this.maskClosable) {
+    const $wrap = this.$el.find('.pilipa-modal-wrap')
+    const $content = this.$el.find('.pilipa-modal-content')
+    $wrap.off('click').on('click', (event) => {
+      if ($content.find(event.target).length === 0 && this.maskClosable) {
         this.hide()
       }
     })
@@ -95,6 +102,9 @@ class Modal {
     })
   }
   public show () {
+    $('body').css({
+      overflow: 'hidden'
+    })
     $('body').append(this.$el)
     this.$el.html(this.template())
     this.$el.find('.pilipa-modal-content').attr({
@@ -118,6 +128,11 @@ class Modal {
         this.$el.find('.pilipa-modal-mask').removeClass('pilipa-fade-leave pilipa-fade-active')
         this.$el.find('.pilipa-modal-content').removeClass('pilipa-zoom-leave pilipa-zoom-active')
         this.$el.remove()
+        if ($('body').find('.pilipa-modal').length === 0) {
+          $('body').css({
+            overflow: ''
+          })
+        }
       }, 200)
     }
   }
@@ -152,14 +167,14 @@ class Modal {
   }
   public template () {
     return `
+      <div class="${this.defaultCls}-mask"></div>
       <div class="${this.defaultCls}-wrap">
-        <div class="${this.defaultCls}-mask"></div>
         <div class="${this.defaultCls}-content" style="">
           <div class="${this.defaultCls}-header">
             <span class="${this.defaultCls}-title">${this.title}</span>
             <span class="${this.defaultCls}-close">×</span>
           </div>
-          <div class="${this.defaultCls}-body">xxx</div>
+          <div class="${this.defaultCls}-body"></div>
           <div class="${this.defaultCls}-footer">
             <button class="pilipa-btn pilipa-btn-primary">确 定</button>
             <button class="pilipa-btn pilipa-btn-default">取 消</button>
