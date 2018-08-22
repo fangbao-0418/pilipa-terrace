@@ -2,19 +2,19 @@ import $ from 'jquery'
 import React from 'react'
 import { webUploader } from '../components'
 /* tslint:disable:max-line-length quotemark */
-let ossCfg: any = JSON.parse("{\"status\":true,\"errorcode\":\"\",\"message\":\"\",\"data\":\"{\\\"AccessKeyId\\\":\\\"STS.NH84cxX8HiEPmgRgVbMDeoGhp\\\",\\\"AccessKeySecret\\\":\\\"JDzuRoLG5qfqUwpEht25KNvgDrKiNe7PvBuzFZEKVEzX\\\",\\\"SecurityToken\\\":\\\"CAISiwJ1q6Ft5B2yfSjIr4uNf9nMtedp3oe7b0Hjg1Y3QctJgILDkjz2IHlNfHVsBeEbtPQznWFZ7\/gflr90UIQAXU3AbNN5q5pK9QfkaoHKtteutUzDHQ0IXTr9MQXy+eOPScebJYqvV5XAQlTAkTAJstmeXD6+XlujHISUgJp8FLo+VRW5ajw0b7U\/ZHEVyqkgOGDWKOymPzPzn2PUFzAIgAdnjn5l4qnNqa\/1qDim1Qanlb5O+d2ufcP7NZAwY60SCYnlgLZEEYPayzNV5hRw86N7sbdJ4z+vvKvGWgAJv0naYreOooE2fV4gOPUgZalft73klPl5ouWWmZnzz1NENupYSD\/P318jEzFNxIkagAGMU85J8OKdo2Um\/5e8DLGj\/SpUZlhKNwusEVnvkUBKXIX0raRl+vrDhSdlJNktjkarXP6rTcXR7qGd1axbHUaRVjtqZdCght7HJ4Buu5IkmSI1BNqm4Ba2oQWWwr8AL378+m2UkPv+HqH\/eNoSZK3Qw6I8ORiL6UDboTmjzW+ppg==\\\",\\\"bucketName\\\":\\\"pilipa\\\",\\\"dir\\\":\\\"pilipa\/375\/7427\/2018-06-30\\\",\\\"regionId\\\":\\\"cn-beijing\\\"}\"}")
-ossCfg = JSON.parse(ossCfg.data)
-let newOssCfg = JSON.parse("{\"status\":true,\"errorcode\":\"\",\"message\":\"\",\"data\":\"{\\\"AccessKeyId\\\":\\\"STS.NHLNFfNSNFUvVkqjiNWEKWZ6F\\\",\\\"AccessKeySecret\\\":\\\"7Baxu8VXnUk49qrRQoWiPETEWhuEMMLepaK4KzhPrj1F\\\",\\\"SecurityToken\\\":\\\"CAISrgJ1q6Ft5B2yfSjIr4v5BfzSo4xv8ZedVE3AjmkbW8pnuJ+dpDz2IH5Je3NgBOgdtfo+m2xX6P8alqF2TIVKTErzN5PJf1LjXUfzDbDasumZsJYU6vT8a3PxZjf/2MjNGaqbKPrWZvaqbX3diyZ32sGUXD6+XlujQ/rr7Jl8dYY4UxWfZzhLD8ssD2kEksIBMmbLPvuAKwPjhnGqbHBloQ1hk2hym+ndicSX8UjZl0aomPcUo4XpK92ha5tpO41wWtHyhqssLvORiHIXyWATr/op3fcaoGiY5Y7HWgUO2XjcbbqIqO8IBRRie603F5RDqPXBjvBisoTR7d+plkkXbbwNCH+BFd/8n5WdQPnYMc0iMK76P3XV25WKMtz7rgcgJHsQPw5RYMq69fyj85XwIBqAAT5A/nwrMyPm+7NEVqES452uwvYAzCzrYS+Z+7pJx8rQrC2PhcWBaI74nWCqWA5/XU3JjPhXuSX3Qd9niPOlXp5fUEK5goS0dqK4SILmU1NspyZZGsrIH70kzTFMnsqErtcBixDsjmbdU7MOOPECYayJjUPpop2hJZwwrsFwV0lD\\\",\\\"bucketName\\\":\\\"pilipa-ml\\\",\\\"dir\\\":\\\"morgan\/2\/201804\\\",\\\"regionId\\\":\\\"beijing\\\"}\"}")
-newOssCfg = JSON.parse(newOssCfg.data)
+const ossCfg: any = JSON.parse('{"credentials":{"securityToken":"CAISwAJ1q6Ft5B2yfSjIr4vxHIyFmZIVx6zcVxLEoW8lP+VrlYv6hjz2IH5Je3NgBOgdtfo+m2xX6P8alrhrSptEXUXzNJYrss4Nr1P6PdJUNEFkVvhW5qe+EE2/VjQTta27OpfqLr70fvOqdCqL9Etayqf7cjOPRkGsNYbz57dsctUQWHvfD19BH8wEHhZ+j8UYOHDNT9fPVCTnmW3NFkFllxNhgGdkk8SFz9ab9wDVgS+/qKwcrJ+jJYO/PYs+fsVnUtO0xOUzc66G2SFd7QQRs/sr1/cDo2+e7pTFUx4TwW3faLeLo4YxdVAmPfdgQvIblpWmy60k4N60vp/s1hNAMdtSVyniX426yKPGYrj3a4ljJeujYC+Tg4/Taces6xlVZmkAcRtLf9s5Izp1DVkiVzXeb6as813ReRc4lCtWKijquxqAATJI2YWV19/cvUUn7EzOBXfLo+X8jQdG4BqzrDklwYNB5tlCpgMyWCuI5XzOA+PuquisJpaUM+U+SpM0dIRSYh5LltMosOTNw2zxS3xqozdFigWXH8eB6zlM5DXg2yoKLSe0p3UVKa/NdLIyYRPpNgLa4/Rrl6rt5m7QTZd8zab4","accessKeySecret":"ASNF9ha3BVAwdYyEcGCA9RCKiiaTsgiMws4XpUSAQhjo","accessKeyId":"STS.NHDW61tM4pn7U4uEop3jGzNQd","expiration":"2018-08-14T06:57:16Z"},"endpoint":"oss-cn-beijing.aliyuncs.com","bucket":"pilipa-ml","roleSessionName":"pilipa_1534226836","pathPrefix":"agent3/4533/2018-08"}')
+console.log(ossCfg)
+const newOssCfg = JSON.parse('{"credentials":{"securityToken":"CAISvgJ1q6Ft5B2yfSjIr4mNfdD31b5g9pGgSkSGtUIMdr4ZpYaehDz2IH5Je3NgBOgdtfo+m2xX6P8alrhrSptEXUXzNJYrss0Nrl75M9JHehNXVvhW5qe+EE2/VjTsvqaLEfebIfrZfvCyER+m8gZ43br9cxi7QlWhKufnoJV7b9MRLG7aCD1dH4VuOxdFos0XPmerFZTLCBPxhXfKB0dFoxd1jXgFiZ6y2cqB8BHT/hmYiOYevNb2OYP2LZsubo9+V9at1alzcu3I3yNW90MNpfssy/YcoGeC5oHaQXspuk7bbLuPrIQwc1QmPPFmRJQp9qasyadK3cXIjJnyxhp3OuVYbj/SXojIwrGfRr72bIZkLe2gZSWSjo/Rb8HvwgQ/ejcDNQdLY9NkL3s1BwEoTnTTIaSq40va+dggmFIMDMsagAGGgJOpHdLzbgclgwu0l2JL0XChzv7xvGb/1KsMD/NTmSe56N0a+1lZizngd44lQtimeADTkaqBspolH/bbeppTsjmRIzWEQuoXGvFSJQyGQnG5df8dL2jwzEYIqhiF2U89lonEgQZnawuCxeqAxp4a0EO5eI4SxTQfGXycD5Tumg==","accessKeySecret":"FEyPk4qDZFo7VGePPxHBDhroUSiEHHd93kx88QVPeMik","accessKeyId":"STS.NJ86jC8aAASKHb7QBYz15JC5f","expiration":"2018-08-13T03:21:49Z"},"endpoint":"oss-cn-beijing.aliyuncs.com","bucket":"pilipa-ml","roleSessionName":"pilipa_1534127508","pathPrefix":"agent3/942/2018-08"}')
+
 export default class extends React.Component {
   public componentDidMount () {
     const uploader = new webUploader({
-      accessKeyId: ossCfg.AccessKeyId,
-      accessKeySecret: ossCfg.AccessKeySecret,
-      stsToken: ossCfg.SecurityToken,
-      bucket: ossCfg.bucketName,
+      accessKeyId: ossCfg.credentials.accessKeyId,
+      accessKeySecret: ossCfg.credentials.accessKeySecret,
+      stsToken: ossCfg.credentials.securityToken,
+      bucket: ossCfg.bucket,
       region: 'oss-cn-beijing',
-      dir: ossCfg.dir,
+      dir: ossCfg.pathPrefix,
       accept: ossCfg.accept,
       uploadTarget: '票据',
       maskClosable: true,
@@ -30,9 +30,14 @@ export default class extends React.Component {
         })
       },
       callback: {
-        url: "https://x-agent.i-counting.cn/api/v1/OSSCallBack.ashx",
-        host: "x-agent.i-counting.cn",
-        body: "filename=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&receiptid=0&typeid=1&companyid=7048&userid=665&self=0&companycode=5a93be1a85effd0001e7f7d0"
+        url: "https://x-agent3.i-counting.cn/incoming/callback/oss",
+        host: "x-agent3.i-counting.cn",
+        body: 'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}' +
+        '&width=${imageInfo.width}&receiptid=0&typeid=1&' +
+        `&self=0&companycode=4533&relateDate=2018-08&version=3` +
+        `&userid=ceshiid&nickname=ceshi&agency=agency1` +
+        '&originalfile=${file.name}',
+        contentType: 'application/x-www-form-urlencoded'
         // contentType: "application/json"
         // body: "filename=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}&receiptid=${x:receiptid}&typeid=${x:typeid}&companyid=${x:companyid}&userid=${x:userid}&self=${x:self}&companycode=${x:companycode}",
         // customValue: {
@@ -46,14 +51,14 @@ export default class extends React.Component {
       }
     })
     uploader.on('error', () => {
-      uploader.trigger('oss-update', {
-        accessKeyId: newOssCfg.AccessKeyId,
-        accessKeySecret: newOssCfg.AccessKeySecret,
-        stsToken: newOssCfg.SecurityToken,
-        bucket: newOssCfg.bucketName,
-        region: 'oss-beijing',
-        dir: newOssCfg.dir
-      })
+      // uploader.trigger('oss-update', {
+      //   accessKeyId: newOssCfg.AccessKeyId,
+      //   accessKeySecret: newOssCfg.AccessKeySecret,
+      //   stsToken: newOssCfg.SecurityToken,
+      //   bucket: newOssCfg.bucketName,
+      //   region: 'oss-beijing',
+      //   dir: newOssCfg.dir
+      // })
     })
     uploader.on('complete', (urls) => {
       console.log(urls, '上传成功')

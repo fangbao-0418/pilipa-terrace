@@ -6,7 +6,9 @@ const data = [{
   name: '预付账款_待摊费用',
   debit: 10,
   credit: '',
-  taxRate: 3.00
+  taxRate: 3.00,
+  currencyType: '人民币',
+  foreignCurrency: true
 },
 {
   summary: '2-15应收商品收入（普票）,税率：3.00%',
@@ -16,7 +18,8 @@ const data = [{
   taxRate: 3.00,
   exchangeRate: 6.8,
   currencyType: '美元',
-  originalCurrencyMoney: 1000
+  originalCurrencyMoney: 1000,
+  foreignCurrency: true
 }]
 export default class extends React.Component {
   constructor () {

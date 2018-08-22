@@ -22,6 +22,7 @@ export interface MyProps {
   visible?: boolean
   type?: 'click' | 'hover'
   initCapital?: (item: any) => string[]
+  delay?: number
 }
 
 export interface MyStates {
@@ -282,12 +283,12 @@ export default class extends React.Component<MyProps, MyStates> {
       }
     })
   }
-  public handleLeave () {
+  public handleLeave (delay = this.props.delay) {
     if (this.t) {
       clearTimeout(this.t)
     }
+    delay = delay || 0
     const { button, results } = this.refs
-
     this.t = setTimeout(() => {
       $(results).addClass('custom-slide-up-leave')
       $(button).find('.btn-right i').removeClass('pilipa-dropdown-arrow-up pilipa-dropdown-arrow-active')
@@ -310,7 +311,7 @@ export default class extends React.Component<MyProps, MyStates> {
           dataTmp: this.allData
         })
       }, 200)
-    }, 100)
+    }, delay + 100)
   }
   public handleSelect (item: T, index: number) {
     item.index = index
@@ -322,7 +323,7 @@ export default class extends React.Component<MyProps, MyStates> {
       selectedIndex: index
     })
     this.defaultPage = index === 0 ? 1 : Math.ceil((index + 1) / this.pageNum)
-    this.handleLeave()
+    this.handleLeave(0)
     if (callBack) {
       setTimeout(() => {
         callBack(item)
@@ -343,7 +344,6 @@ export default class extends React.Component<MyProps, MyStates> {
     try {
       pattern = new RegExp(this.filterVal, 'i')
     } catch (e) {
-      console.log(e.message)
       pattern = new RegExp('', 'i')
     }
     const res = allData.filter((item: T, index): boolean => {
@@ -354,6 +354,7 @@ export default class extends React.Component<MyProps, MyStates> {
     return res || []
   }
   public handleChange (e: any) {
+    clearTimeout(this.t)
     const $items = $(this.refs.results).find('.items')
     this.filterVal = e.target.value
     const { allData } = this
@@ -385,7 +386,6 @@ export default class extends React.Component<MyProps, MyStates> {
   public render () {
     const { className, style, filter } = this.props
     const { visible, data } = this.state
-    // console.log(data, 'render')
     let { title } = this.state
     title = title || this.allData.length && this.allData[0].title || ''
     return (
@@ -398,15 +398,28 @@ export default class extends React.Component<MyProps, MyStates> {
         </div>
         {
           visible && (
-            <div className='results' ref='results'>
+            <div
+              className='results'
+              ref='results'
+              onMouseEnter={() => {
+                clearTimeout(this.t)
+              }}
+              onMouseLeave={() => {
+                if (this.type !== 'hover') {
+                  return
+                }
+                this.handleLeave()
+              }}
+            >
               {
                 filter &&
-                <input
-                  className='input'
-                  value={this.state.filterVal}
-                  onChange={this.handleChange.bind(this)}
-                  ref='input'
-                />
+                <div className='input'>
+                  <input
+                    value={this.state.filterVal}
+                    onChange={this.handleChange.bind(this)}
+                    ref='input'
+                  />
+                </div>
               }
               { data.length === 0 && <p>未搜到结果</p> }
               <div className='items'>

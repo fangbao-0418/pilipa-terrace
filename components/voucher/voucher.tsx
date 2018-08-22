@@ -145,10 +145,18 @@ class Voucher extends React.Component<MyProps, MyStates> {
             <td>
               {
                 item[fieldCfg.foreignCurrency] && (
-                  <p>
-                    {item[fieldCfg.currencyType]}：{item[fieldCfg.originalCurrencyMoney]} <br />
-                    汇率：{item[fieldCfg.exchangeRate]}
-                  </p>
+                  <div>
+                    <p>
+                      {item[fieldCfg.currencyType]}：{item[fieldCfg.originalCurrencyMoney]}
+                    </p>
+                    {
+                      item[fieldCfg.currencyType] !== '人民币' && (
+                        <p>
+                          汇率：{item[fieldCfg.exchangeRate]}
+                        </p>
+                      )
+                    }
+                  </div>
                 )
               }
             </td>

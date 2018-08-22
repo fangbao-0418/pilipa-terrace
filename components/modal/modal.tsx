@@ -61,6 +61,9 @@ class Modal {
   }
   public initEvent () {
     this.$el.find('.pilipa-modal-close').unbind('click').click(() => {
+      if (this.onCancel) {
+        this.onCancel()
+      }
       this.hide()
     })
     if (this.footer === undefined) {
@@ -120,7 +123,7 @@ class Modal {
     this.setAnimation()
     this.initEvent()
   }
-  public hide () {
+  public hide (cb?: () => void) {
     if ($('body').find(this.$el).length > 0) {
       this.$el.find('.pilipa-modal-mask').addClass('pilipa-fade-leave pilipa-fade-active')
       this.$el.find('.pilipa-modal-content').addClass('pilipa-zoom-leave pilipa-zoom-active')
@@ -132,6 +135,9 @@ class Modal {
           $('body').css({
             overflow: ''
           })
+        }
+        if (cb) {
+          cb()
         }
       }, 200)
     }

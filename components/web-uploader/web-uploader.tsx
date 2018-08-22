@@ -60,7 +60,7 @@ class WebUploader extends React.Component <Props, States> {
   public maxUploadNum: number = this.props.maxUploadNum || 3
   public uploadTarget = this.props.uploadTarget || '图片'
   public parallel = 10
-  public maxIndex = 6
+  public maxIndex = 5
   public state: States = {
     initShow: this.files.length === 0,
     files: this.files,
@@ -79,7 +79,7 @@ class WebUploader extends React.Component <Props, States> {
       alert('当前浏览器不支持FileReader,请选择高版本浏览器！')
     }
     bus.on('end-upload', this.onEndUpload.bind(this))
-    bus.on('percentage', this.onPercentage.bind(this))
+    // bus.on('percentage', this.onPercentage.bind(this))
     bus.on('file-readed', this.fileReaded.bind(this))
   }
   public componentDidMount () {
@@ -229,12 +229,16 @@ class WebUploader extends React.Component <Props, States> {
       </div>
     )
   }
-  public removeImage (index: number) {
+  public removeImage (index: number, status: string) {
+    let { newNo } = this.state
     this.files.splice(index, 1)
     this.uploadedInfo.splice(index, 1)
-    this.percentages.splice(index, 1)
     this.md5Files.splice(index, 1)
+    if (status === 'unknow') {
+      newNo -= 1
+    }
     this.setState({
+      newNo: newNo > 0 ? newNo : 0,
       files: this.files,
       initShow: this.files.length === 0
     })
@@ -267,7 +271,7 @@ class WebUploader extends React.Component <Props, States> {
                   isRepeat={isRepeat}
                   index={index}
                   file={file}
-                  removeImg={this.removeImage.bind(this, index)}
+                  removeImg={this.removeImage.bind(this)}
                   callBack={this.props.callBack}
                 />
               )
@@ -314,25 +318,22 @@ class WebUploader extends React.Component <Props, States> {
       this.uploadSuccess()
       break
     }
-    console.log(status, 'status')
+    // console.log(status, 'status')
     this.setState({
       newNo: status === 'finish' ? this.state.newNo : 0,
       uploadStatus: status
     })
   }
-  // 监听上传进度
-  public onPercentage (item: {index: number, percentage: number}) {
-    this.percentages[item.index] = item.percentage
-    this.reckonPercentage()
-  }
+  // // 监听上传进度
+  // public onPercentage (item: {index: number, percentage: number}) {
+  //   // this.percentages[item.index] = item.percentage
+  //   // this.reckonPercentage()
+  // }
   // 计算总体进度
   public reckonPercentage () {
-    let sum = 0
-    this.percentages.map((v) => {
-      sum += v
-    })
+    const { successNo } = this.state
     this.setState({
-      percentage: Math.round((sum / this.files.length) * 100) || 0
+      percentage: Math.round((successNo / this.files.length) * 100) || 0
     })
   }
   // 计算新增的文件数目
@@ -346,8 +347,10 @@ class WebUploader extends React.Component <Props, States> {
     } else {
       uploadStatus = newNo > 0 ? 'continue' : this.state.uploadStatus
     }
+    console.log(newNo, 'reckonNewNo')
     this.setState({
-      newNo,
+      newNo: newNo >= 0 ? newNo : 0,
+      percentage: Math.round((successNo / this.files.length) * 100) || 0,
       uploadStatus
     })
   }
@@ -363,12 +366,21 @@ class WebUploader extends React.Component <Props, States> {
     const failedNo = this.uploadedInfo.length - successNo
     this.setState({
       successNo,
-      failedNo
+      failedNo,
+      percentage: Math.round((successNo / this.files.length) * 100) || 0
     })
-    if (this.uploadedInfo.length === this.files.length && this.state.uploadStatus !== 'start') {
+    let length = 0
+    this.uploadedInfo.map((item) => {
+      if (item) {
+        length += 1
+      }
+    })
+    console.log(length, this.files.length)
+    if (length === this.files.length && this.state.uploadStatus !== 'start') {
       if (this.files.length === 0) {
         uploadStatus = 'start'
       } else if (successNo !== this.files.length && this.files.length > 0) {
+        // console.log(successNo, this.files, 'continue')
         uploadStatus = 'continue'
       }
       this.setState({
@@ -379,8 +391,10 @@ class WebUploader extends React.Component <Props, States> {
   // 监听上传结束
   public onEndUpload (item: {index: number, status: 'success' | 'failed', url: string}) {
     const { files, uploadStatus } = this.state
+    console.log(this.maxIndex, uploadStatus, 'maxIndex')
     if (this.maxIndex < files.length && uploadStatus === 'pause') {
-      this.maxIndex += this.parallel
+      this.maxIndex += 1
+      // console.log(this.maxIndex, 'end upload')
       bus.trigger<{status: string, maxIndex: number, next: boolean}>('handle-upload', {
         status: 'start',
         maxIndex: this.maxIndex,

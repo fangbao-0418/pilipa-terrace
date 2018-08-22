@@ -8,7 +8,7 @@ import bus from './bus'
 export interface Props {
   file: File
   index: number
-  removeImg?: (index: number) => void
+  removeImg?: (index: number, status: string) => void
   accessKeyId: string
   accessKeySecret: string
   stsToken: string
@@ -59,12 +59,14 @@ export default class extends React.Component <Props, States> {
   public callback: any
   public success: boolean = false
   public completeMultipartUpload: any
+  public maxIndex = 0
   public componentWillMount () {
     this.readFile()
     this.handleCallBack()
     this.dir = this.props.dir
     bus.on<{status: UploadStatus, maxIndex: number, next?: boolean}>('handle-upload', (payload) => {
       const { status, maxIndex, next } = payload
+      this.maxIndex = maxIndex
       const isRepeat = this.props.isRepeat === undefined ? true : this.props.isRepeat
       if (this.isDestroy || this.success) {
         return
@@ -296,6 +298,9 @@ export default class extends React.Component <Props, States> {
     }
   }
   public setOss () {
+    if (this.props.index > this.maxIndex) {
+      return
+    }
     this.storeId += 1
     const { accessKeyId, accessKeySecret, stsToken, bucket, region } = this.ossOpts
     this.store[this.storeId] = OSS({
@@ -308,22 +313,19 @@ export default class extends React.Component <Props, States> {
   }
   public handleUpload (status: UploadStatus, maxIndex?: number, next?: boolean) {
     const { uploadStatus } = this.state
-    console.log(uploadStatus, 'xxxxxxx')
+    console.log(maxIndex, 'handleUpload')
     if (this.props.index >= maxIndex) {
       if (status === 'pause') {
         this.setState({
           uploadStatus: 'pause',
           uploading: false
         })
-      } else {
-        // console.log(uploadStatus, 'xxxxxxx')
-        if (uploadStatus !== 'failed') {
-          // this.setState({
-          //   uploading: true
-          // })
-        }
       }
       return
+    } else {
+      if (this.state.uploading) {
+        return
+      }
     }
     if (this.success || (uploadStatus === 'failed' && next)) {
       return
@@ -341,7 +343,9 @@ export default class extends React.Component <Props, States> {
         uploadStatus: 'pause',
         uploading: false
       })
-      this.store[this.storeId].cancel()
+      if (this.store[this.storeId]) {
+        this.store[this.storeId].cancel()
+      }
       break
     case 'continue':
       this.setState({
@@ -373,13 +377,14 @@ export default class extends React.Component <Props, States> {
     case 'delete':
       if (this.props.removeImg) {
         this.removeFile()
-        this.props.removeImg(this.props.index)
+        this.props.removeImg(this.props.index, this.state.uploadStatus)
       }
       break
     }
   }
   public removeFile () {
     const status = this.state.uploadStatus
+    console.log(this.store[this.storeId], 'store')
     switch (status) {
     case 'success':
       // this.store.delete(this.name)
@@ -423,12 +428,12 @@ export default class extends React.Component <Props, States> {
                 'pilipa-web-uploader-image-upload-status',
                 {
                   success: uploadStatus === 'success',
-                  failed: isRepeat || uploadStatus === 'failed'
+                  failed: uploadStatus !== 'success' && (isRepeat || uploadStatus === 'failed')
                 }
               ])
             }
           >
-            {isRepeat ? '票据重复' : uploadStatus === 'success' ? '上传成功' : '上传失败'}
+            {uploadStatus === 'success' ? '上传成功' : (isRepeat ? '票据重复' : '上传失败')}
           </div>
         }
         <div className='pilipa-web-uploader-image-operate'>

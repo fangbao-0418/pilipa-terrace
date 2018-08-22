@@ -5,16 +5,13 @@
 
 # usage
 ```
-npm config set registry https://npmregistry.i-counting.cn
-yarn add pilipa
-or
-yarn add pilipa --registry https://npmregistry.i-counting.cn
+yarn add pilipa --registry https://nexus.i-counting.cn/repository/accounting/
 ```
 
 # Development
 ```
 yarn install
-yarn add ali-oss@5.3.1 font-awesome@4.7.0 jquery@3.3.1 react@16.3.1 react-dom@16.3.1 viewerjs@1.0.0 js-base64 -P
+yarn add ali-oss@5.3.1 font-awesome@4.7.0 jquery@3.3.1 react@16.3.1 react-dom@16.3.1 viewerjs@1.0.0 -P
 yarn dev
 ...
 yarn lib
