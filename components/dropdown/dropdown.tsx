@@ -23,6 +23,7 @@ export interface MyProps {
   type?: 'click' | 'hover'
   initCapital?: (item: any) => string[]
   delay?: number
+  disabled?: boolean
 }
 
 export interface MyStates {
@@ -69,6 +70,18 @@ export default class extends React.Component<MyProps, MyStates> {
     }
   }
   public componentDidMount () {
+    this.initEvent()
+  }
+  public componentWillUnmount () {
+    this.isDestroy = true
+    if (this.t) {
+      clearTimeout(this.t)
+    }
+  }
+  public initEvent () {
+    if (this.props.disabled) {
+      return
+    }
     const $dropdowm = $(this.refs.dropdown)
     const { button } = this.refs
     if (this.type === 'click') {
@@ -95,12 +108,6 @@ export default class extends React.Component<MyProps, MyStates> {
         this.event.returnValue = false
       }
     })
-  }
-  public componentWillUnmount () {
-    this.isDestroy = true
-    if (this.t) {
-      clearTimeout(this.t)
-    }
   }
   public getDefaultValue (props?: MyProps) {
     props = props || this.props
@@ -221,6 +228,9 @@ export default class extends React.Component<MyProps, MyStates> {
     })
   }
   public handleEnter () {
+    if (this.props.disabled) {
+      return
+    }
     if (this.t) {
       clearTimeout(this.t)
     }
@@ -389,7 +399,13 @@ export default class extends React.Component<MyProps, MyStates> {
     let { title } = this.state
     title = title || this.allData.length && this.allData[0].title || ''
     return (
-      <div className={ClassNames(this.defaultCls, className)} style={style} ref='dropdown'>
+      <div
+        className={ClassNames(this.defaultCls, className, {
+          disabled: this.props.disabled
+        })}
+        style={style}
+        ref='dropdown'
+      >
         <div className='costom-btn-group' ref='button'>
           <div className='btn-left'><span title={title}>{title}</span></div>
           <div className='btn-right'>

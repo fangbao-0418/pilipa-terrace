@@ -24,7 +24,12 @@ export interface MyProps {
   isForeignCurrency?: boolean // 是否是外币
   header?: React.ReactElement<any>
   onTd?: (event: JQuery.Event, items: any[], index: number) => void
-  type?: 'voucher' | 'entry'
+  type?: 'voucher' | 'entry' | 'print'
+  showTotal?: boolean
+  debitTotal?: number
+  creditTotal?: number
+  showFooter?: boolean
+  showUpperTotal?: boolean
 }
 export interface MyStates {
   items: any[]
@@ -183,6 +188,9 @@ class Voucher extends React.Component<MyProps, MyStates> {
     })
   }
   public convertMoney (num: number) {
+    if (this.type === 'print') {
+      return <div className='money-unit'>{num}</div>
+    }
     if (!num) {
       num = 0
     }
@@ -193,9 +201,7 @@ class Voucher extends React.Component<MyProps, MyStates> {
       money = (maxNum - 1).toString()
     }
     money = money === '0' ? '' : money
-    console.log(money, 'money')
     const arr = (' '.repeat((11 - money.length)) + money).split('')
-    console.log(arr, 'arr')
     arr.map((item, index) => {
       node.push(
         <span
@@ -222,7 +228,6 @@ class Voucher extends React.Component<MyProps, MyStates> {
     }
   }
   public amountInWords () {
-    // 壹（壹）、贰（贰）、叁、肆（肆）、伍（伍）、陆（陆）、柒、捌、玖、拾、佰、仟、万（万）、亿、元、角、分、零、整（正）
     const upperCase = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
     const total = this.getTotal()
     let num = Math.abs(total.debitMoney) * 100 || 0
@@ -253,14 +258,17 @@ class Voucher extends React.Component<MyProps, MyStates> {
   }
   public render () {
     const {
-      className, style, treasurer, reviewer, originator, isForeignCurrency
+      className, style, treasurer, reviewer, originator, isForeignCurrency, debitTotal, creditTotal, showFooter
     } = this.props
+    const showTotal = this.props.showTotal !== undefined ? this.props.showTotal : true
+    const showUpperTotal = this.props.showUpperTotal !== undefined ? this.props.showUpperTotal : true
     const total = this.getTotal()
     return (
       <div
         ref='voucher'
         className={ClassNames(this.defaultCls, className, {
-          'pilipa-voucher-entry': this.type === 'entry'
+          'pilipa-voucher-entry': this.type === 'entry',
+          'pilipa-voucher-print': this.type === 'print'
         })}
         style={style}
       >
@@ -270,43 +278,73 @@ class Voucher extends React.Component<MyProps, MyStates> {
           </div>
         </div>
         <table className={ClassNames(this.defaultCls + '-table' + (isForeignCurrency ? 2 : 1))}>
-          <thead>
-            <tr>
-              <th rowSpan={2}></th>
-              <th rowSpan={2}>摘要</th>
-              <th rowSpan={2}>会计科目</th>
-              {isForeignCurrency ? <th rowSpan={2}>外币</th> : null}
-              <th>借方金额</th>
-              <th>贷方金额</th>
-            </tr>
-            <tr>
-              <th>
-                <div className='money-unit'>
-                  {this.moneyUnitNode()}
-                </div>
-              </th>
-              <th>
-                <div className='money-unit'>
-                  {this.moneyUnitNode()}
-                </div>
-              </th>
-            </tr>
-          </thead>
+          {
+            this.type === 'print' ?
+            (
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>摘要</th>
+                  <th>会计科目</th>
+                  {isForeignCurrency ? <th rowSpan={2}>外币</th> : null}
+                  <th>借方金额</th>
+                  <th>贷方金额</th>
+                </tr>
+              </thead>
+            ) : (
+              <thead>
+                <tr>
+                  <th rowSpan={2}></th>
+                  <th rowSpan={2}>摘要</th>
+                  <th rowSpan={2}>会计科目</th>
+                  {isForeignCurrency ? <th rowSpan={2}>外币</th> : null}
+                  <th>借方金额</th>
+                  <th>贷方金额</th>
+                </tr>
+                <tr>
+                  <th>
+                    <div className='money-unit'>
+                      {this.moneyUnitNode()}
+                    </div>
+                  </th>
+                  <th>
+                    <div className='money-unit'>
+                      {this.moneyUnitNode()}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            )
+          }
           <tbody>
             {this.mapTrNode()}
-            <tr>
-              <td></td>
-              <td colSpan={!isForeignCurrency ? 2 : 3}>
-                <p>合计：{this.amountInWords()}</p>
-              </td>
-              <td>{this.convertMoney(total.debitMoney)}</td>
-              <td>{this.convertMoney(total.creditMoney)}</td>
-            </tr>
+            {
+              showTotal && (
+                <tr>
+                  <td></td>
+                  <td colSpan={!isForeignCurrency ? 2 : 3}>
+                    <p>合计：{showUpperTotal ? this.amountInWords() : ''}</p>
+                  </td>
+                  <td>
+                    {
+                      debitTotal !== undefined ?
+                      (<div className='money-unit'>{debitTotal}</div>) : this.convertMoney(total.debitMoney)
+                    }
+                  </td>
+                  <td>
+                    {
+                      creditTotal !== undefined ?
+                      (<div className='money-unit'>{creditTotal}</div>) : this.convertMoney(total.creditMoney)
+                    }
+                  </td>
+                </tr>
+              )
+            }
           </tbody>
         </table>
         <div className={this.defaultCls + '-footer'}>
           {
-            this.type === 'voucher' && (
+            this.type === 'voucher' || showFooter && (
               <p>
                 <span>主管会计：{treasurer}</span>
                 <span>审核人：{reviewer}</span>

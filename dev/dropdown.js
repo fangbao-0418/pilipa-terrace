@@ -72,6 +72,7 @@ export default class extends React.Component {
           }}
         />
         <DropDown
+          disabled={true}
           style={{float: 'left'}}
           data={this.data2}
           defaultValue={{
