@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import React from 'react'
-import '../_util'
 export default {
   $el: $('<div class="pilipa-loading"></div>'),
   hide () {

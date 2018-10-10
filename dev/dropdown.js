@@ -8,10 +8,10 @@ export default class extends React.Component {
     this.data = [{
       code: 3306,
       key: 1,
-      title: '爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司爱康鼎科技有限公司1'
+      title: undefined
     }, {
       key: 2,
-      title: '噼里啪智能财税'
+      title: 0
     }]
     this.data2 = [{
       key2: 1,

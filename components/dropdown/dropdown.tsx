@@ -397,7 +397,7 @@ export default class extends React.Component<MyProps, MyStates> {
     const { className, style, filter } = this.props
     const { visible, data } = this.state
     let { title } = this.state
-    title = title || this.allData.length && this.allData[0].title || ''
+    title = title !== undefined ? title : this.allData.length && this.allData[0].title
     return (
       <div
         className={ClassNames(this.defaultCls, className, {

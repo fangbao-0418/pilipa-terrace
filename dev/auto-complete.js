@@ -39,6 +39,7 @@ export default class extends React.Component {
     return (
       <div>
         <AutoComplete
+          disabled={true}
           data={this.data}
           style={{float: 'left', position: 'absolute', top: '400px'}}
           setFields={{

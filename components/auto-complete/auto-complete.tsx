@@ -21,6 +21,7 @@ export interface MyProps {
   initCapital?: (item: any) => string[]
   placement?: 'top' | 'bottom'
   select?: boolean
+  disabled?: boolean
 }
 export interface MyStates {
   data: T[]
@@ -306,6 +307,7 @@ class AutoComplete extends React.Component<MyProps, MyStates> {
           onChange={this.searchChange.bind(this)}
           ref='input'
           value={value}
+          disabled={this.props.disabled}
         />
         {visible &&
           <div

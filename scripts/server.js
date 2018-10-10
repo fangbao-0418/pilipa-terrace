@@ -8,7 +8,7 @@ const app = new Koa()
 const config = require('../webpack.dev.config')
 const compiler = webpack(config)
 
-const proxyUrl = 'https://x-agent3.i-counting.cn/'
+const proxyUrl = 'https://x-agent.i-counting.cn/'
 app.use(staticServer(path.join(__dirname, '../dist')))
 app.use(proxy('/api', {target: proxyUrl, changeOrigin: true}))
 app.use(devMiddleware(compiler, {
