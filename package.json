@@ -1,7 +1,7 @@
 {
-  "name": "pilipa",
-  "version": "3.0.3-alpha.3",
-  "description": "噼里啪前端组件，基于react。",
+  "name": "pilipa-terrace",
+  "version": "1.0.0-alpha.15",
+  "description": "噼里啪b端框架",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
   "scripts": {
@@ -19,14 +19,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "antd": "3.10.1",
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "@types/ali-oss": "1.0.2",
     "@types/classnames": "^2.2.3",
-    "@types/jquery": "^3.2.18",
-    "@types/react-dom": "16.0.2",
+    "@types/jquery": "^3.3.22",
+    "@types/lodash": "^4.14.117",
+    "@types/react": "^16.4.18",
+    "@types/react-dom": "^16.0.9",
+    "@types/react-router": "^4.4.0",
+    "@types/react-router-dom": "^4.3.1",
     "autoprefixer": "^7.2.5",
     "awesome-typescript-loader": "^5.0.0",
     "babel-core": "^6.26.0",
@@ -59,6 +63,7 @@
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.17.4",
     "jasmine-core": "^3.1.0",
+    "jquery": "^3.3.1",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",
@@ -71,6 +76,11 @@
     "koa-webpack-middleware": "^1.0.7",
     "postcss-csso": "^3.0.0",
     "postcss-loader": "^2.0.10",
+    "prop-types": "15.6.2",
+    "react": "16.3.1",
+    "react-dom": "16.3.1",
+    "react-router": "4.3.1",
+    "react-router-dom": "4.3.1",
     "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
     "source-map-loader": "^0.2.3",
@@ -83,19 +93,11 @@
     "tslint-eslint-rules": "^4.1.1",
     "tslint-loader": "^3.6.0",
     "tslint-react": "^3.4.0",
-    "typescript": "^2.8.1",
+    "typescript": "^3.1.6",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^0.6.2",
     "webpack": "4.5.0",
     "webpack-dev-middleware": "^2.0.0",
     "webpack-hot-middleware": "^2.21.2"
-  },
-  "peerDependencies": {
-    "ali-oss": "5.3.1",
-    "font-awesome": "4.7.0",
-    "jquery": "3.3.1",
-    "react": "16.3.1",
-    "react-dom": "16.3.1",
-    "viewerjs": "1.0.0"
   }
 }

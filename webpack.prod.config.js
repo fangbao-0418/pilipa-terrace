@@ -1,14 +1,13 @@
 var path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const extractCommon = new ExtractTextPlugin({
-  filename: 'pilipa.min.css',
+  filename: 'terrace.min.css',
   allChunks: true
 })
 const extractCommon2 = new ExtractTextPlugin({
-  filename: 'pilipa.css',
+  filename: 'terrace.css',
   allChunks: true
 })
 module.exports = [
@@ -17,8 +16,8 @@ module.exports = [
     entry: './index',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'pilipa.min.js',
-      library: 'pilipa',
+      filename: 'terrace.min.js',
+      library: 'terrace',
       libraryTarget: 'umd'
     },
     module: {
@@ -133,17 +132,21 @@ module.exports = [
         }
       }),
       new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/(font-awesome)/)
+      new webpack.IgnorePlugin(/(antd)/)
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.styl', '.css']
     },
     externals: {
-      jquery: 'jquery',
-      'ali-oss': 'ali-oss',
       react: 'react',
       'react-dom': 'react-dom',
-      viewerjs: 'viewerjs'
+      'react-router': 'react-router',
+      'react-router-dom': 'react-router-dom',
+      antd: 'antd',
+      jquery: 'jquery'
+    },
+    performance: {
+      maxAssetSize: 5 * 1024 * 1024
     }
   },
   {
@@ -151,8 +154,8 @@ module.exports = [
     entry: './index',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'pilipa.js',
-      library: 'pilipa',
+      filename: 'terrace.js',
+      library: 'terrace',
       libraryTarget: 'umd'
     },
     module: {
@@ -246,17 +249,21 @@ module.exports = [
     plugins: [
       extractCommon2,
       new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/(font-awesome)/)
+      new webpack.IgnorePlugin(/(antd)/)
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.styl', '.css']
     },
     externals: {
-      jquery: 'jquery',
-      'ali-oss': 'ali-oss',
       react: 'react',
       'react-dom': 'react-dom',
-      viewerjs: 'viewerjs'
+      'react-router': 'react-router',
+      'react-router-dom': 'react-router-dom',
+      antd: 'antd',
+      jquery: 'jquery'
+    },
+    performance: {
+      maxAssetSize: 5 * 1024 * 1024
     }
   }
 ]

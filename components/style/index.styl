@@ -1,59 +1,80 @@
-pilipa-prefix = pilipa
-@import './animation.styl'
-
-for num in (1..50)
-  .mt-{num}
-    margin-right: (num)px
-  .mb-{num}
-    margin-right: (num)px
-  .ml-{num}
-    margin-right: (num)px
-  .mr-{num}
-    margin-right: (num)px
-.{pilipa-prefix}-btn
-  padding: 5px 12px
-  border-radius: 4px
-  font-size: 14px
-  outline: 0
-  display: inline-block
-  background-color: #fff
-  border: 1px solid #ccc
-  cursor: pointer
-  user-select: none
-.{pilipa-prefix}-btn-default
-  color: rgba(0,0,0,.65)
-  background-color: #fff
-  border-color: #d9d9d9
-  &:hover
-    color: #40a9ff;
-    background-color: #fff;
-    border-color: #40a9ff;
-  &:active
-    color: #096dd9;
-    background-color: #fff;
-    border-color: #096dd9;
-.{pilipa-prefix}-btn-warning
-  color: #FFFFFF
-  background-color: #f0ad4e;
-  border-color: #eea236;
-  &:hover
-    background-color: #ec971f;
-    border-color: #d58512;
-  &:active
-    color: #fff;
-    background-color: #d58512;
-    border-color: #985f0d;
-.pilipa-btn-primary
-  color: #fff;
-  background-color: #1890ff;
-  border-color: #1890ff;
-  &:hover
-    background-color: #40a9ff;
-    border-color: #40a9ff;
-  &:active
-    color: #fff;
-    background-color: #096dd9;
-    border-color: #096dd9;
-.pilipa-clickabled
-  color: #337ab7
-  cursor: pointer
+html
+  height: 100%
+  width: 100%
+  body
+    font-family: '微软雅黑', 'Microsoft YaHei'
+    font-size: 12px
+    height: 100%
+    width: 100%
+    ul 
+      list-style none
+      margin: 0
+      padding: 0
+    #root
+      height: 100%
+      width: 100%
+    .fl
+      float: left
+    .fr
+      float: right
+    .ml5
+      margin-left: 5px
+    .ml10
+      margin-left 10px
+    .mr5
+      margin-right 5px
+    .mr10
+      margin-right 10px
+    .mr20
+      margin-right: 20px
+    .mt5
+      margin-top: 5px
+    .mt10
+      margin-top: 10px
+    .mt12
+      margin-top 12px
+    .mt20
+      margin-top 20px
+    .mt40
+      margin-top 40px
+    .mr40
+      margin-right 40px
+    .mb5
+      margin-bottom: 5px
+    .mb10
+      margin-bottom: 10px
+    .mb12
+      margin-bottom 12px
+    .icon
+      cursor pointer
+      display: inline-block
+      background-repeat: no-repeat
+      background-size: 100% 100%
+    .font14
+      font-size: 14px
+    .font18
+      font-size: 18px
+    .text-right
+      text-align: right
+    .text-center
+      text-align: center
+    .text-right
+      text-align: right
+    .href
+      cursor pointer
+      color: #1890FF!important
+    .disabled
+      cursor: not-allowed
+    .inline-block
+      display: inline-block
+    .clear
+      &:after
+        content: ''
+        display: block
+        clear: both
+    .fa
+      color: #999
+      cursor: pointer
+    .middle
+      vertical-align: middle
+      

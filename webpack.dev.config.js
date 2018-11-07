@@ -10,7 +10,8 @@ module.exports = {
   mode: 'development',
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-    './dev/index'
+    './dev/index',
+    './index'
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

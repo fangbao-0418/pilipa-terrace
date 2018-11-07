@@ -40,18 +40,14 @@ gulp.task('dist', function (done) {
   })
 })
 
-gulp.task('stylus', function (done) {
-  gulp.src('components/**/*.styl')
-    .pipe(stylus()).pipe(gulp.dest('.tmp'))
-  done(0)
-})
-
-gulp.task('autoprefix', function () {
+gulp.task('stylus', function (cb) {
   var postcss = require('gulp-postcss')
   var autoprefixer = require('autoprefixer')
-  return gulp.src('.tmp/**/*.css')
+  gulp.src('components/**/*.styl')
+    .pipe(stylus())
     .pipe(postcss([ autoprefixer() ]))
     .pipe(gulp.dest('libs'))
+    .on('end', cb)
 })
 
 // 编译ts
@@ -66,7 +62,7 @@ gulp.task('ts', function (cb) {
     .on('end', cb)
 })
 gulp.task('copy', function (cb) {
-  gulp.src(['components/**/*.d.ts', 'components/**/*.js'])
+  gulp.src(['components/**/*.d.ts', 'components/**/*.js', 'components/**/*.@(png|jpe?g)'])
     .pipe(gulp.dest('libs'))
     .on('end', cb)
 })
@@ -83,7 +79,6 @@ gulp.task('cleanjsx', function () {
   rimraf.sync('libs/**/*.jsx')
 })
 
-gulp.task('css', ['stylus', 'autoprefix'])
 gulp.task('libs', function (cb) {
   rimraf.sync('libs')
   gulpSequence('ts', 'copy', 'js', 'cleanjsx', cb)

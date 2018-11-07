@@ -3,19 +3,20 @@ const location = window.location.href
 let hash
 let Component
 try {
-  hash = location.match(/#([\w-]*)$/)[1]
+  hash = location.match(/#\/?([\w-]*)$/)[1]
+  console.log(hash, 'hash')
   try {
     Component = require('./' + hash + '.tsx').default
   } catch (e) {
     Component = require('./' + hash + '.js').default
   }
 } catch (e) {
-  console.log('home page')
+  console.log(e, location, 'home page')
 }
-
+console.log(Component, 'component')
 export default class App extends React.Component {
   mapDemo () {
-    const demo = ['dropdown', 'auto-complete', 'voucher', 'modal', 'notification', 'loading', 'cookie', 'webuploader', 'searchView', 'test', 'carousel', 'form', 'mount', 'utils']
+    const demo = ['iframe']
     const node = []
     demo.map((item, index) => {
       node.push(
@@ -25,7 +26,7 @@ export default class App extends React.Component {
             cursor: 'pointer'
           }}
           onClick={() => {
-            window.location.href = '/#' + item
+            window.location.href = '/#/' + item
             window.location.reload()
           }}
         >
