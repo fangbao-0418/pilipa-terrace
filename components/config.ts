@@ -1,5 +1,5 @@
 import { UserProps } from './iframe/ContextType'
-export type TypeProps = 'workorder' | 'legwork' | 'premission' | 'crm' | 'message' | 'operate-log' | 'configure'
+export type TypeProps = 'workorder' | 'legwork' | 'permission' | 'crm' | 'message' | 'operate-log' | 'configure'
 interface ConfigProps {
   from: string
   token: string
@@ -11,7 +11,7 @@ interface ConfigProps {
 }
 const config: ConfigProps = {
   from: '',
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem('token') || undefined,
   user: undefined,
   mark: '',
   env: 'development',

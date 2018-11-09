@@ -26,11 +26,6 @@ class Main extends React.Component<Props> {
       onChange: this.onChange.bind(this)
     }
   }
-  public constructor (props: Props) {
-    super(props)
-    Config.env = props.env === undefined ? 'development' : props.env
-    Config.token = props.token
-  }
   public componentWillMount () {
     this.fetchUser()
   }

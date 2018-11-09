@@ -8,6 +8,31 @@ export interface AjaxConfigProps extends JQuery.AjaxSettings {
   [field: string]: any
 }
 type RequestTypeProps = 'GET' | 'POST' | 'DELETE' | 'PUT'
+function handleError (err: JQuery.jqXHR) {
+  let res = {}
+  const { responseJSON, responseText } = err
+  try {
+    res = responseJSON || JSON.parse(responseText)
+  } catch (e) {
+    console.log(e)
+  }
+  return res
+}
+$(document).ajaxError((event, response, settings) => {
+  console.log(response, settings, 'error')
+  const err: any = handleError(response) || {}
+  err.message = err.message || err.errMsg
+  if (response.status === 401) {
+    Config.token = ''
+    sessionStorage.clear()
+    localStorage.clear()
+    if (Config.env === 'production') {
+      window.location.href = '/login'
+    } else {
+      Config.history('/login')
+    }
+  }
+})
 const http = (url: string, type?: AjaxConfigProps | RequestTypeProps, config: AjaxConfigProps = {}) => {
   // url = APP.env === 'production' ? 'https://x-sys.i-counting.cn' + url : url
   let data: any
@@ -31,7 +56,7 @@ const http = (url: string, type?: AjaxConfigProps | RequestTypeProps, config: Aj
   delete config.extension
   data = config.data || config || undefined
   const headers = Object.assign({}, config.headers, {
-    token: Config.token,
+    token: Config.token || undefined,
     from: Config.from
   })
   let ajaxConfig: JQuery.AjaxSettings = {

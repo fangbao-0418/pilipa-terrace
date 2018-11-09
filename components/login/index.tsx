@@ -9,6 +9,11 @@ class Main extends React.Component {
   public state: State = {
     step: Config.token ? 2 : 1
   }
+  public componentWillReceiveProps () {
+    this.setState({
+      step: Config.token ? 2 : 1
+    })
+  }
   public render () {
     const { step } = this.state
     return (

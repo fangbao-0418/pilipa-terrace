@@ -8,8 +8,6 @@ export const fetchUserInfo = () => {
     res.codes = res2
     Config.user = res
     return res
-  }, () => {
-    window.location.href = '/logout'
   })
 }
 

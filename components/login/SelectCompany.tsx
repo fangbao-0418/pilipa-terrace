@@ -17,7 +17,7 @@ class Main extends React.Component {
           companyId: item.companyId,
           token: Config.token
         }).then(() => {
-          location.replace('/')
+          this.history()
         })
       } else {
         this.setState({
@@ -25,6 +25,13 @@ class Main extends React.Component {
         })
       }
     })
+  }
+  public history (url = '/') {
+    if (Config.env === 'production') {
+      window.location.href = '/'
+    } else {
+      Config.history('/')
+    }
   }
   public render () {
     const { dataSource } = this.state
@@ -44,10 +51,8 @@ class Main extends React.Component {
                         companyId: item.companyId,
                         token: Config.token
                       }).then((res) => {
-                        console.log(res)
-                        // APP.history.push('/')
+                        this.history()
                       })
-                      // APP.history.push('/')
                     }}
                   >
                     {item.companyName}

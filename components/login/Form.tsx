@@ -21,11 +21,6 @@ class Main extends React.Component<Props> {
   public values: any = {}
   public verify: any
   public num = 0
-  public componentWillMount () {
-    if (localStorage.getItem('token')) {
-      location.replace('/')
-    }
-  }
   public componentDidMount () {
     this.verify = new GVerify('verify')
   }
@@ -123,10 +118,10 @@ class Main extends React.Component<Props> {
     return (
       <div className={'box'}>
         <div className={'title'}>噼里啪管理系统</div>
-        <div className={'switch'}>
+        {/* <div className={'switch'}>
           <span className={classNames({active: this.state.type === 1})} onClick={this.changeType.bind(this, 1)}>短信登录</span>
           <span className={classNames({active: this.state.type === 2})} onClick={this.changeType.bind(this, 2)}>微信登录</span>
-        </div>
+        </div> */}
         <div className={'sms'} ref='sms'>
           <ul>
             <li onClick={this.onliClick.bind(this)} className={classNames({'has-error': !!error.phone})}>
