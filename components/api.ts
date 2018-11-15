@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import http from './http'
 // 用户登陆
 export const userLogin = (payload: {
@@ -7,6 +8,10 @@ export const userLogin = (payload: {
   return http(`/user/v1/api/login`, 'POST', {
     data: payload
   })
+}
+// 获取菜单
+export const fetchMenu = () => {
+  return $.get(`/json/menu.json`)
 }
 // 获取短信验证码
 export const fetchSmsVerifyCode = (phone: string) => {

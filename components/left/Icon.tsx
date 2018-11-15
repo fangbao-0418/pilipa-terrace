@@ -1,12 +1,19 @@
 import classNames from 'classnames'
 import React from 'react'
 interface Props {
-  type: 'bussiness' | 'open' | 'customer' | 'sign' | 'set' | 'center' | 'organ' | 'user' | 'worker' | 'message' | 'task' | 'tasktpl' | 'perform' | 'data' | 'configure' | 'log'
+  src: string
 }
 class Main extends React.Component<Props> {
   public render () {
+    console.log(this.props.src)
     return (
-      <span className={classNames('menu-icon', `menu-icon-${this.props.type}`)}></span>
+      <span
+        className={'menu-icon'}
+        style={{
+          backgroundImage: `url(${this.props.src})`
+        }}
+      >
+      </span>
     )
   }
 }

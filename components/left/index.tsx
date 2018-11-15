@@ -2,18 +2,12 @@ import React from 'react'
 import { Layout, Menu } from 'antd'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { UserProps } from '../iframe/ContextType'
-import getConfigs, { getHomePage } from './config'
-import Config from '../config'
+import { getHomePage } from './config'
+import Config, { MenuItem } from '../config'
+import Icon from './Icon'
 const SubMenu = Menu.SubMenu
 const { Sider } = Layout
-export interface MenuItem {
-  title: string
-  path?: string
-  icon?: JSX.Element
-  hidden?: boolean
-  mark?: string
-  children?: Array<MenuItem>
-}
+
 interface Props extends RouteComponentProps {
   user: UserProps
 }
@@ -29,7 +23,6 @@ class Main extends React.Component<Props, State> {
     openKeys: []
   }
   public pathInfo: {[key: string]: MenuItem} = {}
-  public configs: MenuItem[] = getConfigs()
   public homePage = getHomePage()
   public componentDidMount () {
     this.getActive()
@@ -38,7 +31,6 @@ class Main extends React.Component<Props, State> {
     if (this.props.location.pathname !== props.location.pathname) {
       this.getActive(props.location.pathname)
     }
-    this.configs = getConfigs()
   }
   public getActive (pathname = this.props.location.pathname) {
     let selectedKey = ''
@@ -74,19 +66,25 @@ class Main extends React.Component<Props, State> {
       window.location.href = '/' + mark + url
     }
   }
-  public getMenuNodes (configs = this.configs, prefKey = 'm') {
+  public getMenuNodes (configs = Config.user.menu, prefKey = 'm') {
     const nodes: JSX.Element[] = []
     configs.forEach((item, index) => {
       const key = [prefKey, index].join('-')
       const path = item.path
       this.pathInfo[key] = item
       let Item
+      const icon = Config.env === 'development' ? `https://x-b.i-counting.cn${item.icon}` : item.icon
       if (item.children) {
         Item = (
           <SubMenu
             hidden={item.hidden}
             key={key}
-            title={<span>{item.icon}<span>{item.title}</span></span>}
+            title={(
+              <span>
+                {!!item.icon && <Icon src={icon} />}
+                <span>{item.title}</span>
+              </span>
+            )}
             onTitleClick={() => {
               this.setState({
                 openKeys: [key]
@@ -111,7 +109,7 @@ class Main extends React.Component<Props, State> {
               }
             }}
           >
-            {item.icon}
+            {!!item.icon && <Icon src={icon} />}
             <span
             >
               {item.title}

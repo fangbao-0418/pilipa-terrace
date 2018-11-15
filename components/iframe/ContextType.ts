@@ -1,4 +1,5 @@
 import React from 'react'
+import { MenuItem } from '../config'
 export interface UserProps {
   companyName?: string
   // email: string
@@ -9,6 +10,7 @@ export interface UserProps {
   cityCode?: string
   city?: string
   codes?: string[]
+  menu?: MenuItem[]
 }
 export interface ValueProps {
   user: UserProps,

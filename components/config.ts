@@ -1,5 +1,14 @@
 import { UserProps } from './iframe/ContextType'
-export type TypeProps = 'workorder' | 'legwork' | 'permission' | 'crm' | 'message' | 'operate-log' | 'configure'
+export type TypeProps = string
+export interface MenuItem {
+  title: string
+  path?: string
+  code?: string
+  mark?: string
+  hidden?: boolean
+  icon?: string
+  children?: Array<MenuItem>
+}
 interface ConfigProps {
   from: string
   token: string
