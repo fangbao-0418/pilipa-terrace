@@ -160,7 +160,6 @@ class Msg implements MsgI {
 
         // 通用数据交互
         this.onData(data)
-        console.log('receive msg::', data)
       }).catch((e: any) => {
         // this.onData({title: '错误', content: '暂无提醒'})
         console.error('message error:', e)

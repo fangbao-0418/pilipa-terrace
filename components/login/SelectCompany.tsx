@@ -35,9 +35,6 @@ class Main extends React.Component {
   }
   public render () {
     const { dataSource } = this.state
-    // if (dataSource.length <= 1) {
-    //   return null
-    // }
     return (
       <div className='select-company'>
         <ul>

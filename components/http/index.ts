@@ -19,7 +19,6 @@ function handleError (err: JQuery.jqXHR) {
   return res
 }
 $(document).ajaxError((event, response, settings) => {
-  console.log(response, settings, 'error')
   const err: any = handleError(response) || {}
   err.message = err.message || err.errMsg
   if (response.status === 401) {

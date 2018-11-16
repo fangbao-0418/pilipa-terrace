@@ -1,6 +1,6 @@
 {
   "name": "pilipa-terrace",
-  "version": "1.0.0-alpha.25",
+  "version": "1.0.0-alpha.26",
   "description": "噼里啪b端框架",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",

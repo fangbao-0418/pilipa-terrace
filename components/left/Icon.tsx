@@ -5,7 +5,6 @@ interface Props {
 }
 class Main extends React.Component<Props> {
   public render () {
-    console.log(this.props.src)
     return (
       <span
         className={'menu-icon'}

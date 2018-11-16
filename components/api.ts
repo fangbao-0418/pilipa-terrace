@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import http from './http'
+import Config from './config'
 // 用户登陆
 export const userLogin = (payload: {
   phone: string,
@@ -25,7 +26,12 @@ export const bindCompany = (payload: {token: string, companyId: string}) => {
 }
 // 获取公司列表
 export const companylist = (token: string) => {
-  return http(`/user/v1/api/user/company/list?token=${token}`)
+  return http(`/user/v1/api/user/company/list?token=${token}`).then((res) => {
+    return res
+  }, (err) => {
+    Config.history('/logout')
+    return err
+  })
 }
 // 退出
 export const userLogout = () => {

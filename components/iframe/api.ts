@@ -31,7 +31,6 @@ export const fetchUserInfo = () => {
   ]).then(([res, res2, res3]) => {
     res.codes = res2
     res.menu = handelMenuData(res3, res2)
-    console.log(res.menu, 'res3', 'menu')
     Config.user = res
     return res
   })
