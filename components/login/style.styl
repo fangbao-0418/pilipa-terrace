@@ -76,8 +76,8 @@
         font-size: 14px
         color: #333333
         caret-color: #1890ff
-        &::input-placeholder
-          color: #d9d9d9
+        &::-webkit-input-placeholder
+          color: rgb(191, 191, 191)
       .verify-image
         float: right
       .phone, .verify-text, .sms-verify-text
@@ -86,9 +86,13 @@
         box-sizing: content-box
         position relative
         width: 100%
-        transition: all 100ms
+        transition: all .3s;
+        border-radius: 2px
         &:hover
-          border: 1px solid #1890ff
+          border: 1px solid #40a9ff
+        &:focus-within
+          box-shadow: 0 0 0 2px rgba(24,144,255,.2)
+          border-radius: 2px
         input 
           line-height: 40px
           height: 40px

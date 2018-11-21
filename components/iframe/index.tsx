@@ -24,7 +24,7 @@ class Index extends React.Component<Props> {
     if (Config.env === 'development') {
       Config.history = this.props.history.push
     }
-    if (!token) {
+    if (!token && this.props.location.pathname !== '/login') {
       this.history('/login')
     }
   }
