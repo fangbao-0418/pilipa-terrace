@@ -1,7 +1,7 @@
 import Config from '../config'
 export const getHomePage = () => {
   let url = '/'
-  Config.user.menu.find((item) => {
+  Config.menu.find((item) => {
     if (item.hidden !== true) {
       if (item.path) {
         url = item.path

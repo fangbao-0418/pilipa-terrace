@@ -131,19 +131,48 @@ module.exports = [
           }
         }
       }),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/(antd)/)
+      new webpack.NoEmitOnErrorsPlugin()
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.styl', '.css']
     },
     externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
-      'react-router': 'react-router',
-      'react-router-dom': 'react-router-dom',
-      antd: 'antd',
-      jquery: 'jquery'
+      react: {
+        commonjs: 'react',
+        commonjs2: 'react',
+        amd: 'react',
+        root: 'React'
+      },
+      'react-dom': {
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'react-dom',
+        root: 'ReactDom'
+      },
+      'react-router': {
+        commonjs: 'react-router',
+        commonjs2: 'react-router',
+        amd: 'react-router',
+        root: 'ReactRouter'
+      },
+      'react-router-dom': {
+        commonjs: 'react-router-dom',
+        commonjs2: 'react-router-dom',
+        amd: 'react-router-dom',
+        root: 'ReactRouterDOM'
+      },
+      antd: {
+        commonjs: 'antd',
+        commonjs2: 'antd',
+        amd: 'antd',
+        root: 'antd'
+      },
+      jquery: {
+        commonjs: 'jquery',
+        commonjs2: 'jquery',
+        amd: 'jquery',
+        root: 'jQuery'
+      }
     },
     performance: {
       maxAssetSize: 5 * 1024 * 1024
@@ -248,19 +277,48 @@ module.exports = [
     },
     plugins: [
       extractCommon2,
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.IgnorePlugin(/(antd)/)
+      new webpack.NoEmitOnErrorsPlugin()
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js', '.min.js', '.styl', '.css']
     },
     externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
-      'react-router': 'react-router',
-      'react-router-dom': 'react-router-dom',
-      antd: 'antd',
-      jquery: 'jquery'
+      react: {
+        commonjs: 'react',
+        commonjs2: 'react',
+        amd: 'react',
+        root: 'React'
+      },
+      'react-dom': {
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'react-dom',
+        root: 'ReactDom'
+      },
+      'react-router': {
+        commonjs: 'react-router',
+        commonjs2: 'react-router',
+        amd: 'react-router',
+        root: 'ReactRouter'
+      },
+      'react-router-dom': {
+        commonjs: 'react-router-dom',
+        commonjs2: 'react-router-dom',
+        amd: 'react-router-dom',
+        root: 'ReactRouterDOM'
+      },
+      antd: {
+        commonjs: 'antd',
+        commonjs2: 'antd',
+        amd: 'antd',
+        root: 'antd'
+      },
+      jquery: {
+        commonjs: 'jquery',
+        commonjs2: 'jquery',
+        amd: 'jquery',
+        root: 'jQuery'
+      }
     },
     performance: {
       maxAssetSize: 5 * 1024 * 1024

@@ -33,10 +33,6 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/lodash@^4.14.117":
-  version "4.14.117"
-  resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.117.tgz#695a7f514182771a1e0f4345d189052ee33c8778"
-
 "@types/node@*":
   version "9.6.2"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
@@ -2236,8 +2232,8 @@ crypto-browserify@^3.11.0:
     randomfill "^1.0.3"
 
 css-animation@1.x, css-animation@^1.3.2, css-animation@^1.4.1:
-  version "1.4.1"
-  resolved "http://registry.npm.taobao.org/css-animation/download/css-animation-1.4.1.tgz#5b8813125de0fbbbb0bbe1b472ae84221469b7a8"
+  version "1.5.0"
+  resolved "http://registry.npm.taobao.org/css-animation/download/css-animation-1.5.0.tgz#c96b9097a5ef74a7be8480b45cc44e4ec6ca2bf5"
   dependencies:
     babel-runtime "6.x"
     component-classes "^1.2.5"
@@ -6938,8 +6934,8 @@ preserve@^0.2.0:
   resolved "http://registry.npm.taobao.org/preserve/download/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
 prettier@^1.14.3:
-  version "1.14.3"
-  resolved "http://registry.npm.taobao.org/prettier/download/prettier-1.14.3.tgz#90238dd4c0684b7edce5f83b0fb7328e48bd0895"
+  version "1.15.2"
+  resolved "http://registry.npm.taobao.org/prettier/download/prettier-1.15.2.tgz#d31abe22afa4351efa14c7f8b94b58bb7452205e"
 
 pretty-error@^2.0.2:
   version "2.1.1"
@@ -7197,8 +7193,8 @@ rc-calendar@~9.7.9:
     rc-util "^4.1.1"
 
 rc-cascader@~0.16.0:
-  version "0.16.0"
-  resolved "http://registry.npm.taobao.org/rc-cascader/download/rc-cascader-0.16.0.tgz#11baa854c2aaa2d6a8f601dec75dd136d59c5156"
+  version "0.16.2"
+  resolved "http://registry.npm.taobao.org/rc-cascader/download/rc-cascader-0.16.2.tgz#e8f44702523d88aa3f28e92e440f1de5ec384d41"
   dependencies:
     array-tree-filter "^1.0.0"
     prop-types "^15.5.8"
@@ -7264,8 +7260,8 @@ rc-editor-core@~0.8.3:
     setimmediate "^1.0.5"
 
 rc-editor-mention@^1.1.7:
-  version "1.1.8"
-  resolved "http://registry.npm.taobao.org/rc-editor-mention/download/rc-editor-mention-1.1.8.tgz#08dafc50b1ab9ad4d2355eedd6308373ea66473a"
+  version "1.1.11"
+  resolved "http://registry.npm.taobao.org/rc-editor-mention/download/rc-editor-mention-1.1.11.tgz#e6bff74448105438f70b269a41f70cd753b99f41"
   dependencies:
     babel-runtime "^6.23.0"
     classnames "^2.2.5"
@@ -7347,13 +7343,14 @@ rc-progress@~2.2.6:
     prop-types "^15.5.8"
 
 rc-rate@~2.4.2:
-  version "2.4.2"
-  resolved "http://registry.npm.taobao.org/rc-rate/download/rc-rate-2.4.2.tgz#c097bfdba7a5783cec287c928b1461cc1621f836"
+  version "2.4.3"
+  resolved "http://registry.npm.taobao.org/rc-rate/download/rc-rate-2.4.3.tgz#70434905faf84c9a0694bec4bdbd9b9a9099318f"
   dependencies:
     babel-runtime "^6.26.0"
     classnames "^2.2.5"
     prop-types "^15.5.8"
     rc-util "^4.3.0"
+    react-lifecycles-compat "^3.0.4"
 
 rc-select@~8.4.0:
   version "8.4.4"
@@ -7417,8 +7414,8 @@ rc-table@~6.3.4:
     warning "^3.0.0"
 
 rc-tabs@~9.4.6:
-  version "9.4.8"
-  resolved "http://registry.npm.taobao.org/rc-tabs/download/rc-tabs-9.4.8.tgz#62144284189d9e36472b6a6f6948bdba715bbccc"
+  version "9.4.9"
+  resolved "http://registry.npm.taobao.org/rc-tabs/download/rc-tabs-9.4.9.tgz#6ecdf4209a9a9dc23c65c5e22435c3bfd97e56d7"
   dependencies:
     babel-runtime "6.x"
     classnames "2.x"

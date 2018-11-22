@@ -17,6 +17,8 @@ interface ConfigProps {
   env: 'development' | 'production'
   history?: (url: string) => void
   type?: TypeProps
+  logo?: string
+  menu?: MenuItem[]
 }
 const config: ConfigProps = {
   from: '',
@@ -26,6 +28,8 @@ const config: ConfigProps = {
   env: 'development',
   history: (url) => {
     window.location.href = url
-  }
+  },
+  logo: '',
+  menu: []
 }
 export default config

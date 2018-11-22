@@ -1,6 +1,6 @@
+import $ from 'jquery'
 import http from '../http'
 import Config, { MenuItem } from '../config'
-import { fetchMenu } from '../api'
 export function hasPermission (key: string, codes: string[]) {
   if (key !== undefined) {
     if (codes.indexOf(key) > -1) {
@@ -23,14 +23,19 @@ function handelMenuData (menu: MenuItem[], codes: string[]) {
   })
   return res
 }
+// 获取菜单
+export const fetchConfig = () => {
+  return $.get(`/json/config.json`)
+}
 export const fetchUserInfo = () => {
   return Promise.all([
     http(`/user/v1/api/user/info?token=${Config.token}`),
     fetchPermissionCode(),
-    fetchMenu()
+    fetchConfig()
   ]).then(([res, res2, res3]) => {
     res.codes = res2
-    res.menu = handelMenuData(res3, res2)
+    Config.menu = handelMenuData(res3.menu, res2)
+    Config.logo = res3.logo
     Config.user = res
     return res
   })

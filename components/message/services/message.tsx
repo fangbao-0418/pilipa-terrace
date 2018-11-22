@@ -10,7 +10,6 @@ import { ReactNode } from 'react'
 import { notification } from 'antd'
 import { ArgsProps } from 'antd/lib/notification'
 import { Button } from 'antd'
-import _ from 'lodash'
 import Config from '../../config'
 import MsgService from './index'
 
@@ -79,7 +78,7 @@ class Msg implements MsgI {
 
   // 初始化
   public constructor (conf: Conf = {}) {
-    this.conf = _.extend(this.conf, conf)
+    this.conf = Object.assign(this.conf, conf)
     this.evs = {}
   }
 

@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import http from './http'
 import Config from './config'
 // 用户登陆
@@ -10,10 +9,7 @@ export const userLogin = (payload: {
     data: payload
   })
 }
-// 获取菜单
-export const fetchMenu = () => {
-  return $.get(`/json/menu.json`)
-}
+
 // 获取短信验证码
 export const fetchSmsVerifyCode = (phone: string) => {
   return http(`/user/v1/api/short/message/send`, 'GET', {

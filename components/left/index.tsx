@@ -66,7 +66,7 @@ class Main extends React.Component<Props, State> {
       window.location.href = '/' + mark + url
     }
   }
-  public getMenuNodes (configs = Config.user.menu, prefKey = 'm') {
+  public getMenuNodes (configs = Config.menu, prefKey = 'm') {
     const nodes: JSX.Element[] = []
     configs.forEach((item, index) => {
       const key = [prefKey, index].join('-')
@@ -122,6 +122,7 @@ class Main extends React.Component<Props, State> {
     return nodes
   }
   public render () {
+    const logo = Config.env === 'development' ? `https://x-b.i-counting.cn${Config.logo}` : Config.logo
     return (
       <Sider
         className='pilipa-terrace-left'
@@ -135,7 +136,9 @@ class Main extends React.Component<Props, State> {
               this.toHome()
             }}
             className={'logo'}
-          />
+          >
+            <img src={logo} />
+          </div>
         </div>
         <div className='menu'>
           <Menu
