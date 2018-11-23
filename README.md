@@ -1,38 +1,36 @@
-# version
- 旧版请使用1.x，旧版最后版本为1.1.6
-
- 新版使用3.x 
+# Notes
+* antd推荐使用3.10.1
+* 依赖资源包jquery、react、react-dom、react-router、react-router-dom、antd
 
 # usage
 ```
-yarn add pilipa --registry https://nexus.i-counting.cn/repository/accounting/
+yarn add pilipa-terrace --registry http://registry.npm.taobao.org/
 ```
 
 # Development
 ```
 yarn install
-yarn add ali-oss@5.3.1 font-awesome@4.7.0 jquery@3.3.1 react@16.3.1 react-dom@16.3.1 viewerjs@1.0.0 -P
 yarn dev
 ...
 yarn lib
 yarn dist
 ```
 
-# dependency 
-### commonjs
-- `yarn add @types/ali-oss --registry https://npmregistry.i-counting.cn`
-- `yarn add viewerjs@^1.0.0`
-- `yarn add react@^16.2.0 react-dom@^16.2.0`
-- `yarn add font-awesome@^4.7.0`
-- `yarn add jquery@^3.2.1`
-
-### amd
+### script引用资源包时webpack下的配置
 ```
-define(['jquery', 'react', 'react-dom', 'viewerjs', 'ali-oss'], ($, React, ReactDom, Viewer, OSS) => {})
+externals: {
+  jquery: 'jQuery',
+  react: 'React',
+  'react-dom': 'ReactDOM',
+  'react-router': 'ReactRouter',
+  'react-router-dom': 'ReactRouterDOM',
+  antd: 'antd',
+  'pilipa-terrace': 'terrace'
+}
 ```
 
 # Change Log 
 
-### 3.0.2
-  &nbsp;&nbsp; `2018-06-07` 
-  - loading 组件改版 样式优化 #32
+### 1.0.3-alpha.3
+  &nbsp;&nbsp; `2018-11-23` 
+  - 修改登陆样式
