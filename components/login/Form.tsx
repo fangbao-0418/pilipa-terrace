@@ -31,8 +31,8 @@ class Main extends React.Component<Props> {
   }
   public toLogin () {
     const { error } = this.state
-    if (!this.values.phone) {
-      error.phone = '手机号不能为空'
+    if (!/^1[3456789][0-9]\d{8}$/.test(this.values.phone)) {
+      error.phone = '手机号码格式不正确'
     }
     if (!this.verify.validate(this.values['verify-code'] || '')) {
       error['verify-code'] = '图片验证码不匹配'
@@ -55,16 +55,19 @@ class Main extends React.Component<Props> {
       if (this.props.onOk) {
         this.props.onOk()
       }
-    }, () => {
-      error.phone = '手机号尚未注册或短信验证码不正确'
+    }, (err) => {
+      console.log(err.responseJSON.errors[0].message, 'err')
+      error.phone = err.responseJSON.errors[0].message || '登陆失败'
       this.setState({
         error
       })
     })
   }
   public handleChange (field: 'phone' | 'verify-code' | 'sms-verify-code', e: React.SyntheticEvent) {
+    const { error } = this.state
+    error[field] = undefined
     this.setState({
-      error: {}
+      error
     })
     const target: any = e.target
     const value = target.value
@@ -106,13 +109,6 @@ class Main extends React.Component<Props> {
       }
     }, 1000)
   }
-  public onliClick (e: any) {
-    const current = e.currentTarget
-    current.parentElement.childNodes.forEach((el: Element) => {
-      el.setAttribute('class', '')
-    })
-    current.setAttribute('class', 'active')
-  }
   public render () {
     const { error, message } = this.state
     return (
@@ -124,7 +120,7 @@ class Main extends React.Component<Props> {
         </div> */}
         <div className={'sms'} ref='sms'>
           <ul>
-            <li onClick={this.onliClick.bind(this)} className={classNames({'has-error': !!error.phone})}>
+            <li className={classNames({'has-error': !!error.phone})}>
               <div className={'phone'}>
                 <input maxLength={11} placeholder='请输入手机号' onChange={this.handleChange.bind(this, 'phone')}/>
               </div>
@@ -132,7 +128,7 @@ class Main extends React.Component<Props> {
                 {error.phone}
               </span>
             </li>
-            <li onClick={this.onliClick.bind(this)} className={classNames({'has-error': !!error['verify-code']})}>
+            <li className={classNames({'has-error': !!error['verify-code']})}>
               <div className={'verify-text'}>
                 <input
                   maxLength={4}
@@ -145,7 +141,7 @@ class Main extends React.Component<Props> {
                 {error['verify-code']}
               </span>
             </li>
-            <li onClick={this.onliClick.bind(this)} className={classNames({'has-error': !!error['sms-verify-code']})}>
+            <li className={classNames({'has-error': !!error['sms-verify-code']})}>
               <div className={'sms-verify-text'}>
                 <input
                   maxLength={6}

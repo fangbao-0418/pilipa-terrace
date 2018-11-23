@@ -70,6 +70,10 @@
           &.has-error
             .phone, .verify-text, .sms-verify-text
               border: 1px solid red
+              &:focus-within
+                border: 1px solid #ff4d4f
+                box-shadow: 0 0 0 2px rgba(245,34,45,.2)
+                border-radius: 2px
       input 
         outline: none
         border: none
@@ -91,6 +95,7 @@
         &:hover
           border: 1px solid #40a9ff
         &:focus-within
+          border: 1px solid #40a9ff
           box-shadow: 0 0 0 2px rgba(24,144,255,.2)
           border-radius: 2px
         input 
@@ -156,22 +161,24 @@
   .select-company
     ul
       position: absolute
-      width: 240px
+      width: 280px
       margin: auto auto
       left: 0
       right: 0
       top: 50%
       transform: translateY(-50%)
       li
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        background: #FFFFFF
+        padding: 10px 20px
+        border-radius: 4px
+        min-height: 40px
         span
-          display: block
-          background: #FFFFFF
-          border-radius: 4px
-          height: 40px
-          margin-bottom: 10px
           font-size: 14px
-          line-height: 40px
-          text-align: center
+          line-height: 18px
           cursor pointer
           user-select: none
           &:hover
