@@ -60,7 +60,7 @@ class Main extends React.Component<Props, State> {
       Config.history(url)
       return
     }
-    if (mark === Config.mark) {
+    if (mark === Config.type) {
       this.props.history.push(url)
     } else {
       window.location.href = '/' + mark + url

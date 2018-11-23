@@ -6,7 +6,7 @@ export const getHomePage = () => {
     if (item.hidden !== true) {
       if (item.path) {
         url = item.path
-        Config.mark = item.mark
+        mark = item.mark
         return true
       } else {
         if (item.children) {
@@ -14,7 +14,6 @@ export const getHomePage = () => {
             if (item2.hidden !== true) {
               url = item2.path
               mark = item.mark
-              // Config.mark = item.mark
               return true
             }
           }) > -1
