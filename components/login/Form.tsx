@@ -66,6 +66,9 @@ class Main extends React.Component<Props> {
   public handleChange (field: 'phone' | 'verify-code' | 'sms-verify-code', e: React.SyntheticEvent) {
     const { error } = this.state
     error[field] = undefined
+    if (field === 'sms-verify-code') {
+      error.phone = undefined
+    }
     this.setState({
       error
     })
