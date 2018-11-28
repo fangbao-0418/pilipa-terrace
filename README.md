@@ -4,7 +4,7 @@
 
 # usage
 ```
-yarn add pilipa-terrace --registry http://registry.npm.taobao.org/
+yarn add pilipa-terrace --registry https://npmregistry.i-counting.cn
 ```
 
 # Development
@@ -31,6 +31,6 @@ externals: {
 
 # Change Log 
 
-### 1.0.3-alpha.3
-  &nbsp;&nbsp; `2018-11-23` 
-  - 修改登陆样式
+### 1.0.7
+  &nbsp;&nbsp; `2018-11-28` 
+  - 支持无痕模式

@@ -1,4 +1,5 @@
 import { UserProps } from './iframe/ContextType'
+import cookie from './cookie'
 export type TypeProps = string
 export interface MenuItem {
   title: string
@@ -22,7 +23,7 @@ interface ConfigProps {
 }
 const config: ConfigProps = {
   from: '',
-  token: localStorage.getItem('token') || undefined,
+  token: localStorage.getItem('token') || cookie.get('token') || undefined,
   user: undefined,
   mark: '',
   env: 'development',

@@ -111,9 +111,7 @@ class Main extends React.Component<{}, State> {
                   marginRight: '25px'
                 }}
                 onClick={() => {
-                  if (this.state.msgCount > 0) {
-                    this.msg.uiLogicLinkToList()
-                  }
+                  this.msg.uiLogicLinkToList()
                 }}
               >
                 <i className={'point'} style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}} />

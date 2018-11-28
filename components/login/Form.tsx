@@ -4,6 +4,7 @@ import GVerify from '../utils/gVerify'
 import { userLogin, fetchSmsVerifyCode } from '../api'
 import classNames from 'classnames'
 import Config from '../config'
+import cookie from '../cookie'
 interface Props {
   onOk?: () => void
 }
@@ -52,11 +53,15 @@ class Main extends React.Component<Props> {
     }).then((res) => {
       Config.token = res.token
       localStorage.setItem('token', res.token)
+      cookie.set({
+        token: res.token
+      }, {
+        expires: 24 * 3600 * 30
+      })
       if (this.props.onOk) {
         this.props.onOk()
       }
     }, (err) => {
-      console.log(err.responseJSON.errors[0].message, 'err')
       error.phone = err.responseJSON.errors[0].message || '登陆失败'
       this.setState({
         error
