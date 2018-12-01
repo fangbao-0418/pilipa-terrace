@@ -87,7 +87,7 @@ class Main extends React.Component<Props, State> {
             )}
             onTitleClick={() => {
               this.setState({
-                openKeys: [key]
+                openKeys: key === this.state.openKeys[0] ? [] : [key]
               })
             }}
           >

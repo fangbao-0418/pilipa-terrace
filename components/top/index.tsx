@@ -106,15 +106,18 @@ class Main extends React.Component<{}, State> {
                 className={`icon message`}
                 style={{
                   backgroundImage: `url(${require('../assets/images/message.png')})`,
-                  width: '18px',
-                  height: '20px',
+                  width: '14px',
+                  height: '16px',
                   marginRight: '25px'
                 }}
                 onClick={() => {
                   this.msg.uiLogicLinkToList()
                 }}
               >
-                <i className={'point'} style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}} />
+                <i
+                  className={'point'}
+                  style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}}
+                />
               </span>
               <span
                 className={'username'}
@@ -131,8 +134,8 @@ class Main extends React.Component<{}, State> {
                   className='icon'
                   style={{
                     backgroundImage: `url(${require('../assets/images/user-menu.png')})`,
-                    width: '18px',
-                    height: '18px'
+                    width: '14px',
+                    height: '14px'
                   }}
                 />
               </Dropdown>
