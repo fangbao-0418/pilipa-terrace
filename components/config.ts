@@ -22,7 +22,7 @@ interface ConfigProps {
   menu?: MenuItem[]
 }
 const config: ConfigProps = {
-  from: '',
+  from: '4',
   token: localStorage.getItem('token') || cookie.get('token') || undefined,
   user: undefined,
   mark: '',

@@ -1,6 +1,6 @@
 {
   "name": "pilipa-terrace",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "噼里啪b端公共服务",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
