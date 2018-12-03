@@ -56,7 +56,7 @@ class Main extends React.Component<Props> {
       cookie.set({
         token: res.token
       }, {
-        expires: 24 * 3600 * 30
+        expires: 24 * 3600 * 30 * 1000
       })
       if (this.props.onOk) {
         this.props.onOk()
