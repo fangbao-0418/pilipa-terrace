@@ -1,4 +1,3 @@
-import 'antd/dist/antd.css'
 import React from 'react'
 import Config from '../components/config'
 import Iframe from '../components/iframe/index'

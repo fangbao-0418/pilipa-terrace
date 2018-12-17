@@ -4,8 +4,7 @@ import Left from '../left'
 import Config from '../config'
 import { getHomePage } from '../left/config'
 import {
-  Switch,
-  Route
+  Switch
 } from 'react-router-dom'
 import { Layout } from 'antd'
 import { fetchUserInfo } from './api'
@@ -15,6 +14,7 @@ interface Props {
   env?: 'development' | 'production'
   token?: string
   onChange?: (user?: UserProps) => void
+  defaultValue?: UserProps
 }
 interface State {
   value: ValueProps
@@ -22,11 +22,11 @@ interface State {
 class Main extends React.Component<Props> {
   public state: State = {
     value: {
-      user: undefined,
+      user: this.props.defaultValue,
       onChange: this.onChange.bind(this)
     }
   }
-  public componentWillMount () {
+  public componentDidMount () {
     this.fetchUser()
   }
   public onChange () {

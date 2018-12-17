@@ -8,18 +8,29 @@ import {
   Switch,
   Route
 } from 'react-router-dom'
-import Config, { TypeProps } from '../config'
+import Config, { TypeProps, MenuItem } from '../config'
 interface Props extends RouteComponentProps<{}> {
   env?: 'development' | 'production'
   token?: string
   onChange?: (user?: UserProps) => void
   type?: TypeProps
+  defaultValue?: UserProps
+  config?: {
+    menu: MenuItem[],
+    logo: string
+  }
 }
 class Index extends React.Component<Props> {
   public componentWillMount () {
     Config.env = this.props.env === undefined ? 'development' : this.props.env
     const token = this.props.token || Config.token
+    const config = Object.assign({}, {
+      menu: [],
+      logo: ''
+    }, this.props.config)
     Config.token = token
+    Config.menu = config.menu
+    Config.logo = config.logo
     Config.type = this.props.type
     if (Config.env === 'development') {
       Config.history = this.props.history.push

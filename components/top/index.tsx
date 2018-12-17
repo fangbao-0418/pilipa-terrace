@@ -18,7 +18,7 @@ class Main extends React.Component<{}, State> {
     collapsed: false,
     companyList: []
   }
-  public componentWillMount () {
+  public componentDidMount () {
     // 消息初始化
     this.msg = Msg({}).connect()
     // 交互：获取到已读消息数
@@ -61,6 +61,15 @@ class Main extends React.Component<{}, State> {
         // mode='inline'
         // style={{width: 00}}
       >
+        <Menu.Item
+          onClick={() => {
+            this.history('/permission/info')
+          }}
+        >
+          <span>
+            账号设置
+          </span>
+        </Menu.Item>
         {
           companyList.length > 1 && (
             <Menu.SubMenu title='切换公司'>
@@ -98,7 +107,9 @@ class Main extends React.Component<{}, State> {
     return (
       <ContextType.Consumer>
         {({ user, onChange }) => (
-          <Header className={'pilipa-terrace-top'}>
+          <Header
+            className={'pilipa-terrace-top'}
+          >
             <div
               className={'top-right'}
             >

@@ -23,7 +23,7 @@ interface ConfigProps {
 }
 const config: ConfigProps = {
   from: '4',
-  token: localStorage.getItem('token') || cookie.get('token') || undefined,
+  token: (window.localStorage ? localStorage.getItem('token') : undefined) || cookie.get('token') || undefined,
   user: undefined,
   mark: '',
   env: 'development',
