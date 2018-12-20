@@ -14,7 +14,6 @@ function handleError (err: JQuery.jqXHR) {
   try {
     res = responseJSON || JSON.parse(responseText)
   } catch (e) {
-    console.log(e)
   }
   return res
 }
@@ -22,18 +21,14 @@ $(document).ajaxError((event, response, settings) => {
   const err: any = handleError(response) || {}
   err.message = err.message || err.errMsg
   if (response.status === 401) {
-    Config.token = ''
-    sessionStorage.clear()
-    localStorage.clear()
     if (Config.env === 'production') {
-      window.location.href = '/login'
+      window.location.href = '/logout'
     } else {
-      Config.history('/login')
+      Config.history('/logout')
     }
   }
 })
 const http = (url: string, type?: AjaxConfigProps | RequestTypeProps, config: AjaxConfigProps = {}) => {
-  // url = APP.env === 'production' ? 'https://x-sys.i-counting.cn' + url : url
   let data: any
   if (config instanceof Array) {
     data = config
