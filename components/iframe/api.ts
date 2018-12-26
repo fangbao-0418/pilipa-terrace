@@ -25,7 +25,7 @@ function handelMenuData (menu: MenuItem[], codes: string[]) {
 }
 // 获取菜单
 export const fetchConfig = () => {
-  return $.get(`/json/config.json`)
+  return $.get(`/json/config.json?v=${new Date().getTime()}`)
 }
 export const fetchUserInfo = () => {
   return Promise.all([
