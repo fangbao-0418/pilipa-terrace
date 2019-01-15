@@ -1,7 +1,9 @@
 import React from 'react'
 import Main from './Main'
-import Login from '../login'
-import Logout from '../logout'
+import Login from '../uaa/login'
+import Logout from '../uaa/logout'
+import Token from '../uaa/token'
+import Bind from '../uaa/bind'
 import { UserProps } from './ContextType'
 import { withRouter, RouteComponentProps } from 'react-router'
 import {
@@ -35,7 +37,7 @@ class Index extends React.Component<Props> {
     if (Config.env === 'development') {
       Config.history = this.props.history.push
     }
-    if (!token && this.props.location.pathname !== '/login') {
+    if (!token && ['/login', '/token'].indexOf(this.props.location.pathname) === -1) {
       this.history('/login')
     }
   }
@@ -56,6 +58,8 @@ class Index extends React.Component<Props> {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/logout' component={Logout} />
+          <Route path='/token' component={Token} />
+          <Route path='/bind' component={Bind} />
           {Config.token && <Main {...this.props}/>}
         </Switch>
       )
