@@ -44,7 +44,7 @@ class Main extends React.Component<Props, State> {
     this.setState({
       error: `非法操作，${message}，即将退出...`
     })
-    if (Config.env === 'production') {
+    if (/^(localhost|[\d\.]*)$/.test(window.location.host) === false) {
       setTimeout(() => {
         Config.history('/logout')
       }, 2000)
