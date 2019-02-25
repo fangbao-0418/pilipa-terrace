@@ -13,6 +13,17 @@ function getUaaInfo () {
     clientId
   }
 }
+export const queryToObject = (querystring: string) => {
+  const arr = querystring.split('&')
+  const obj: any = {}
+  arr.map((item) => {
+    const res = item.split('=') || []
+    if (res[0]) {
+      obj[res[0]] = res[1]
+    }
+  })
+  return obj
+}
 // 用户登陆
 export const userLogin = (payload: {
   phone: string,
@@ -49,7 +60,7 @@ export const userLogout = () => {
   })
 }
 // uaa获取token
-export const fetchUaaLoginUrl = () => {
+export const fetchUaaLoginUrl = (path: string = '') => {
   const CLIENT_ID = getUaaInfo().clientId
   const ENV = Config.env
   const $REDIRECT = `${window.location.origin}/token`
@@ -57,7 +68,7 @@ export const fetchUaaLoginUrl = () => {
   //   $REDIRECT = `${window.location.origin}/#/token`
   // }
   const UAA_SERVER_URL = getUaaInfo().url
-  return `${UAA_SERVER_URL}?response_type=code&client_id=${CLIENT_ID}&scope=&redirect_uri=${$REDIRECT}`
+  return `${UAA_SERVER_URL}${path}?response_type=code&client_id=${CLIENT_ID}&scope=&redirect_uri=${$REDIRECT}`
 }
 // 获取token
 export const fetchToken = (code: string) => {
