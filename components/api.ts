@@ -60,7 +60,7 @@ export const userLogout = () => {
   })
 }
 // uaa获取token
-export const fetchUaaLoginUrl = (path: string = '') => {
+export const fetchUaaLoginUrl = (path: string = '/v2/') => {
   const CLIENT_ID = getUaaInfo().clientId
   const ENV = Config.env
   const $REDIRECT = `${window.location.origin}/token`
