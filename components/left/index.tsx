@@ -39,7 +39,7 @@ class Main extends React.Component<Props, State> {
         const item = this.pathInfo[key]
         const path = item.path
         const pattern = new RegExp(`^${path}[\/\]?$`)
-        if (pattern.test('/' + item.mark + pathname) && (item.mark === Config.type || !Config.type)) {
+        if (pattern.test((item.mark ? ('/' + item.mark) : '') + pathname) && (item.mark === Config.type || !Config.type)) {
           selectedKey = key
           Config.mark = this.pathInfo[key].mark
         }
@@ -55,8 +55,10 @@ class Main extends React.Component<Props, State> {
   }
   public history (url: string, mark: string = Config.mark) {
     const pattern = new RegExp(`^/${mark}`)
-    url = url.replace(pattern, '')
-    if (Config.env === 'development') {
+    if (mark) {
+      url = url.replace(pattern, '')
+    }
+    if (Config.env === 'development' || !mark) {
       Config.history(url)
       return
     }
