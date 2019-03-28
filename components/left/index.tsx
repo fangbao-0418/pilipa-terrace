@@ -58,7 +58,7 @@ class Main extends React.Component<Props, State> {
     if (mark) {
       url = url.replace(pattern, '')
     }
-    if (Config.env === 'development' || !mark) {
+    if (Config.env === 'development') {
       Config.history(url)
       return
     }
