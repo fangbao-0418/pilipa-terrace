@@ -5,6 +5,7 @@ import { UserProps } from '../iframe/ContextType'
 import { getHomePage } from './config'
 import Config, { MenuItem } from '../config'
 import Icon from './Icon'
+import cookie from '../cookie'
 const SubMenu = Menu.SubMenu
 const { Sider } = Layout
 
@@ -33,7 +34,7 @@ class Main extends React.Component<Props, State> {
     }
   }
   public getActive (pathname = this.props.location.pathname) {
-    let selectedKey = ''
+    let selectedKey = cookie.get('selectedKey') || ''
     for (const key in this.pathInfo) {
       if (this.pathInfo.hasOwnProperty(key)) {
         const item = this.pathInfo[key]
@@ -43,6 +44,11 @@ class Main extends React.Component<Props, State> {
           selectedKey = key
           Config.mark = this.pathInfo[key].mark
         }
+        cookie.set({
+          selectedKey
+        }, {
+          expires: 24 * 3600 * 1000
+        })
       }
     }
     this.setState({
@@ -65,7 +71,7 @@ class Main extends React.Component<Props, State> {
     if (mark === Config.type) {
       this.props.history.push(url)
     } else {
-      window.location.href = '/' + mark + url
+      window.location.href = mark ? '/' + mark + url : url
     }
   }
   public getMenuNodes (configs = Config.menu, prefKey = 'm') {
