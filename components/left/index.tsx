@@ -39,7 +39,6 @@ class Main extends React.Component<Props, State> {
     let currTop = 0
     const t = setInterval(() => {
       currTop += 10
-      el.scollTop = currTop
       el.scrollTop = currTop
       if (currTop >= top) {
         clearInterval(t)
@@ -47,8 +46,15 @@ class Main extends React.Component<Props, State> {
     } , ms)
   }
   public toFixedMenuPosition () {
+    const index = this.state.openKeys[0] ? (this.state.openKeys[0].match(/\d+/) ? this.state.openKeys[0].match(/\d+/)[0] : 0) : 0
     const el: any = this.refs.menu
-    const scrollTop = Config.localStorage.getItem('menu-scroll-top')
+    if (el.children[0].children.length === 0) {
+      return
+    }
+    const scrollTop = el.children[0].children[index].offsetTop - 84
+    if (!scrollTop) {
+      return
+    }
     setTimeout(() => {
       this.animate(el, scrollTop)
     }, 300)
@@ -72,8 +78,8 @@ class Main extends React.Component<Props, State> {
       }
     }
     this.setState({
-      openKeys: [selectedKey.substr(0, selectedKey.length - 2)],
-      selectedKeys: [selectedKey]
+      openKeys: selectedKey.match(/^m-\d+/) ? [selectedKey.match(/^m-\d+/)[0]] : [],
+      selectedKeys: selectedKey ? [selectedKey] : []
     }, () => {
       if (first) {
         this.toFixedMenuPosition()
@@ -84,8 +90,6 @@ class Main extends React.Component<Props, State> {
     this.history(this.homePage.path, this.homePage.mark)
   }
   public history (url: string, mark: string = Config.mark) {
-    const el: any = this.refs.menu
-    Config.localStorage.setItem('menu-scroll-top', el.scrollTop)
     const pattern = new RegExp(`^/${mark}`)
     if (mark) {
       url = url.replace(pattern, '')
