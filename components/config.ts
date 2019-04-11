@@ -20,6 +20,7 @@ interface ConfigProps {
   type?: TypeProps
   logo?: string
   menu?: MenuItem[]
+  localStorage?: any
 }
 const config: ConfigProps = {
   from: '4',
@@ -31,6 +32,20 @@ const config: ConfigProps = {
     window.location.href = url
   },
   logo: '',
-  menu: []
+  menu: [],
+  localStorage: {
+    setItem: (key: string, value: string) => {
+      localStorage.setItem(key, value)
+      const time = new Date().getTime() + 30 * 24 * 3600 * 1000
+      cookie.set({
+        [key]: value
+      }, {
+        expires: new Date(time)
+      })
+    },
+    getItem: (key: string) => {
+      return localStorage.getItem(key) || cookie.get(key)
+    }
+  }
 }
 export default config

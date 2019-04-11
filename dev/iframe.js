@@ -3,21 +3,24 @@ import Config from '../components/config'
 import Iframe from '../components/iframe/index'
 import {
   HashRouter,
-  Route
+  Route,
+  Switch
 } from 'react-router-dom'
 const Router = HashRouter
 Config.env = 'production'
 class Main extends React.Component {
   render () {
     return (
-      <div>
+      <div style={{height: '100%'}}>
         <Router>
-          <Iframe
-            // token='973be12280904f7285c155bee443c7f244'
-            // env='production'
-          >
-            <Route path='/organ' render={() => <div>organ</div> }/>
-          </Iframe>
+          <Switch>
+            <Iframe
+              token='103a43c0-b801-4b3e-adf9-5814d430ab78'
+              // env='production'
+            >
+              <Route path='/organ' render={() => <div>organ</div> }/>
+            </Iframe>
+          </Switch>
         </Router>
       </div>
     )

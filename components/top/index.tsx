@@ -1,17 +1,21 @@
 import React from 'react'
 import { Layout, Dropdown, Menu } from 'antd'
-import ContextType from '../iframe/ContextType'
+import { UserProps } from '../iframe/ContextType'
 import Config from '../config'
 // 消息提醒
 import Msg from '../message/services/message'
 import { companylist, bindCompany } from '../api'
 const { Header } = Layout
+interface Props {
+  user: UserProps
+  onChange?: () => void
+}
 interface State {
   msgCount: number
   collapsed: boolean
   companyList: Array<{companyName: string, companyId: string}>
 }
-class Main extends React.Component<{}, State> {
+class Main extends React.Component<Props, State> {
   public msg: any
   public state: State = {
     msgCount: 0,
@@ -48,7 +52,9 @@ class Main extends React.Component<{}, State> {
       token: Config.token,
       companyId: code
     }).then(() => {
-      onChange()
+      if (onChange) {
+        onChange()
+      }
     })
   }
   public history (url: string) {
@@ -104,56 +110,57 @@ class Main extends React.Component<{}, State> {
     return menu
   }
   public render () {
+    const { user, onChange } = this.props
     return (
-      <ContextType.Consumer>
-        {({ user, onChange }) => (
-          <Header
-            className={'pilipa-terrace-top'}
+      // <ContextType.Consumer>
+      //   {({ user, onChange }) => (
+      <Header
+        className={'pilipa-terrace-top'}
+      >
+        <div
+          className={'top-right'}
+        >
+          <span
+            className={`icon message`}
+            style={{
+              backgroundImage: `url(${require('../assets/images/message.png')})`,
+              width: '14px',
+              height: '16px',
+              marginRight: '25px'
+            }}
+            onClick={() => {
+              this.msg.uiLogicLinkToList()
+            }}
           >
-            <div
-              className={'top-right'}
-            >
-              <span
-                className={`icon message`}
-                style={{
-                  backgroundImage: `url(${require('../assets/images/message.png')})`,
-                  width: '14px',
-                  height: '16px',
-                  marginRight: '25px'
-                }}
-                onClick={() => {
-                  this.msg.uiLogicLinkToList()
-                }}
-              >
-                <i
-                  className={'point'}
-                  style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}}
-                />
-              </span>
-              <span
-                className={'username'}
-                style={{
-                  marginRight: '15px'
-                }}
-              >
-                {user.username}
-              </span>
-              <Dropdown
-                overlay={this.getMenu(onChange)}
-              >
-                <span
-                  className='icon'
-                  style={{
-                    backgroundImage: `url(${require('../assets/images/user-menu.png')})`,
-                    width: '14px',
-                    height: '14px'
-                  }}
-                />
-              </Dropdown>
-            </div>
-          </Header>
-        )}
-      </ContextType.Consumer>
+            <i
+              className={'point'}
+              style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}}
+            />
+          </span>
+          <span
+            className={'username'}
+            style={{
+              marginRight: '15px'
+            }}
+          >
+            {user.username}
+          </span>
+          <Dropdown
+            overlay={this.getMenu(onChange)}
+          >
+            <span
+              className='icon'
+              style={{
+                backgroundImage: `url(${require('../assets/images/user-menu.png')})`,
+                width: '14px',
+                height: '14px'
+              }}
+            />
+          </Dropdown>
+        </div>
+      </Header>
+        // )}
+      // </ContextType.Consumer>
     )
   }
 }

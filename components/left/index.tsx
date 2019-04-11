@@ -30,10 +30,30 @@ class Main extends React.Component<Props, State> {
   }
   public componentWillReceiveProps (props: Props) {
     if (this.props.location.pathname !== props.location.pathname) {
-      this.getActive(props.location.pathname)
+      this.getActive(props.location.pathname, false)
     }
   }
-  public getActive (pathname = this.props.location.pathname) {
+  public animate (el: any, scrollTop: number, time = 200) {
+    const top = scrollTop
+    const ms = top / time
+    let currTop = 0
+    const t = setInterval(() => {
+      currTop += 10
+      el.scollTop = currTop
+      el.scrollTop = currTop
+      if (currTop >= top) {
+        clearInterval(t)
+      }
+    } , ms)
+  }
+  public toFixedMenuPosition () {
+    const el: any = this.refs.menu
+    const scrollTop = Config.localStorage.getItem('menu-scroll-top')
+    setTimeout(() => {
+      this.animate(el, scrollTop)
+    }, 300)
+  }
+  public getActive (pathname = this.props.location.pathname, first = true) {
     let selectedKey = cookie.get('selectedKey') || ''
     for (const key in this.pathInfo) {
       if (this.pathInfo.hasOwnProperty(key)) {
@@ -54,12 +74,18 @@ class Main extends React.Component<Props, State> {
     this.setState({
       openKeys: [selectedKey.substr(0, selectedKey.length - 2)],
       selectedKeys: [selectedKey]
+    }, () => {
+      if (first) {
+        this.toFixedMenuPosition()
+      }
     })
   }
   public toHome () {
     this.history(this.homePage.path, this.homePage.mark)
   }
   public history (url: string, mark: string = Config.mark) {
+    const el: any = this.refs.menu
+    Config.localStorage.setItem('menu-scroll-top', el.scrollTop)
     const pattern = new RegExp(`^/${mark}`)
     if (mark) {
       url = url.replace(pattern, '')
@@ -148,13 +174,12 @@ class Main extends React.Component<Props, State> {
             <img src={logo} />
           </div>
         </div>
-        <div className='menu'>
+        <div className='menu' ref='menu'>
           <Menu
             theme='dark'
             mode='inline'
             selectedKeys={this.state.selectedKeys}
             openKeys={this.state.openKeys}
-            // defaultSelectedKeys={['m-0-0']}
           >
             {this.getMenuNodes()}
           </Menu>

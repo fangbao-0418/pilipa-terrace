@@ -16,8 +16,8 @@ export interface ValueProps {
   user: UserProps,
   onChange?: (value?: ValueProps) => void
 }
-const defaultValue: ValueProps = {
-  user: {}
-}
-const ContextType = React.createContext(defaultValue)
-export default ContextType
+// const defaultValue: ValueProps = {
+//   user: {}
+// }
+// const ContextType = React.createContext(defaultValue)
+// export default ContextType

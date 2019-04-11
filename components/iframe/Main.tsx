@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 import { Layout } from 'antd'
 import { fetchUserInfo } from './api'
-import ContextType, { ValueProps, UserProps } from './ContextType'
+import { ValueProps, UserProps } from './ContextType'
 const { Content } = Layout
 interface Props {
   env?: 'development' | 'production'
@@ -34,8 +34,6 @@ class Main extends React.Component<Props> {
       const path = getHomePage().path
       if (Config.env === 'production') {
         window.location.href = path
-      } else {
-        Config.history(path)
       }
     })
   }
@@ -61,19 +59,19 @@ class Main extends React.Component<Props> {
       return null
     }
     return (
-      <ContextType.Provider value={this.state.value}>
-        <Layout className='pilipa-terrace-container'>
-          <Left user={user}/>
-          <Layout>
-            <Top />
-            <Content className='content'>
-              <Switch>
-                {this.props.children}
-              </Switch>
-            </Content>
-          </Layout>
+      // <ContextType.Provider value={this.state.value}>
+      <Layout className='pilipa-terrace-container'>
+        <Left user={user}/>
+        <Layout>
+          <Top user={user} onChange={this.onChange.bind(this)} />
+          <Content className='content'>
+            <Switch>
+              {this.props.children}
+            </Switch>
+          </Content>
         </Layout>
-      </ContextType.Provider>
+      </Layout>
+      // </ContextType.Provider>
     )
   }
 }
