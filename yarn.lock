@@ -6596,6 +6596,12 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/pify/download/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
+pilipa-analytics@^1.0.5:
+  version "1.0.5"
+  resolved "https://npmregistry.i-counting.cn/pilipa-analytics/-/pilipa-analytics-1.0.5.tgz#5905cb98f74fa80997e56add9da5effb1c07ff79"
+  dependencies:
+    babel-polyfill "^6.26.0"
+
 pinkie-promise@^2.0.0:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/pinkie-promise/download/pinkie-promise-2.0.1.tgz#2135d6dfa7a358c069ac9b178776288228450ffa"
