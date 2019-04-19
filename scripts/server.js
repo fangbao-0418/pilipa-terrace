@@ -14,6 +14,9 @@ app.use(proxy('/json', {target: 'https://x-b.i-counting.cn/', changeOrigin: true
 app.use(devMiddleware(compiler, {
   stats: {
     colors: true
+  },
+  historyApiFallback: {
+    index: '/index.html'
   }
 }))
 

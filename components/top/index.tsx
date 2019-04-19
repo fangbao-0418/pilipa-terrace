@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout, Dropdown, Menu } from 'antd'
 import { UserProps } from '../iframe/ContextType'
+import cookie from '../cookie'
 import Config from '../config'
 // 消息提醒
 import Msg from '../message/services/message'
@@ -48,10 +49,21 @@ class Main extends React.Component<Props, State> {
     })
   }
   public switchCompany (code: string, onChange: () => void) {
+    const token = Config.token
     bindCompany({
       token: Config.token,
       companyId: code
     }).then(() => {
+      localStorage.clear()
+      sessionStorage.clear()
+      cookie.removeAll()
+      localStorage.setItem('token', token)
+      sessionStorage.setItem('token', token)
+      cookie.set({
+        token
+      }, {
+        expires: 24 * 3600 * 30 * 1000
+      })
       if (onChange) {
         onChange()
       }

@@ -2,11 +2,11 @@ import React from 'react'
 import Config from '../components/config'
 import Iframe from '../components/iframe/index'
 import {
-  HashRouter,
+  BrowserRouter,
   Route,
   Switch
 } from 'react-router-dom'
-const Router = HashRouter
+const Router = BrowserRouter
 Config.env = 'production'
 class Main extends React.Component {
   render () {
