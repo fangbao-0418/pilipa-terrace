@@ -10,7 +10,11 @@ import
 const Router = HashRouter
 Config.env = 'development'
 class Main extends React.Component {
+  componentDidCatch (E, info) {
+    console.log(E, info, 'error info')
+  }
   render () {
+    const a = {}
     return (
       <div style={ { height: '100%' } }>
         <Router>

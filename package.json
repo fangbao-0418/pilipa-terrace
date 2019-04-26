@@ -1,6 +1,6 @@
 {
   "name": "pilipa-terrace",
-  "version": "1.0.13-alpha.15",
+  "version": "1.0.13-alpha.16",
   "description": "噼里啪b端公共服务",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
@@ -77,8 +77,8 @@
     "postcss-csso": "^3.0.0",
     "postcss-loader": "^2.0.10",
     "prop-types": "15.6.2",
-    "react": "16.3.1",
-    "react-dom": "16.3.1",
+    "react": "16.5.1",
+    "react-dom": "16.5.1",
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "rimraf": "^2.6.2",
