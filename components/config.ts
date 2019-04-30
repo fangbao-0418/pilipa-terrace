@@ -27,7 +27,7 @@ interface ConfigProps {
 }
 const pa = new Pa('icrm', window.navigator.userAgent, {
   env: location.hostname === 'icrm.pilipa.cn' ? 'production' : 'development', // dev || production
-  trigger: ['icrm.pilipa.cn', 'x-b.i-counting.cn', 'dev-b.i-counting.cn'].indexOf(location.hostname) > -1 // 是否发送请求
+  trigger: ['icrm.pilipa.cn', 'x-b.i-counting.cn', 'dev-b.i-counting.cn'].indexOf(location.hostname) > -1 || true // 是否发送请求
 })
 const config: ConfigProps = {
   from: '4',

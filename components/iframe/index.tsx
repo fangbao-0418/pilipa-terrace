@@ -34,7 +34,6 @@ class Index extends React.Component<Props> {
     Config.menu = config.menu
     Config.logo = config.logo
     Config.type = this.props.type
-    this.trackPage()
     if (Config.env === 'development') {
       Config.history = this.props.history.push
     }
@@ -42,34 +41,15 @@ class Index extends React.Component<Props> {
       this.history('/login')
     }
   }
-  public componentWillReceiveProps (props: Props) {
-    const currentUrl = props.location.pathname + props.location.search + props.location.hash
-    const oldUrl = this.props.location.pathname + this.props.location.search + this.props.location.hash
-    if (currentUrl !== oldUrl) {
-      this.trackPage()
-    }
-  }
   public componentDidCatch  (E: Error, info: any) {
     this.trackError(E, info)
-  }
-  public trackPage () {
-    setTimeout(() => {
-      // 页面追踪
-      Config.pa.trackPage({
-        title: document.title,
-        location: window.location.href,
-        referer: document.referrer
-      })
-    }, 0)
   }
   public trackError (E: any, info: any) {
     setTimeout(() => {
       // 页面错误事件追踪
       Config.trackPageError({
-        params: {
-          stack: E.stack,
-          href: window.location.href
-        }
+        stack: E.stack,
+        href: window.location.href
       })
     }, 0)
   }

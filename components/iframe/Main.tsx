@@ -9,8 +9,9 @@ import {
 import { Layout } from 'antd'
 import { fetchUserInfo } from './api'
 import { ValueProps, UserProps } from './ContextType'
+import { withRouter, RouteComponentProps } from 'react-router'
 const { Content } = Layout
-interface Props {
+interface Props extends RouteComponentProps {
   env?: 'development' | 'production'
   token?: string
   onChange?: (user?: UserProps) => void
@@ -27,7 +28,37 @@ class Main extends React.Component<Props> {
     }
   }
   public componentDidMount () {
-    this.fetchUser()
+    this.fetchUser().then(() => {
+      this.trackPage()
+    })
+  }
+  public componentWillReceiveProps (props: Props) {
+    const currentUrl = props.location.pathname + props.location.search + props.location.hash
+    const oldUrl = this.props.location.pathname + this.props.location.search + this.props.location.hash
+    if (currentUrl !== oldUrl) {
+      this.trackPage()
+    }
+  }
+  public trackPage () {
+    setTimeout(() => {
+      // 页面追踪
+      const user = Config.user || {}
+      Config.pa.trackEvent({
+        labelId: 'page',
+        eventId: 'pageview',
+        params: {
+          title: document.title,
+          location: window.location.href,
+          referer: document.referrer,
+          username: user.username,
+          companyId: user.companyId,
+          companyName: user.companyName,
+          phone: user.phone,
+          userType: user.userType,
+          regionCompanyType: user.regionCompanyType
+        }
+      })
+    }, 0)
   }
   public onChange () {
     this.fetchUser().then(() => {
@@ -75,4 +106,4 @@ class Main extends React.Component<Props> {
     )
   }
 }
-export default Main
+export default withRouter(Main)
