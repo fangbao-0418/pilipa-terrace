@@ -6,7 +6,6 @@ import Token from '../uaa/token'
 import Bind from '../uaa/bind'
 import { UserProps } from './ContextType'
 import { withRouter, RouteComponentProps } from 'react-router'
-import Pa from 'pilipa-analytics'
 import {
   Switch,
   Route
@@ -23,12 +22,7 @@ interface Props extends RouteComponentProps<{}> {
     logo: string
   }
 }
-const pa = new Pa('icrm', window.navigator.userAgent, {
-  env: 'production', // dev || production
-  trigger: true // 是否发送请求
-})
 class Index extends React.Component<Props> {
-  public trackEvent = this.setConfig.bind(this)()
   public componentWillMount () {
     Config.env = this.props.env === undefined ? 'development' : this.props.env
     const token = this.props.token || Config.token
@@ -58,48 +52,26 @@ class Index extends React.Component<Props> {
   public componentDidCatch  (E: Error, info: any) {
     this.trackError(E, info)
   }
-  public setConfig () {
-    let env: 'development' | 'production' = 'development'
-    if (window.location.hostname === 'icrm.pilipa.cn') {
-      env = 'production'
-    }
-    pa.setEnv(env)
-    return (fn?: any) => {
-      if (['x-b.i-counting.cn', 'icrm.pilipa.cn'].indexOf(window.location.hostname) === -1) {
-        return
-      }
-      if (fn) {
-        fn()
-      }
-    }
-  }
   public trackPage () {
-    this.trackEvent(() => {
-      setTimeout(() => {
-        // 页面追踪
-        pa.trackPage({
-          title: document.title,
-          location: window.location.href,
-          referer: document.referrer
-        })
-      }, 0)
-    })
+    setTimeout(() => {
+      // 页面追踪
+      Config.pa.trackPage({
+        title: document.title,
+        location: window.location.href,
+        referer: document.referrer
+      })
+    }, 0)
   }
   public trackError (E: any, info: any) {
-    this.trackEvent(() => {
-      setTimeout(() => {
-        // 页面错误事件追踪
-        pa.trackEvent({
-          labelId: 'page-error',
-          eventId: 'error',
-          params: {
-            stack: E.stack,
-            href: window.location.href,
-            token: Config.token
-          }
-        })
-      }, 0)
-    })
+    setTimeout(() => {
+      // 页面错误事件追踪
+      Config.trackPageError({
+        params: {
+          stack: E.stack,
+          href: window.location.href
+        }
+      })
+    }, 0)
   }
   public history (url: string) {
     if (Config.env === 'production') {

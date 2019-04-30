@@ -3,7 +3,7 @@ import { MenuItem } from '../config'
 export interface UserProps {
   companyName?: string
   // email: string
-  // phone: string
+  phone?: string
   username?: string
   companyId?: string
   /** 城市编码 */
@@ -11,6 +11,8 @@ export interface UserProps {
   city?: string
   codes?: string[]
   menu?: MenuItem[]
+  regionCompanyType?: 'Agent' | 'DirectCompany'
+  userType?: 'System' | 'Agent' | 'DirectCompany'
 }
 export interface ValueProps {
   user: UserProps,
