@@ -31,6 +31,6 @@ externals: {
 
 # Change Log 
 
-### 1.0.7
-  &nbsp;&nbsp; `2018-11-28` 
-  - 支持无痕模式
+### 1.0.14
+  &nbsp;&nbsp; `2019-05-14` 
+  - 支持自定义content布局

@@ -15,7 +15,10 @@ interface Props extends RouteComponentProps {
   env?: 'development' | 'production'
   token?: string
   onChange?: (user?: UserProps) => void
+  /** 默认userinfo */
   defaultValue?: UserProps
+  /** 是否使用自带content布局，默认使用自带content布局 */
+  content?: boolean
 }
 interface State {
   value: ValueProps
@@ -89,20 +92,27 @@ class Main extends React.Component<Props> {
     if (user === undefined) {
       return null
     }
+    const content = this.props.content !== undefined ? this.props.content : true
     return (
-      // <ContextType.Provider value={this.state.value}>
       <Layout className='pilipa-terrace-container'>
         <Left user={user}/>
         <Layout>
           <Top user={user} onChange={this.onChange.bind(this)} />
-          <Content className='content'>
-            <Switch>
-              {this.props.children}
-            </Switch>
-          </Content>
+          {
+            content ? (
+              <Content className='content'>
+                <Switch>
+                  {this.props.children}
+                </Switch>
+              </Content>
+            ) : (
+              <Switch>
+                  {this.props.children}
+              </Switch>
+            )
+          }
         </Layout>
       </Layout>
-      // </ContextType.Provider>
     )
   }
 }

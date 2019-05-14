@@ -19,6 +19,7 @@ class Main extends React.Component {
       <div style={ { height: '100%' } }>
         <Router>
           <Iframe
+            content={false}
             token='24d64163-1804-44db-9723-70ae419a5eef'
             env='development'
           >
