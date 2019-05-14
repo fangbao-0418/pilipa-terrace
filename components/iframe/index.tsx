@@ -17,6 +17,8 @@ interface Props extends RouteComponentProps<{}> {
   onChange?: (user?: UserProps) => void
   type?: TypeProps
   defaultValue?: UserProps
+  /** 是否使用自带content布局，默认使用自带content布局 */
+  content?: boolean
   config?: {
     menu: MenuItem[],
     logo: string
