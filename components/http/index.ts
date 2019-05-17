@@ -1,6 +1,6 @@
-import $ from 'jquery'
 import Config from '../config'
-const RequestTypes = ['GET', 'POST', 'DELETE', 'PUT']
+import filters from './filters'
+import xhr, { interceptors, XHRConfigProps, Data } from './xhr'
 export interface AjaxConfigProps extends JQuery.AjaxSettings {
   type?: RequestTypeProps
   raw?: boolean
@@ -17,87 +17,67 @@ function handleError (err: JQuery.jqXHR) {
   }
   return res
 }
-$(document).ajaxError((event, response, settings) => {
-  const err: any = handleError(response) || {}
-  err.message = err.message || err.errMsg
-  if (response.status === 401) {
-    if (Config.env === 'production') {
-      window.location.href = '/logout'
-    } else {
-      Config.history('/logout')
-    }
-  }
+
+// $(document).ajaxError((event, response, settings) => {
+//   const err: any = handleError(response) || {}
+//   err.message = err.message || err.errMsg
+//   if (response.status === 401) {
+//     if (Config.env === 'production') {
+//       window.location.href = '/logout'
+//     } else {
+//       Config.history('/logout')
+//     }
+//   }
+// })
+
+interceptors.request.use((xhr: any, e: any, settings: any) => {
+  console.log(settings, new Date().getTime(), 'request')
+  // e.abort()
+  return e
 })
-const http = (url: string, type?: AjaxConfigProps | RequestTypeProps, config: AjaxConfigProps = {}) => {
-  let data: any
-  if (config instanceof Array) {
-    data = config
-    config = {}
-    config.data = data
-  }
-  if (typeof type === 'object') {
+interceptors.response.use((e: any) => {
+  console.log(e, 'response')
+  return e
+})
+const http = (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps) => {
+  url = '/sys/v2/' + url
+  let finalConfig: XHRConfigProps = {}
+  if (typeof type !== 'string') {
+    config = null
     config = type
-    if (typeof config.type === 'string' && RequestTypes.indexOf(config.type.toUpperCase()) > -1) {
-      type = config.type || 'GET'
-      delete (config.type)
-    } else {
-      type = 'GET'
-    }
+    type = ((config as any).type || 'GET') as RequestTypeProps
+  }
+  if (config instanceof Array) {
+    finalConfig.data = config
   } else {
-    type = type || 'GET'
+    finalConfig = config || {}
   }
-  const extension = config.extension || {}
-  delete config.extension
-  data = config.data || config || undefined
-  const headers = Object.assign({}, config.headers, {
-    token: Config.token || undefined,
-    from: Config.from
-  })
-  let ajaxConfig: JQuery.AjaxSettings = {
-    url: '/sys' + url,
-    method: type,
-    headers,
-    contentType: config.contentType !== undefined ? config.contentType : 'application/json; charset=utf-8',
-    data,
-    timeout: 10000
-    // xhrFields: {
-    //   withCredentials: true
-    // }
-  }
-  if (extension) {
-    ajaxConfig = $.extend(true, ajaxConfig, extension)
-  }
-  delete config.headers
-  delete config.contentType
-  const raw = config.raw || false
-  switch (type) {
-  case 'POST':
-    ajaxConfig.processData = config.processData || false
-    ajaxConfig.data = raw ? data : JSON.stringify(data)
-    break
-  case 'PUT':
-    ajaxConfig.processData = config.processData || false
-    ajaxConfig.data = raw ? data : JSON.stringify(data)
-    break
-  case 'DELETE':
-    ajaxConfig.processData = config.processData || false
-    ajaxConfig.data = raw ? data : JSON.stringify(data)
-    break
-  }
-  return $.ajax(ajaxConfig).then((res) => {
-    let result = {}
-    if (typeof res === 'string') {
-      try {
-        result = JSON.parse(res)
-      } catch (e) {
-        result = res
+  finalConfig.headers = Object.assign({}, {
+    token: '24d64163-1804-44db-9723-70ae419a5eef',
+    from: '4'
+  }, finalConfig.headers)
+  return xhr(url, type, finalConfig).then((response) => {
+    const { result } = response
+    if (result.status && result.status !== 200) {
+      if (result.status === 401) {
+        Config.history('/logout')
       }
-    } else {
-      result = res
+      if (result.message) {
+        let pass = true
+        filters.errorPrompt.map((pattern) => {
+          if (new RegExp(pattern).test(url)) {
+            pass = false
+          }
+        })
+        if (pass) {
+          // APP.error(result.message)
+        }
+      }
+      return Promise.reject(result)
     }
     return result
   }, (err) => {
-    return err
+    Promise.reject(err)
   })
 }
 export default http
