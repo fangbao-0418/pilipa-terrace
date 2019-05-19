@@ -15,7 +15,7 @@ export type XHRConfigProps = {
   contentType?: any
   [field: string]: any
 } | any[]
-type RequestTypeProps = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'OPTION' | 'HEAD'
+export type RequestTypeProps = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'OPTION' | 'HEAD'
 
 export interface RequestConfig {
   url: string
@@ -102,33 +102,38 @@ export function composeURL (url: string, data: object) {
 
 interface Interceptor {
   request: {
-    readonly success: any
-    readonly error: any
-    use: (success: any) => void
+    readonly callback: any
+    use: (callback: (xhr: XMLHttpRequest, ev: ProgressEvent, settings: RequestConfig) => void) => void
   }
   response: {
-    readonly success: any
-    readonly error: any
-    use: (success: any, error?: (response: any) => any) => void
+    readonly callback: any
+    use: (callback?: (response: ResponseProps) => ResponseProps) => void
   }
 }
 
-export const interceptors: Interceptor = {
+const interceptors: Interceptor = {
   request: {
-    success: undefined,
-    error: undefined,
-    use (success) {
-      this.success = success
+    callback: undefined,
+    use (callback) {
+      this.callback = callback
+      Object.freeze(this)
     }
   },
   response: {
-    success: undefined,
-    error: undefined,
-    use (success, error) {
-      this.success = success
-      this.error = error
+    callback: undefined,
+    use (callback) {
+      this.callback = callback
+      Object.freeze(this)
     }
   }
+}
+
+Promise.prototype.always = function <S = any>(callback: (success: S, error: any) => void) {
+  return this.then((res: S) => {
+    return callback(res, undefined)
+  }, (err: any) => {
+    return callback(undefined, err)
+  })
 }
 
 function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps): Promise<ResponseProps> {
@@ -149,7 +154,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
     data = config && config.data || config
   }
   const processData = finalConfig.processData !== undefined ? finalConfig.processData : true
-  const headers = finalConfig.headers
+  const headers = finalConfig.headers || {}
   const contentType =  headers['Content-Type'] !== undefined ? headers['Content-Type'] : finalConfig.contentType
   headers['Content-Type'] = contentType === false ? undefined : (contentType || 'application/json; charset=utf-8')
 
@@ -166,7 +171,9 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
       xhr.setRequestHeader(key, headers[key])
     }
   }
+
   const body = (processData ? data && JSON.stringify(data) : data) as Body
+
   const settings: RequestConfig = {
     url,
     type,
@@ -175,25 +182,26 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
     headers,
     body
   }
+
   const p = new Promise<ResponseProps>((resolve, reject: (error: ResponseProps) => void) => {
-    xhr.onloadstart = (e: ProgressEvent) => {
-      if (interceptors.request.success) {
-        interceptors.request.success(xhr, e, settings)
+    xhr.onloadstart = (ev: ProgressEvent) => {
+      if (interceptors.request.callback) {
+        interceptors.request.callback(xhr, ev, settings)
       }
     }
-    xhr.onload = (e: ProgressEvent) => {
-      const currentTarget = e.currentTarget as any as CurrentTarget
+    xhr.onload = (ev: ProgressEvent) => {
+      const currentTarget = ev.currentTarget as any as CurrentTarget
       const status = currentTarget.status
       const result = parse(currentTarget.response)
       let response: ResponseProps = ({
-        type: e.type as any,
+        type: ev.type as any,
         status: currentTarget.status,
         statusText: currentTarget.statusText,
         result,
         config: settings
       })
-      if (interceptors.response.success) {
-        response = interceptors.response.success(response)
+      if (interceptors.response.callback) {
+        response = interceptors.response.callback(response)
       }
       if (status === 200) {
         resolve (response)
@@ -201,36 +209,49 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
         reject(response)
       }
     }
-    xhr.onerror = (e: ProgressEvent) => {
-      const currentTarget = e.currentTarget as any as CurrentTarget
+    xhr.onerror = (ev: ProgressEvent) => {
+      const currentTarget = ev.currentTarget as any as CurrentTarget
       let response: ResponseProps = {
-        type: e.type as any,
+        type: ev.type as any,
         status: currentTarget.status,
         statusText: currentTarget.statusText,
         result: null,
         config: settings
       }
-      if (interceptors.response.success) {
-        response = interceptors.response.success(response)
+      if (interceptors.response.callback) {
+        response = interceptors.response.callback(response)
       }
       reject(response)
     }
-    xhr.ontimeout = (e: ProgressEvent) => {
-      const currentTarget = e.currentTarget as any as CurrentTarget
+    xhr.ontimeout = (ev: ProgressEvent) => {
+      const currentTarget = ev.currentTarget as any as CurrentTarget
       let response: ResponseProps = {
-        type: e.type as any,
+        type: ev.type as any,
         status: currentTarget.status,
         statusText: currentTarget.statusText,
         result: null,
         config: settings
       }
-      if (interceptors.response.success) {
-        response = interceptors.response.success(response)
+      if (interceptors.response.callback) {
+        response = interceptors.response.callback(response)
       }
       reject(response)
     }
     xhr.send(body || null)
   })
   return p
+}
+http.interceptors = interceptors
+http.get = (url: string, config: XHRConfigProps) => {
+  return http(url, 'GET', config)
+}
+http.post = (url: string, config: XHRConfigProps) => {
+  return http(url, 'POST', config)
+}
+http.put = (url: string, config: XHRConfigProps) => {
+  return http(url, 'PUT', config)
+}
+http.delete = (url: string, config: XHRConfigProps) => {
+  return http(url, 'DELETE', config)
 }
 export default http

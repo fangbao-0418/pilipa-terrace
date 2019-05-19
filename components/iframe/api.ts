@@ -1,5 +1,5 @@
-import $ from 'jquery'
 import http from '../http'
+import xhr from '../http/xhr'
 import Config, { MenuItem } from '../config'
 export function hasPermission (key: string, codes: string[]) {
   if (key !== undefined) {
@@ -25,7 +25,7 @@ function handelMenuData (menu: MenuItem[], codes: string[]) {
 }
 // 获取菜单
 export const fetchConfig = () => {
-  return $.get(`/json/config.json?v=${new Date().getTime()}`)
+  return xhr(`/json/config.json?v=${new Date().getTime()}`)
 }
 export const fetchUserInfo = () => {
   return Promise.all([
@@ -33,9 +33,10 @@ export const fetchUserInfo = () => {
     fetchPermissionCode(),
     fetchConfig()
   ]).then(([res, res2, res3]) => {
+    const config = res3.result
     res.codes = res2
-    Config.menu = handelMenuData(res3.menu, res2)
-    Config.logo = res3.logo
+    Config.menu = handelMenuData(config.menu, res2)
+    Config.logo = config.logo
     Config.user = res
     return res
   })

@@ -6,15 +6,16 @@ import cookie from '../cookie'
 type Props = RouteComponentProps<{}>
 class Main extends React.Component<Props> {
   public componentWillMount () {
-    userLogout()
-    Config.token = ''
-    Config.user = undefined
-    if (window.localStorage) {
-      localStorage.clear()
-      sessionStorage.clear()
-    }
-    cookie.removeAll()
-    Config.history('/login')
+    userLogout().always(() => {
+      Config.token = ''
+      Config.user = undefined
+      if (window.localStorage) {
+        localStorage.clear()
+        sessionStorage.clear()
+      }
+      cookie.removeAll()
+      Config.history('/login')
+    })
   }
   public render () {
     return (

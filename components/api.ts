@@ -1,5 +1,5 @@
-import $ from 'jquery'
 import http from './http'
+import xhr from './http/xhr'
 import Config from './config'
 function getUaaInfo () {
   let url = 'https://x-id.i-counting.cn'
@@ -75,20 +75,17 @@ export const fetchUaaLoginUrl = (path: string = '/v2/') => {
 // 获取token
 export const fetchToken = (code: string) => {
   const uri = `${window.location.origin}/token`
-  return $.ajax({
-    url: `/sys/user/v1/api/oauth2/token?code=${code}&redirectURI=${uri}`,
-    headers: {
-      from: '4'
-    }
-  })
+  return http(
+    `/sys/user/v1/api/oauth2/token?code=${code}&redirectURI=${uri}`
+  )
 }
 // uaa注销
 export const uaaLogout = () => {
   const UAA_SERVER_URL = getUaaInfo().url
-  return $.ajax({
-    url: `${UAA_SERVER_URL}/ua/logout`,
-    xhrFields: {
+  return xhr.get(
+    `${UAA_SERVER_URL}/ua/logout`,
+    {
       withCredentials: true
     }
-  })
+  )
 }

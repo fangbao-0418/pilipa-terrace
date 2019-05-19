@@ -27,12 +27,6 @@
   version "4.7.2"
   resolved "http://registry.npm.taobao.org/@types/history/download/@types/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
 
-"@types/jquery@^3.3.22":
-  version "3.3.22"
-  resolved "http://registry.npm.taobao.org/@types/jquery/download/@types/jquery-3.3.22.tgz#cde55dc8f83207dffd16205b05f97ce824581735"
-  dependencies:
-    "@types/sizzle" "*"
-
 "@types/node@*":
   version "9.6.2"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
@@ -69,10 +63,6 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
-
-"@types/sizzle@*":
-  version "2.3.2"
-  resolved "http://registry.npm.taobao.org/@types/sizzle/download/@types/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
 
 abbrev@1:
   version "1.1.1"
@@ -4844,10 +4834,6 @@ istanbul@^0.4.0:
 jasmine-core@^3.1.0:
   version "3.1.0"
   resolved "http://registry.npm.taobao.org/jasmine-core/download/jasmine-core-3.1.0.tgz#a4785e135d5df65024dfc9224953df585bd2766c"
-
-jquery@^3.3.1:
-  version "3.3.1"
-  resolved "http://registry.npm.taobao.org/jquery/download/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.9:
   version "2.4.1"
