@@ -72,7 +72,7 @@ function optimizeData (data: Data) {
     return null
   }
   if (data instanceof Object) {
-    ['type', 'processData', 'withCredentials', 'headers'].map((key) => {
+    ['type', 'processData', 'withCredentials', 'timeout', 'headers'].map((key) => {
       delete (data as any)[key]
     })
   }
@@ -159,14 +159,20 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
   const contentType =  headers['Content-Type'] !== undefined ? headers['Content-Type'] : finalConfig.contentType
   headers['Content-Type'] = contentType === false ? undefined : (contentType || 'application/json; charset=utf-8')
 
+  data = Object.assign({}, data)
+
+  finalConfig.withCredentials = finalConfig.withCredentials || false
+  finalConfig.timeout = finalConfig.timeout || 10000
   data = optimizeData(data) as Body
   if (type === 'GET' && data instanceof Object) {
     url = composeURL(url, data as object)
     data = null
   }
+
   xhr.open(type, url, true)
-  xhr.timeout = finalConfig.timeout || 10000
-  xhr.withCredentials = finalConfig.withCredentials || false
+  xhr.timeout = finalConfig.timeout
+  xhr.withCredentials = finalConfig.withCredentials
+  console.log(finalConfig, xhr.withCredentials, 'xhr.withCredentials')
   for (const key in headers) {
     if (key in headers && headers[key] !== undefined) {
       xhr.setRequestHeader(key, headers[key])

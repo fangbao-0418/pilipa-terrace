@@ -102,9 +102,7 @@ export const companylist = (token: string) => {
 }
 // 退出
 export const userLogout = () => {
-  return http(`/user/v1/api/logout`, 'POST', {
-    // token: APP.token
-  })
+  return http(`/user/v1/api/logout`, 'POST')
 }
 // uaa获取token
 export const fetchUaaLoginUrl = (path: string = '/v2/') => {
@@ -121,16 +119,18 @@ export const fetchUaaLoginUrl = (path: string = '/v2/') => {
 export const fetchToken = (code: string) => {
   const uri = `${window.location.origin}/token`
   return http(
-    `/sys/user/v1/api/oauth2/token?code=${code}&redirectURI=${uri}`
+    `/user/v1/api/oauth2/token?code=${code}&redirectURI=${uri}`
   )
 }
 // uaa注销
 export const uaaLogout = () => {
   const UAA_SERVER_URL = getUaaInfo().url
-  return xhr.get(
-    `${UAA_SERVER_URL}/ua/logout`,
-    {
-      withCredentials: true
-    }
-  )
+  return userLogout().always(() => {
+    return xhr.get(
+      `${UAA_SERVER_URL}/ua/logout`,
+      {
+        withCredentials: true
+      }
+    )
+  })
 }

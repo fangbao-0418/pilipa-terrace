@@ -5,7 +5,7 @@ import React from 'react'
 class Main extends React.Component {
   public componentDidMount () {
     const res = queryToObject(window.location.search.replace(/^\?/, ''))
-    uaaLogout().always(() => {
+    uaaLogout().always((s) => {
       Config.token = ''
       Config.user = undefined
       if (window.localStorage) {

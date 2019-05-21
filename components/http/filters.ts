@@ -4,7 +4,8 @@ const filters = {
     '/v1/api/user/info\\?token=',
     '/v1/api/authority/code\\?token=',
     '/v1/api/user/company/list\\?token=',
-    '/shop-pay/v2/api/pay/account/balance'
+    '/shop-pay/v2/api/pay/account/balance',
+    '/v1/api/jssdk-token'
   ],
   /** 过滤loading  */
   loading: [
