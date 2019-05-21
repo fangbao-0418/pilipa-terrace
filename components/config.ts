@@ -1,6 +1,8 @@
 import Pa from 'pilipa-analytics'
 import { UserProps } from './iframe/ContextType'
 import cookie from './cookie'
+import notification from 'pilipa/libs/notification'
+import loading from 'pilipa/libs/loading'
 export type TypeProps = string
 export interface MenuItem {
   title: string
@@ -20,13 +22,19 @@ interface ConfigProps {
   env: 'development' | 'production'
   trackPageError: (params: object) => void
   history?: (url: string) => void
-  type?: TypeProps
-  logo?: string
-  menu?: MenuItem[]
+  type: TypeProps
+  logo: string
+  menu: MenuItem[]
   localStorage?: any
+  success: (message: string) => void
+  error: (message: string) => void
+  loading: {
+    show: () => void
+    hide: () => void
+  }
 }
 const pa = new Pa('icrm', window.navigator.userAgent, {
-  env: location.hostname === 'icrm.pilipa.cn' ? 'production' : 'development', // dev || production
+  env: location.hostname === 'icrm.pilipa.cn' ? 'production' : 'development',
   trigger: ['icrm.pilipa.cn', 'x-b.i-counting.cn', 'dev-b.i-counting.cn'].indexOf(location.hostname) > -1 || true // 是否发送请求
 })
 const config: ConfigProps = {
@@ -34,6 +42,7 @@ const config: ConfigProps = {
   token: (window.localStorage ? localStorage.getItem('token') : undefined) || cookie.get('token') || undefined,
   user: undefined,
   mark: '',
+  type: undefined,
   env: 'development',
   pa,
   trackPageError: (params) => {
@@ -70,6 +79,26 @@ const config: ConfigProps = {
     },
     getItem: (key: string) => {
       return localStorage.getItem(key) || cookie.get(key)
+    }
+  },
+  success: (message) => {
+    notification.success({
+      title: '系统提示',
+      message
+    })
+  },
+  error: (message) => {
+    notification.error({
+      title: '系统提示',
+      message
+    })
+  },
+  loading: {
+    show () {
+      loading.show()
+    },
+    hide () {
+      loading.hide()
     }
   }
 }

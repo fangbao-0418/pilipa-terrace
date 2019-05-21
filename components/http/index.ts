@@ -1,20 +1,72 @@
+/// <reference path='../global-plugin.d.ts' />
 import Config from '../config'
 import filters from './filters'
-import xhr, { RequestTypeProps, XHRConfigProps } from './xhr'
+import ajax, { RequestConfig, RequestTypeProps, XHRConfigProps } from '../ajax'
 
-xhr.interceptors.request.use((x, ev, settings) => {
-  console.log(settings, new Date().getTime(), 'request')
+let ajaxCount = 0
+/** 跳过loading */
+function isPass (options: RequestConfig) {
+  const { url } = options
+  const index = filters.loading.findIndex((test) => {
+    const pattern = new RegExp(test)
+    if (pattern.test(url)) {
+      return true
+    }
+  })
+  return index > -1 ? true : false
+}
+/** ajax请求前拦截 */
+ajax.interceptors.request.use((x, ev, settings) => {
+  if (!isPass(settings)) {
+    ajaxCount += 1
+    if (ajaxCount > 0 && !document.querySelector('.pilipa-loading')) {
+      Config.loading.show()
+    }
+  }
 })
-xhr.interceptors.response.use((response) => {
-  // const err: any = handleError(response) || {}
-  // err.message = err.message || err.errMsg
-  // if (response.status === 401) {
-  //   if (Config.env === 'production') {
-  //     window.location.href = '/logout'
-  //   } else {
-  //     Config.history('/logout')
-  //   }
-  // }
+/** ajax响应后拦截 */
+ajax.interceptors.response.use((response) => {
+  /** 是否跳过loading */
+  if (!isPass(response.config)) {
+    ajaxCount -= 1
+    if (ajaxCount <= 0) {
+      Config.loading.hide()
+    }
+  }
+  const { result, status } = response
+  /** 401退出 */
+  if (status === 401 || status === 200 && result.status === 401) {
+    if (Config.env === 'production') {
+      window.location.href = '/logout'
+    } else {
+      Config.history('/logout')
+    }
+    return response
+  }
+  if (status !== 200 || status === 200 && result.status !== 200) {
+    let pass = true
+    const url = response.config.url
+    /** 过滤错误提示 */
+    filters.error.map((pattern) => {
+      if (new RegExp(pattern).test(url)) {
+        pass = false
+      }
+    })
+    /** 错误提示 */
+    if (result.errors instanceof Array && pass) {
+      const message: string[] = []
+      result.errors.forEach((item: {message: string, code: string}) => {
+        message.push(item.message)
+      })
+      Config.error(message.join('，'))
+    } else if (result.status && result.message) {
+      Config.error(result.message)
+      response.status = result.status
+    }
+  }
+  if (response.type === 'timeout') {
+    Config.error('系统请求超时！')
+  }
   return response
 })
 
@@ -32,28 +84,11 @@ const http = (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', conf
     finalConfig = config || {}
   }
   finalConfig.headers = Object.assign({}, {
-    token: 'c8c6d25b-3f2c-4883-9da3-964884b1a9b3',
+    token: Config.token,
     from: '4'
   }, finalConfig.headers)
-  return xhr(url, type, finalConfig).then((response) => {
+  return ajax(url, type, finalConfig).then((response) => {
     const { result } = response
-    if (result.status && result.status !== 200) {
-      if (result.status === 401) {
-        Config.history('/logout')
-      }
-      if (result.message) {
-        let pass = true
-        filters.errorPrompt.map((pattern) => {
-          if (new RegExp(pattern).test(url)) {
-            pass = false
-          }
-        })
-        if (pass) {
-          // APP.error(result.message)
-        }
-      }
-      return Promise.reject(result)
-    }
     return result
   }, (err) => {
     Promise.reject(err)

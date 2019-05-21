@@ -1,4 +1,5 @@
-export interface CurrentTarget {
+/// <reference path='../global-plugin.d.ts' />
+export interface EventTarget {
   status: number
   statusText: string
   response: string
@@ -190,8 +191,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
       }
     }
     xhr.onload = (ev: ProgressEvent) => {
-      const currentTarget = ev.currentTarget as any as CurrentTarget
-      const status = currentTarget.status
+      const currentTarget = ev.currentTarget as any as EventTarget
       const result = parse(currentTarget.response)
       let response: ResponseProps = ({
         type: ev.type as any,
@@ -203,6 +203,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
       if (interceptors.response.callback) {
         response = interceptors.response.callback(response)
       }
+      const status = response.status
       if (status === 200) {
         resolve (response)
       } else {
@@ -210,7 +211,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
       }
     }
     xhr.onerror = (ev: ProgressEvent) => {
-      const currentTarget = ev.currentTarget as any as CurrentTarget
+      const currentTarget = ev.currentTarget as any as EventTarget
       let response: ResponseProps = {
         type: ev.type as any,
         status: currentTarget.status,
@@ -224,7 +225,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
       reject(response)
     }
     xhr.ontimeout = (ev: ProgressEvent) => {
-      const currentTarget = ev.currentTarget as any as CurrentTarget
+      const currentTarget = ev.currentTarget as any as EventTarget
       let response: ResponseProps = {
         type: ev.type as any,
         status: currentTarget.status,
@@ -250,8 +251,5 @@ http.post = (url: string, config: XHRConfigProps) => {
 }
 http.put = (url: string, config: XHRConfigProps) => {
   return http(url, 'PUT', config)
-}
-http.delete = (url: string, config: XHRConfigProps) => {
-  return http(url, 'DELETE', config)
 }
 export default http

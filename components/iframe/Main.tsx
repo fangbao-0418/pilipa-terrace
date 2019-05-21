@@ -4,10 +4,12 @@ import Left from '../left'
 import Config from '../config'
 import { getHomePage } from '../left/config'
 import {
+  Route,
   Switch
 } from 'react-router-dom'
 import { Layout } from 'antd'
-import { fetchUserInfo } from './api'
+import ErrorPage from '../error-page'
+import { fetchUserInfo } from '../api'
 import { ValueProps, UserProps } from './ContextType'
 import { withRouter, RouteComponentProps } from 'react-router'
 const { Content } = Layout
@@ -103,11 +105,17 @@ class Main extends React.Component<Props> {
               <Content className='content'>
                 <Switch>
                   {this.props.children}
+                  <Route
+                    component={ErrorPage}
+                  />
                 </Switch>
               </Content>
             ) : (
               <Switch>
-                  {this.props.children}
+                {this.props.children}
+                <Route
+                  component={ErrorPage}
+                />
               </Switch>
             )
           }

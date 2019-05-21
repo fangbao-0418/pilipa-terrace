@@ -27,6 +27,12 @@
   version "4.7.2"
   resolved "http://registry.npm.taobao.org/@types/history/download/@types/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
 
+"@types/jquery@^3.3.29":
+  version "3.3.29"
+  resolved "https://registry.npm.taobao.org/@types/jquery/download/@types/jquery-3.3.29.tgz#680a2219ce3c9250483722fccf5570d1e2d08abd"
+  dependencies:
+    "@types/sizzle" "*"
+
 "@types/node@*":
   version "9.6.2"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.2.tgz#e49ac1adb458835e95ca6487bc20f916b37aff23"
@@ -63,6 +69,10 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/sizzle@*":
+  version "2.3.2"
+  resolved "https://registry.npm.taobao.org/@types/sizzle/download/@types/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
 
 abbrev@1:
   version "1.1.1"
@@ -4835,6 +4845,10 @@ jasmine-core@^3.1.0:
   version "3.1.0"
   resolved "http://registry.npm.taobao.org/jasmine-core/download/jasmine-core-3.1.0.tgz#a4785e135d5df65024dfc9224953df585bd2766c"
 
+jquery@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+
 js-base64@^2.1.9:
   version "2.4.1"
   resolved "http://registry.npm.taobao.org/js-base64/download/js-base64-2.4.1.tgz#e02813181cd53002888e918935467acb2910e596"
@@ -6587,6 +6601,13 @@ pilipa-analytics@^1.0.5:
   resolved "https://npmregistry.i-counting.cn/pilipa-analytics/-/pilipa-analytics-1.0.5.tgz#5905cb98f74fa80997e56add9da5effb1c07ff79"
   dependencies:
     babel-polyfill "^6.26.0"
+
+pilipa@^3.0.8-alpha.2:
+  version "3.0.8-alpha.2"
+  resolved "https://npmregistry.i-counting.cn/pilipa/-/pilipa-3.0.8-alpha.2.tgz#bea5dd3db63595036492f277814797a687fd71a7"
+  dependencies:
+    babel-polyfill "^6.26.0"
+    classnames "^2.2.5"
 
 pinkie-promise@^2.0.0:
   version "2.0.1"

@@ -34,3 +34,6 @@ externals: {
 ### 1.0.14
   &nbsp;&nbsp; `2019-05-14` 
   - 支持自定义content布局
+### 1.0.14-alpha.2
+  &nbsp;&nbsp; `2019-05-20` 
+  - 整合xhr、api
