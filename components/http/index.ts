@@ -58,9 +58,9 @@ ajax.interceptors.response.use((response) => {
       result.errors.forEach((item: {message: string, code: string}) => {
         message.push(item.message)
       })
-      Config.error(message.join('，'))
+      Config.warning(message.join('，'))
     } else if (result.status && result.message) {
-      Config.error(result.message)
+      Config.warning(result.message)
       response.status = result.status
     }
   }

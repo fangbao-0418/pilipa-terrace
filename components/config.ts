@@ -28,6 +28,7 @@ interface ConfigProps {
   localStorage?: any
   success: (message: string) => void
   error: (message: string) => void
+  warning: (message: string) => void
   loading: {
     show: () => void
     hide: () => void
@@ -89,6 +90,12 @@ const config: ConfigProps = {
   },
   error: (message) => {
     notification.error({
+      title: '系统提示',
+      message
+    })
+  },
+  warning: (message) => {
+    notification.warning({
       title: '系统提示',
       message
     })
