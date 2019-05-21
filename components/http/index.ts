@@ -91,7 +91,7 @@ const http = (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', conf
     const { result } = response
     return result
   }, (err) => {
-    Promise.reject(err)
+    return Promise.reject(err)
   })
 }
 export default http
