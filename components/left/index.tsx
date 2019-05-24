@@ -64,9 +64,11 @@ class Main extends React.Component<Props, State> {
     for (const key in this.pathInfo) {
       if (this.pathInfo.hasOwnProperty(key)) {
         const item = this.pathInfo[key]
-        const path = item.path
+        let path = item.path
+        const isFullPath = /^\^/.test(path)
+        path = isFullPath ? path.replace(/^\^/, '') : path
         const pattern = new RegExp(`^${path}[\/\]?$`)
-        if (pattern.test((item.mark ? ('/' + item.mark) : '') + pathname) && (item.mark === Config.type || !Config.type)) {
+        if (pattern.test((item.mark && !isFullPath ? ('/' + item.mark) : '') + pathname) && (item.mark === Config.type || !Config.type)) {
           selectedKey = key
           Config.mark = this.pathInfo[key].mark
         }
@@ -91,8 +93,9 @@ class Main extends React.Component<Props, State> {
   }
   public history (url: string, mark: string = Config.mark) {
     const pattern = new RegExp(`^/${mark}`)
+    const isFullPath = /^\^/.test(url)
     if (mark) {
-      url = url.replace(pattern, '')
+      url = isFullPath ? url.replace(/^\^/, '') : url.replace(pattern, '')
     }
     if (Config.env === 'development') {
       Config.history(url)
@@ -101,7 +104,7 @@ class Main extends React.Component<Props, State> {
     if (mark === Config.type) {
       this.props.history.push(url)
     } else {
-      window.location.href = mark ? '/' + mark + url : url
+      window.location.href = mark && !isFullPath ? '/' + mark + url : url
     }
   }
   public getMenuNodes (configs = Config.menu, prefKey = 'm') {

@@ -159,11 +159,14 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
   const contentType =  headers['Content-Type'] !== undefined ? headers['Content-Type'] : finalConfig.contentType
   headers['Content-Type'] = contentType === false ? undefined : (contentType || 'application/json; charset=utf-8')
 
-  data = Object.assign({}, data)
-
   finalConfig.withCredentials = finalConfig.withCredentials || false
   finalConfig.timeout = finalConfig.timeout || 10000
-  data = optimizeData(data) as Body
+
+  if (data instanceof Object && !(data instanceof Array)) {
+    data = Object.assign({}, data)
+    data = optimizeData(data) as Body
+  }
+
   if (type === 'GET' && data instanceof Object) {
     url = composeURL(url, data as object)
     data = null

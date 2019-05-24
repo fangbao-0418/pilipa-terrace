@@ -53,7 +53,7 @@ function getUaaInfo () {
     url = 'https://id.i-counting.cn'
     clientId = 'rtnsJtnT5Lu3cdmN'
   } else if (window.location.hostname === 'dev-b.i-counting.cn') {
-    clientId = 'tGH6QkG10pBDcYe8'
+    // clientId = 'tGH6QkG10pBDcYe8'
   }
   return {
     url,

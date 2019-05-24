@@ -1,6 +1,9 @@
 import React from 'react'
 import http from '../components/http'
 class Main extends React.Component {
+  componentDidMount () {
+    http('/user/v1/api/company/login/region', 'POST', ['Agent', 'DirectCompany'])
+  }
   render () {
     return (
       <div style={{margin: 20}}>

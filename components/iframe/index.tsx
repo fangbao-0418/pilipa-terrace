@@ -16,6 +16,7 @@ interface Props extends RouteComponentProps<{}> {
   token?: string
   onChange?: (user?: UserProps) => void
   type?: TypeProps
+  group?: string
   defaultValue?: UserProps
   /** 是否使用自带content布局，默认使用自带content布局 */
   content?: boolean
