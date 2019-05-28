@@ -27,8 +27,9 @@ export const getHomePage = () => {
       stack: e.stack
     })
   }
+  /** 清除^开头的url */
   return {
-    path: url,
+    path: url.replace(/^\^/, ''),
     mark
   }
 }

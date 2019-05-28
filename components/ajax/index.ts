@@ -48,7 +48,7 @@ export function parse (data: string) {
 export function param (obj: any) {
   const arr = []
   for (const key in obj) {
-    if (key in obj) {
+    if (key in obj && obj[key] !== undefined) {
       arr.push(`${key}=${obj[key]}`)
     }
   }
@@ -143,7 +143,6 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
   let data: Data
 
   if (typeof type !== 'string') {
-    config = null
     config = type
     type = ((config as any).type || 'GET') as RequestTypeProps
   }
@@ -162,11 +161,11 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
   finalConfig.withCredentials = finalConfig.withCredentials || false
   finalConfig.timeout = finalConfig.timeout || 10000
 
-  if (data instanceof Object && !(data instanceof Array)) {
+  if (data instanceof Object && !(data instanceof Array) && data === config) {
     data = Object.assign({}, data)
     data = optimizeData(data) as Body
   }
-
+  console.log(finalConfig, 'finalConfig')
   if (type === 'GET' && data instanceof Object) {
     url = composeURL(url, data as object)
     data = null
@@ -175,7 +174,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
   xhr.open(type, url, true)
   xhr.timeout = finalConfig.timeout
   xhr.withCredentials = finalConfig.withCredentials
-  console.log(finalConfig, xhr.withCredentials, 'xhr.withCredentials')
+
   for (const key in headers) {
     if (key in headers && headers[key] !== undefined) {
       xhr.setRequestHeader(key, headers[key])

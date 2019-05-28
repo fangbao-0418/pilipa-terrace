@@ -3,6 +3,16 @@ import http from '../components/http'
 class Main extends React.Component {
   componentDidMount () {
     http('/user/v1/api/company/login/region', 'POST', ['Agent', 'DirectCompany'])
+    http('/outside/v1/api/task/outside/list?tabName=UNDISTRIBUTED&extshow=true&pageSize=15&pageCurrent=1&rootAreaId=16&provinceId=210000', {
+      cityId: undefined,
+      orgId: ''
+    })
+    http('/outside/v1/api/template/product', {
+      data: {
+        type: 'OUTSIDE',
+        companyId: 0
+      }
+    })
   }
   render () {
     return (
