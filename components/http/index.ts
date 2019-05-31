@@ -70,7 +70,7 @@ ajax.interceptors.response.use((response) => {
   return response
 })
 
-const http = (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps) => {
+const http = <T = any>(url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps): Promise<T> => {
   url = '/sys' + url
   let finalConfig: XHRConfigProps = {}
   if (typeof type !== 'string') {
@@ -87,7 +87,7 @@ const http = (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', conf
     token: Config.token,
     from: '4'
   }, finalConfig.headers)
-  return ajax(url, type, finalConfig).then((response) => {
+  return ajax<T>(url, type, finalConfig).then((response) => {
     const { result } = response
     return result
   }, (err) => {

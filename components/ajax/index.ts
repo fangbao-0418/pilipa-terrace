@@ -26,13 +26,13 @@ export interface RequestConfig {
   headers: object
   body: Body
 }
-export interface ResponseProps {
+export interface ResponseProps<T = any> {
   type: 'load' | 'timeout' | 'error'
   /** http 状态码 */
   status: number
   statusText: string
   /** 请求返回的结果 */
-  result: any
+  result: T
   /** request配置信息 */
   config: RequestConfig
 }
@@ -137,7 +137,7 @@ Promise.prototype.always = function <S = any>(callback: (success: S, error: any)
   })
 }
 
-function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps): Promise<ResponseProps> {
+function http <T = any> (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps): Promise<ResponseProps<T>> {
   const xhr = new XMLHttpRequest()
   let finalConfig: XHRConfigProps = {}
   let data: Data
@@ -165,7 +165,7 @@ function http (url: string, type: XHRConfigProps | RequestTypeProps = 'GET', con
     data = Object.assign({}, data)
     data = optimizeData(data) as Body
   }
-  console.log(finalConfig, 'finalConfig')
+
   if (type === 'GET' && data instanceof Object) {
     url = composeURL(url, data as object)
     data = null

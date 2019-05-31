@@ -34,8 +34,21 @@ class Main extends React.Component<Props> {
   }
   public componentDidMount () {
     this.fetchUser().then(() => {
+      this.toHome()
       this.trackPage()
     })
+  }
+  public toHome () {
+    const pathname = window.location.pathname
+    if (pathname !== '/') {
+      return
+    }
+    const path = getHomePage().path
+    if (Config.env === 'production') {
+      window.location.href = path
+    } else {
+      Config.history(path)
+    }
   }
   public componentWillReceiveProps (props: Props) {
     const currentUrl = props.location.pathname + props.location.search + props.location.hash
