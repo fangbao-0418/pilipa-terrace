@@ -89,6 +89,10 @@ class Main extends React.Component<Props, State> {
     })
   }
   public toHome () {
+    if (this.homePage.path === '/') {
+      Config.history('/noAccess')
+      return
+    }
     this.history(this.homePage.path, this.homePage.mark)
   }
   public history (url: string, mark: string = Config.mark) {

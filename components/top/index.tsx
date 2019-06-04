@@ -39,10 +39,6 @@ class Main extends React.Component<Props, State> {
       })
     })
   }
-  // 设置右上角消息提醒
-  public msgAlert () {
-
-  }
   public toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
@@ -124,8 +120,6 @@ class Main extends React.Component<Props, State> {
   public render () {
     const { user, onChange } = this.props
     return (
-      // <ContextType.Consumer>
-      //   {({ user, onChange }) => (
       <Header
         className={'pilipa-terrace-top'}
       >
@@ -171,8 +165,6 @@ class Main extends React.Component<Props, State> {
           </Dropdown>
         </div>
       </Header>
-        // )}
-      // </ContextType.Consumer>
     )
   }
 }

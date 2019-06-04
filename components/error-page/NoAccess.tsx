@@ -4,7 +4,7 @@ class Main extends React.Component {
     return (
       <div className='no-access'>
         <div className='no-access-bgimg'>
-          <div className='no-access-message'>您的暂无权限访问！</div>
+          <div className='no-access-message'>页面无权限访问！</div>
         </div>
       </div>
     )
