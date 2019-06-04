@@ -39,11 +39,15 @@ class Main extends React.Component<Props> {
     })
   }
   public toHome () {
-    const pathname = window.location.pathname
+    const pathname = Config.env === 'production' ? window.location.pathname : this.props.location.pathname
     if (pathname !== '/') {
       return
     }
     const path = getHomePage().path
+    if (path === '/') {
+      Config.history('/noAccess')
+      return
+    }
     if (Config.env === 'production') {
       window.location.href = path
     } else {
@@ -119,6 +123,10 @@ class Main extends React.Component<Props> {
                 <Switch>
                   {this.props.children}
                   <Route
+                    path='/noAccess'
+                    component={ErrorPage.NoAccess}
+                  />
+                  <Route
                     component={ErrorPage}
                   />
                 </Switch>
@@ -126,6 +134,16 @@ class Main extends React.Component<Props> {
             ) : (
               <Switch>
                 {this.props.children}
+                <Route
+                  path='/noAccess'
+                  render={() => {
+                    return (
+                      <Content className='content'>
+                        <ErrorPage.NoAccess />
+                      </Content>
+                    )
+                  }}
+                />
                 <Route
                   component={ErrorPage}
                 />
