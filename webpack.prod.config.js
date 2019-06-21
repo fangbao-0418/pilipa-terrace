@@ -2,6 +2,11 @@ var path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzer = require('webpack-bundle-analyzer')
+const BundleAnalyzerPlugin = new BundleAnalyzer.BundleAnalyzerPlugin({
+  analyzerMode: 'static',
+  openAnalyzer: false
+})
 const extractCommon = new ExtractTextPlugin({
   filename: 'terrace.min.css',
   allChunks: true
@@ -124,6 +129,7 @@ module.exports = [
     },
     plugins: [
       extractCommon,
+      BundleAnalyzerPlugin,
       new UglifyJsPlugin({
         uglifyOptions: {
           compress: {
@@ -166,12 +172,6 @@ module.exports = [
         commonjs2: 'antd',
         amd: 'antd',
         root: 'antd'
-      },
-      jquery: {
-        commonjs: 'jquery',
-        commonjs2: 'jquery',
-        amd: 'jquery',
-        root: 'jQuery'
       }
     },
     performance: {
@@ -312,12 +312,6 @@ module.exports = [
         commonjs2: 'antd',
         amd: 'antd',
         root: 'antd'
-      },
-      jquery: {
-        commonjs: 'jquery',
-        commonjs2: 'jquery',
-        amd: 'jquery',
-        root: 'jQuery'
       }
     },
     performance: {

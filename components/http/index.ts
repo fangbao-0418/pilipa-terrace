@@ -6,10 +6,16 @@ import ajax, { RequestConfig, RequestTypeProps, XHRConfigProps } from '../ajax'
 let ajaxCount = 0
 /** 跳过loading */
 function isPass (options: RequestConfig) {
-  const { url } = options
+  const { url, type } = options
   const index = filters.loading.findIndex((test) => {
+    const match = test.match(/^(post|get)::/)
+    let matchType: string = type
+    if (match) {
+      matchType = match[1]
+      test = test.substr(match[0].length)
+    }
     const pattern = new RegExp(test)
-    if (pattern.test(url)) {
+    if (pattern.test(url) && type.toUpperCase() === matchType.toUpperCase()) {
       return true
     }
   })
@@ -71,7 +77,7 @@ ajax.interceptors.response.use((response) => {
 })
 
 const http = <T = any>(url: string, type: XHRConfigProps | RequestTypeProps = 'GET', config?: XHRConfigProps): Promise<T> => {
-  url = '/sys' + url
+  url = /^https?/.test(url) ? url : '/sys' + url
   let finalConfig: XHRConfigProps = {}
   if (typeof type !== 'string') {
     config = null

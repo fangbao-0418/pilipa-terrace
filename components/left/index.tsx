@@ -80,7 +80,7 @@ class Main extends React.Component<Props, State> {
       }
     }
     this.setState({
-      openKeys: selectedKey.match(/^m-\d+/) ? [selectedKey.match(/^m-\d+/)[0]] : [],
+      openKeys: this.getAllKeys(selectedKey, false),
       selectedKeys: selectedKey ? [selectedKey] : []
     }, () => {
       if (first) {
@@ -111,6 +111,29 @@ class Main extends React.Component<Props, State> {
       window.location.href = mark && !isFullPath ? '/' + mark + url : url
     }
   }
+  /**
+   * 获取链条key
+   * @param key - 当前选中key
+   * @param returnParent - 是否包含当前key
+   * @returns {String[]} - 返回链条key
+   */
+  public getAllKeys (key: string, containSelf = true) {
+    if (!containSelf) {
+      if (/^m-\d+$/.test(key)) {
+        return []
+      }
+      key = key.replace(/-\d+$/, '')
+    }
+    const arr = key.match(/-\d+/g)
+    const keys: string[] = []
+    let str = 'm'
+    arr.map((item) => {
+      str += item
+      keys.push(str)
+    })
+    console.log(arr, keys, 'keys')
+    return keys
+  }
   public getMenuNodes (configs = Config.menu, prefKey = 'm') {
     const nodes: JSX.Element[] = []
     configs.forEach((item, index) => {
@@ -132,7 +155,7 @@ class Main extends React.Component<Props, State> {
             )}
             onTitleClick={() => {
               this.setState({
-                openKeys: key === this.state.openKeys[0] ? [] : [key]
+                openKeys: this.state.openKeys.indexOf(key) !== -1 ? this.getAllKeys(key, false) : this.getAllKeys(key)
               })
             }}
           >
@@ -147,7 +170,7 @@ class Main extends React.Component<Props, State> {
             onClick={(menuitem: {key: string}) => {
               if (path) {
                 this.setState({
-                  openKeys: [prefKey],
+                  openKeys: this.getAllKeys(menuitem.key, true),
                   selectedKeys: [menuitem.key]
                 })
                 this.history(path, item.mark)

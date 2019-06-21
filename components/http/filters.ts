@@ -11,7 +11,8 @@ const filters = {
   loading: [
     '/notification/v1/api/remind/prompt/last/(\\w)+',
     '/notification/v1/api/remind/unread/(\\w)+',
-    '/v1/api/makecall\\?customerId='
+    '/v1/api/makecall\\?customerId=',
+    'post::/shop-pay/invoice/titles'
   ]
 }
 export default filters
