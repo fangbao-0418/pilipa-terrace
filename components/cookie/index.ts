@@ -18,7 +18,6 @@ export default {
         ${(options.domain !== undefined ? `domain=${options.domain};` : '')}
         ${(options.secure !== undefined ? `secure=${options.secure};` : '')} `
         str = str.replace(/;\s*/g, '; ').trim().slice(0, -1)
-        console.log(str, 'str')
         document.cookie = str
       }
     }

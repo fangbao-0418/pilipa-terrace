@@ -37,7 +37,14 @@
     "jsx-no-lambda": false,
     "key-spacing": ["error", { "beforeColon": false,  "afterColon": true }],
     "ordered-imports": false,
-    "max-line-length": false
+    "max-line-length": false,
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    }
   },
   "rulesDirectory": []
 }

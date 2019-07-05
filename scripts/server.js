@@ -7,10 +7,10 @@ const staticServer = require('koa-static')
 const app = new Koa()
 const config = require('../webpack.dev.config')
 const compiler = webpack(config)
-const proxyUrl = 'https://dev-b.i-counting.cn/'
+const proxyUrl = 'https://x-b.i-counting.cn/'
 app.use(staticServer(path.join(__dirname, '../dist')))
 app.use(proxy('/sys', {target: proxyUrl, changeOrigin: true}))
-app.use(proxy('/json', {target: 'https://dev-b.i-counting.cn/', changeOrigin: true}))
+app.use(proxy('/json', {target: 'https://x-b.i-counting.cn/', changeOrigin: true}))
 app.use(devMiddleware(compiler, {
   stats: {
     colors: true
@@ -22,6 +22,6 @@ app.use(devMiddleware(compiler, {
 
 app.use(hotMiddleware(compiler))
 
-app.listen(3003, function () {
-  console.log('app listening on port 3003!\n')
+app.listen(3009, function () {
+  console.log('app listening on port 3009!\n')
 })

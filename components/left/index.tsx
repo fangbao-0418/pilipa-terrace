@@ -1,5 +1,7 @@
 import React from 'react'
-import { Layout, Menu } from 'antd'
+import { Layout } from 'antd'
+import { $ } from 'pilipa'
+import Menu from '../menu'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { UserProps } from '../iframe/ContextType'
 import { getHomePage } from './config'
@@ -33,20 +35,20 @@ class Main extends React.Component<Props, State> {
       this.getActive(props.location.pathname, false)
     }
   }
-  public animate (el: any, scrollTop: number, time = 200) {
-    const top = scrollTop
-    const ms = top / time
-    let currTop = 0
-    const t = setInterval(() => {
-      currTop += 10
-      el.scrollTop = currTop
-      if (currTop >= top) {
-        clearInterval(t)
-      }
-    } , ms)
-  }
+  // public animate (el: any, scrollTop: number, time = 200) {
+  //   const top = scrollTop
+  //   const ms = top / time
+  //   let currTop = 0
+  //   const t = setInterval(() => {
+  //     currTop += 10
+  //     el.scrollTop = currTop
+  //     if (currTop >= top) {
+  //       clearInterval(t)
+  //     }
+  //   } , ms)
+  // }
   public toFixedMenuPosition () {
-    const index = this.state.openKeys[0] ? (this.state.openKeys[0].match(/\d+/) ? this.state.openKeys[0].match(/\d+/)[0] : 0) : 0
+    const index = this.state.openKeys[0] ? ((this.state.openKeys[0].match(/\d+/) ? this.state.openKeys[0].match(/\d+/)[0] : 0)) : 0
     const el: any = this.refs.menu
     if (el.children[0].children.length === 0) {
       return
@@ -55,9 +57,7 @@ class Main extends React.Component<Props, State> {
     if (!scrollTop) {
       return
     }
-    setTimeout(() => {
-      this.animate(el, scrollTop)
-    }, 300)
+    $(el).scrollTop(scrollTop)
   }
   public getActive (pathname = this.props.location.pathname, first = true) {
     let selectedKey = cookie.get('selectedKey') || ''
@@ -124,14 +124,13 @@ class Main extends React.Component<Props, State> {
       }
       key = key.replace(/-\d+$/, '')
     }
-    const arr = key.match(/-\d+/g)
+    const arr = key.match(/-\d+/g) || []
     const keys: string[] = []
     let str = 'm'
     arr.map((item) => {
       str += item
       keys.push(str)
     })
-    console.log(arr, keys, 'keys')
     return keys
   }
   public getMenuNodes (configs = Config.menu, prefKey = 'm') {
@@ -167,11 +166,11 @@ class Main extends React.Component<Props, State> {
           <Menu.Item
             hidden={item.hidden}
             key={key}
-            onClick={(menuitem: {key: string}) => {
+            onClick={() => {
               if (path) {
                 this.setState({
-                  openKeys: this.getAllKeys(menuitem.key, true),
-                  selectedKeys: [menuitem.key]
+                  openKeys: this.getAllKeys(key, true),
+                  selectedKeys: [key]
                 })
                 this.history(path, item.mark)
               }

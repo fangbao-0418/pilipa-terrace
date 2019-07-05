@@ -1,0 +1,34 @@
+.pilipa-menu
+  .pilipa-menu-submenu
+    color: hsla(0,0%,100%,.65)
+    font-size: 14px
+    cursor pointer
+    .pilipa-menu-submenu-title
+      line-height: 40px
+      margin: 4px 16px 4px 24px
+      transition: all 500ms
+      position relative
+      &:hover
+        color: hsla(0,0%,100%,1)
+        .pilipa-menu-submenu-arrow
+          color: hsla(0,0%,100%,1)
+      .pilipa-menu-submenu-arrow
+        position: absolute
+        right: 16px
+        top: 12px
+        transition: all 500ms
+    .pilipa-menu-sub
+      display: none
+      background: #000c17
+  .pilipa-menu-item
+    font-size: 14px
+    color: hsla(0,0%,100%,.65)
+    line-height: 40px
+    margin: 4px 16px 4px 24px
+    cursor pointer
+    transition: all 500ms
+    &:hover
+      color: hsla(0,0%,100%,1)
+  .pilipa-menu-item-selected
+    span
+      color: #e84845

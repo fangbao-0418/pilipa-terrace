@@ -39,6 +39,10 @@
   dependencies:
     samsam "1.3.0"
 
+"@types/animejs@^2.0.2":
+  version "2.0.2"
+  resolved "https://npmregistry.i-counting.cn/@types%2fanimejs/-/animejs-2.0.2.tgz#80ec902fb0dc90778fbcdaf080c03c44ddda979f"
+
 "@types/classnames@^2.2.3":
   version "2.2.3"
   resolved "http://registry.npm.taobao.org/@types/classnames/download/@types/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
@@ -6836,10 +6840,11 @@ pilipa-analytics@^1.0.5:
   dependencies:
     babel-polyfill "^6.26.0"
 
-pilipa@^3.0.8-alpha.7:
-  version "3.0.8-alpha.7"
-  resolved "https://npmregistry.i-counting.cn/pilipa/-/pilipa-3.0.8-alpha.7.tgz#d0ef8ab15eeda0530c4f2d5e999d6d59e2149e29"
+pilipa@^3.0.8-alpha.15:
+  version "3.0.8-alpha.15"
+  resolved "https://npmregistry.i-counting.cn/pilipa/-/pilipa-3.0.8-alpha.15.tgz#13ee1a02ad8d486619365668fa734779e7856f70"
   dependencies:
+    "@types/animejs" "^2.0.2"
     animejs "^3.0.1"
     babel-polyfill "^6.26.0"
     classnames "^2.2.5"

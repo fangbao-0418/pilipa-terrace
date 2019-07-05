@@ -1,6 +1,6 @@
 {
   "name": "pilipa-terrace",
-  "version": "1.0.15-alpha.4",
+  "version": "1.0.15-alpha.9",
   "description": "噼里啪b端公共服务",
   "main": "libs/index.js",
   "typings": "libs/index.d.ts",
@@ -21,7 +21,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
-    "pilipa": "^3.0.8-alpha.7",
+    "pilipa": "^3.0.8-alpha.15",
     "pilipa-analytics": "^1.0.5"
   },
   "devDependencies": {
