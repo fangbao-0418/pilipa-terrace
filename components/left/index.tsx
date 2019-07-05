@@ -57,7 +57,7 @@ class Main extends React.Component<Props, State> {
     if (!scrollTop) {
       return
     }
-    $(el).scrollTop(scrollTop)
+    $(el).scrollTop(scrollTop, 800)
   }
   public getActive (pathname = this.props.location.pathname, first = true) {
     let selectedKey = cookie.get('selectedKey') || ''
@@ -147,7 +147,7 @@ class Main extends React.Component<Props, State> {
             hidden={item.hidden}
             key={key}
             title={(
-              <span>
+              <span className='pilipa-menu-submenu-title-content'>
                 {!!item.icon && <Icon src={icon} />}
                 <span>{item.title}</span>
               </span>
