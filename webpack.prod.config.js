@@ -18,7 +18,7 @@ const extractCommon2 = new ExtractTextPlugin({
 module.exports = [
   {
     mode: 'production',
-    entry: './index',
+    entry: ['./index'],
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'terrace.min.js',
@@ -114,7 +114,7 @@ module.exports = [
           loader: 'url-loader',
           options: {
             limit: 1000,
-            name: '[name].[hash:7].[ext]'
+            name: 'images/[name].[hash:7].[ext]'
           }
         },
         {
@@ -122,7 +122,7 @@ module.exports = [
           loader: 'url-loader',
           options: {
             limit: 10000,
-            name: '[name].[hash:7].[ext]'
+            name: 'fonts/[name].[hash:7].[ext]'
           }
         }
       ]
@@ -262,7 +262,7 @@ module.exports = [
           loader: 'url-loader',
           options: {
             limit: 1000,
-            name: '[name].[hash:7].[ext]'
+            name: 'images/[name].[hash:7].[ext]'
           }
         },
         {
@@ -270,7 +270,7 @@ module.exports = [
           loader: 'url-loader',
           options: {
             limit: 10000,
-            name: '[name].[hash:7].[ext]'
+            name: 'fonts/[name].[hash:7].[ext]'
           }
         }
       ]

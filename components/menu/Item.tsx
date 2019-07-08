@@ -29,7 +29,7 @@ class Main extends React.Component<Props> {
         className={classNames('pilipa-menu-item', {'pilipa-menu-item-selected': selectedKeys.indexOf(key) > -1})}
         onClick={this.handleClick.bind(this)}
       >
-        <div>{this.props.children}</div>
+        {this.props.children}
       </div>
     )
   }

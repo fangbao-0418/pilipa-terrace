@@ -48,7 +48,8 @@ class Main extends React.Component<Props, State> {
   //   } , ms)
   // }
   public toFixedMenuPosition () {
-    const index = this.state.openKeys[0] ? ((this.state.openKeys[0].match(/\d+/) ? this.state.openKeys[0].match(/\d+/)[0] : 0)) : 0
+    const openKey = this.state.openKeys[0] ? this.state.openKeys[0] : this.state.selectedKeys[0]
+    const index = openKey ? ((openKey.match(/\d+/) ? openKey.match(/\d+/)[0] : 0)) : 0
     const el: any = this.refs.menu
     if (el.children[0].children.length === 0) {
       return
@@ -147,7 +148,10 @@ class Main extends React.Component<Props, State> {
             hidden={item.hidden}
             key={key}
             title={(
-              <span className='pilipa-menu-submenu-title-content'>
+              <span
+                title={item.title}
+                className='pilipa-menu-submenu-title-content'
+              >
                 {!!item.icon && <Icon src={icon} />}
                 <span>{item.title}</span>
               </span>
@@ -178,6 +182,7 @@ class Main extends React.Component<Props, State> {
           >
             {!!item.icon && <Icon src={icon} />}
             <span
+              title={item.title}
             >
               {item.title}
             </span>

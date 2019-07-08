@@ -40,7 +40,7 @@ class Main extends React.Component<Props> {
         </div>
         <div id={`${key}Menu`} ref='sub' className='pilipa-menu-sub'>
           <div
-            style={{marginLeft: 24}}
+            style={{marginLeft: 12}}
           >
             {this.props.children}
           </div>
