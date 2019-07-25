@@ -127,13 +127,7 @@ class Main extends React.Component<Props, State> {
           className={'top-right'}
         >
           {user.codes.indexOf('im_account_authority') > -1 && <span
-            className={`icon message`}
-            style={{
-              backgroundImage: `url(${require('../assets/images/imicon.png')})`,
-              width: '18px',
-              height: '16px',
-              marginRight: '25px'
-            }}
+            className={`icon im`}
             onClick={() => {
               window.location.href = '/tools/im/main.html'
             }}
@@ -145,12 +139,6 @@ class Main extends React.Component<Props, State> {
           </span>}
           <span
             className={`icon message`}
-            style={{
-              backgroundImage: `url(${require('../assets/images/message.png')})`,
-              width: '14px',
-              height: '16px',
-              marginRight: '25px'
-            }}
             onClick={() => {
               this.msg.uiLogicLinkToList()
             }}
@@ -172,12 +160,7 @@ class Main extends React.Component<Props, State> {
             overlay={this.getMenu(onChange)}
           >
             <span
-              className='icon'
-              style={{
-                backgroundImage: `url(${require('../assets/images/user-menu.png')})`,
-                width: '14px',
-                height: '14px'
-              }}
+              className='icon menu'
             />
           </Dropdown>
         </div>
