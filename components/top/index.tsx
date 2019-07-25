@@ -126,6 +126,23 @@ class Main extends React.Component<Props, State> {
         <div
           className={'top-right'}
         >
+          {user.codes.indexOf('im_account_authority') > -1 && <span
+            className={`icon message`}
+            style={{
+              backgroundImage: `url(${require('../assets/images/imicon.png')})`,
+              width: '18px',
+              height: '16px',
+              marginRight: '25px'
+            }}
+            onClick={() => {
+              window.location.href = '/tools/im/main.html'
+            }}
+          >
+            <i
+              className={'point'}
+              style={{visibility: this.state.msgCount ? 'visible' : 'hidden'}}
+            />
+          </span>}
           <span
             className={`icon message`}
             style={{
