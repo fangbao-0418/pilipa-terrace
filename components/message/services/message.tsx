@@ -197,7 +197,6 @@ class Msg implements MsgI {
     }
     // 关闭
     const onClose = () => {
-      console.log('message closed.....')
       setReaded()
     }
 
@@ -206,7 +205,9 @@ class Msg implements MsgI {
       description: (
         <div>
           <h5 style={{fontSize: '14px', borderTop: '1px solid #ddd', padding: '15px 0 0'}}>{data.title}</h5>
-          <p>{data.content}</p>
+          <p style={{maxHeight: 300, overflow: 'auto'}}>
+            {data.content}
+          </p>
           <div style={{textAlign: 'right'}}>
             <Button
               type='primary'
@@ -215,10 +216,10 @@ class Msg implements MsgI {
                 this.uiClose()
                 // 设为已读
                 setReaded()
-                console.log('???????????//', data.id)
                 this.uiLogicLinkToList()
               }}
-            >查看详情
+            >
+              查看详情
             </Button>
           </div>
         </div>
