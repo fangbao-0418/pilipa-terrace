@@ -205,7 +205,7 @@ class Msg implements MsgI {
       description: (
         <div>
           <h5 style={{fontSize: '14px', borderTop: '1px solid #ddd', padding: '15px 0 0'}}>{data.title}</h5>
-          <p style={{maxHeight: 300, overflow: 'auto'}}>
+          <p style={{maxHeight: 84, overflow: 'auto'}}>
             {data.content}
           </p>
           <div style={{textAlign: 'right'}}>

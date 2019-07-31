@@ -43,8 +43,14 @@ class Main extends React.Component<Props> {
     if (pathname !== '/') {
       return
     }
+    const { user } = this.state.value
     const path = getHomePage().path
     if (path === '/') {
+      /** 判断是否有客服权限 */
+      if (user.codes.indexOf('im_account_authority') > -1) {
+        window.location.href = '/tools/im/'
+        return
+      }
       Config.history('/noAccess')
       return
     }

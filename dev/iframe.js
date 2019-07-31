@@ -21,7 +21,7 @@ class Main extends React.Component {
         <Router>
           <Iframe
             content={false}
-            token='c5291b73-00ed-444a-b58c-ae34c5ee9363.1564383111828'
+            token='c5291b73-00ed-444a-b58c-ae34c5ee9363.1564491180072'
             env='development'
           >
             <Route path='/upload' component={Upload} />
